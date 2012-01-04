@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:loadsensing="http://loadsensing.com" >
+
+    <PreferenceCategory android:title="@string/settingMapTitle" >
+
+        <ListPreference
+            android:dialogTitle="@string/settingSelectMapDialog"
+            android:entries="@array/mapTypeEntries"
+            android:entryValues="@array/mapTypeValues"
+            android:key="maps"
+            android:summary="@string/settingSelectMap"
+            android:title="@string/settingMapType" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settingNetCloserTitle" >
+
+        <ListPreference
+            android:dialogTitle="@string/settingDistanceUnitDialog"
+            android:entries="@array/DistanceUnitEntries"
+            android:entryValues="@array/DistanceUnitValues"
+            android:key="netcloserunit"
+            android:summary="@string/settingSelectDistanceUnit"
+            android:title="@string/settingDistanceUnit" />
+
+        <com.lsn.LoadSensing.ui.SeekBarPreference
+            android:defaultValue="10"
+            android:key="netcloserdist"
+            android:max="25"
+            loadsensing:min="1"
+            android:summary="@string/settingDistanceRange"
+            android:title="@string/settingDistanceRangeTitle" />
+
+        <com.lsn.LoadSensing.ui.SeekBarPreference
+            android:defaultValue="10"
+            android:key="netclosertime"
+            android:max="25"
+            loadsensing:min="5"
+            android:summary="@string/settingTimeRange"
+            android:title="@string/settingTimeRangeTitle"
+            loadsensing:unitsRight=" s." />
+    </PreferenceCategory>
+
+</PreferenceScreen>

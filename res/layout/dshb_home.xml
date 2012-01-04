@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <com.lsn.LoadSensing.ui.DashboardLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFF"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/dsh_btn_netList"
+                style="@style/DashboardButton"
+                android:drawableTop="@drawable/dshb_btn_hom_01_netlist"
+                android:text="@string/act_lbl_homNetList" />
+
+            <Button
+                android:id="@+id/dsh_btn_netMaps"
+                style="@style/DashboardButton"
+                android:drawableTop="@drawable/dshb_btn_hom_02_netmaps"
+                android:text="@string/act_lbl_homNetMaps" />
+
+            <Button
+                android:id="@+id/dsh_btn_QRCode"
+                style="@style/DashboardButton"
+                android:drawableTop="@drawable/dshb_btn_hom_03_qrcode"
+                android:text="@string/act_lbl_homQRCode" />
+
+            <Button
+                android:id="@+id/dsh_btn_Faves"
+                style="@style/DashboardButton"
+                android:drawableTop="@drawable/dshb_btn_hom_04_faves"
+                android:text="@string/act_lbl_homFaves" />
+
+            <Button
+                android:id="@+id/dsh_btn_AR"
+                style="@style/DashboardButton"
+                android:drawableTop="@drawable/dshb_btn_hom_05_augreal"
+                android:text="@string/act_lbl_homAugReal" />
+
+            <Button
+                android:id="@+id/dsh_btn_netCloser"
+                style="@style/DashboardButton"
+                android:drawableTop="@drawable/dshb_btn_hom_06_netcloser"
+                android:text="@string/act_lbl_homNetCloser" />
+        </com.lsn.LoadSensing.ui.DashboardLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtHomeMessage"
+        android:layout_width="fill_parent"
+        android:layout_height="12dip"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="#DD5A54"
+        android:gravity="bottom|center_horizontal"
+        android:text="There is an update available"
+        android:textColor="#FFFFFF"
+        android:textSize="9dip"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+</FrameLayout>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, LoadSensingActivity!</string>
+    <string name="app_name">LoadSensing App</string>
+    <string name="app_team">EQUIPO LSN</string>
+    <string name="info_LoadSensing">Para más información sobre LoadSensing, se puede consultar la siguiente web:</string>
+    <string name="app_url">http://www.loadsensing.com</string>
+    <string name="infoTabAbout">Sobre...</string>
+    <string name="infoTabLicense">Licencia</string>
+
+    <!-- Messages Init -->
+    <string name="msg_BadLoginPass">Login/Password incorrectos</string>
+    <string name="msg_Welcome">Bienvenido usuario</string>
+    <string name="msg_NOLocServ">No se han encontrado servicios de localización activos</string>
+    <string name="msg_PleaseWait">Procesando...</string>
+    <string name="msg_retrievNetworks">Recuperando redes...</string>
+    <string name="msg_retrievImages">Recuperando imágenes...</string>
+    <string name="msg_retrievSensors">Recuperando sensores...</string>
+    <string name="msg_ErrMarketAccess">Error al acceder al Android Market</string>
+    <string name="msg_ActionCancelled">Acción cancelada</string>
+    <string name="msg_NotConnected">Conexión a Internet necesaría para acceder a la aplicación</string>
+    <string name="msg_CommError">Error de comunicación con el servidor</string>
+    <string name="msg_ErrorSavingFile">Error guardando fichero localmente</string>
+    <string name="msg_ProcessError">Error cargando información</string>
+    <string name="msg_NetworkNotFound">Red no encontrada en el servidor</string>
+    <string name="msg_NetworkNotFound">Sensor no encontrado en el servidor</string>
+    <string name="msg_UnderDevelopment">Opción en desarrollo</string>
+    <!-- Messages End -->
+    <!-- Activity Labels Init -->
+    <string name="act_lbl_homHome">LoadSensing App</string>
+    <string name="act_lbl_homConfig">Configuración</string>
+    <string name="act_lbl_homAbout">Sobre...</string>
+    <string name="act_lbl_homLicense">Licencia</string>
+    <string name="act_lbl_homInfo">Información</string>
+    <string name="act_lbl_homHelp">Ayuda</string>
+    <string name="act_lbl_homNetList">Redes en lista</string>
+    <string name="act_lbl_homNetMaps">Redes en mapa</string>
+    <string name="act_lbl_homQRCode">Leer QR Code</string>
+    <string name="act_lbl_homFaves">Favoritos</string>
+    <string name="act_lbl_homAugReal">Realidad Augmentada</string>
+    <string name="act_lbl_homNetCloser">Redes cercanas</string>
+    <string name="act_lbl_favNetwork">Redes favoritas</string>
+    <string name="act_lbl_favSensor">Sensores favoritos</string>
+    <string name="act_lbl_favImage">Imagenes favoritas</string>
+    <string name="act_lbl_netinfo">Información de red</string>
+    <string name="act_lbl_SensorList">Listado de sensores</string>
+    <string name="act_lbl_NetImages">Imagenes de red</string>
+    <string name="act_lbl_BigImage">Imagen %1$d de %2$d</string>
+    <string name="act_lbl_sensorinfo">Información del sensor</string>
+    <string name="act_lbl_sensorchart">Gráfico del sensor</string>
+    <!-- Activity Labels End -->
+
+
+    <!-- Login Init -->
+    <string name="strUser">Usuario:</string>
+    <string name="strPassword">Contraseña:</string>
+    <string name="strLogin">Acceder</string>
+    <string name="strExit">Salir</string>
+    <!-- Login End -->
+    <!-- ActionBar Text Init -->
+    <string name="abtxtLogOut">Salir</string>
+    <string name="abtxtConfiguration">Configuración</string>
+    <string name="abtxtInformation">Información</string>
+    <!-- ActionBar Text End -->
+    <!-- Dialog Text Init -->
+    <string name="dialogLogOut">¿Desea cambiar de usuario?</string>
+    <string name="txtYes">Si</string>
+    <string name="txtNo">No</string>
+    <string name="txtExit">Salida</string>
+    <!-- Dialog Text End -->
+    <!-- Faves Activity Init -->
+    <string name="act_lbl_favNetworks">Redes Favoritas</string>
+    <string name="act_lbl_favSensors">Sensores Favoritos</string>
+    <string name="act_lbl_favImages">Imágenes Favoritas</string>
+    <string name="tab_fav_networks">Redes</string>
+    <string name="tab_fav_sensors">Sensores</string>
+    <string name="tab_fav_images">Imágenes</string>
+    <string name="message_error_network">La red ya está en favoritos</string>
+    <string name="message_error_sensor">El sensor ya está en favoritos</string>
+    <string name="message_error_image">La imagen ya está en favoritos</string>
+    <string name="message_add_network">Red añadida a favoritos</string>
+    <string name="message_add_sensor">Sensor añadido a favoritos</string>
+    <string name="message_add_image">Imagen añadida a favoritos</string>
+    <!-- Faves Activity End -->
+    <!-- NetList Activity Init -->
+    <string name="strSituation">Situación:</string>
+    <string name="strNumSensors">Número de sensores:</string>
+    <!-- NetList Activity End -->
+    <!-- SensorList Activity Init -->
+    <string name="strSensorType">Tipo:</string>
+    <string name="strSensorChannel">Canal:</string>
+    <!-- SensorList Activity End -->
+    <!-- NetCloser Activity Init -->
+    <string name="strGetLocation">Obteniendo ubicación...</string>
+    <string name="strYourLocation">Tu ubicación - (lat: %1$s,lon: %2$s)</string>
+    <string name="strErrorLocation">Tu ubicación no puede ser obtenida</string>
+    <string name="strDisplayInfo">Radio: %1$s - Redes encontradas: %2$d</string>
+    <!-- NetCloser Activity End -->
+    <!-- FavesSensors Activity Init -->
+    <string name="strNetName">Red:</string>
+
+    <!-- FavesSensors Activity End -->
+    <!-- NetInfo Activity Init -->
+    <string name="lblNetName">Red:</string>
+    <string name="lblnetSituation">Situación:</string>
+    <string name="lblnetPosition">Posición:</string>
+    <string name="lblnetPosLatitude">Latitud</string>
+    <string name="lblnetPosLongitude">Longitud</string>
+    <string name="lblnetPosAltitude">Altitud</string>
+    <string name="lblnetNumSensors">Sensores:</string>
+    <string name="lblnetLoadSensors">Ver sensores</string>
+    <string name="lblnetLoadImages">Ver imágenes</string>
+
+    <!-- NetInfo Activity End -->
+    <!-- SensorInfo Activity Init -->
+    <string name="lblSensorSituation">Situación:</string>
+    <string name="lblSensorType">Tipo:</string>
+    <string name="lblSensorChannel">Canal:</string>
+    <string name="lblSensorName">Sensor:</string>
+    <string name="lblSensorDescription">Descripción:</string>
+    <string name="lblSensorValues">Valores:</string>
+    <string name="lblSensorMeasure">Medida:</string>
+    <string name="lblSensorMaxLoad">Máximo:</string>
+    <string name="lblSensorSensitivity">Sensitividad:</string>
+    <string name="lblSensorOffset">Compensación:</string>
+    <string name="lblSensorAlarmAt">Alarma a:</string>
+    <string name="lblSensorLastTare">Última avería:</string>
+    <string name="lblSensorLoadChart">Cargar gráfico</string>
+    <string name="lblSensorChartType">Tipo de gràfico:</string>
+    <string name="lblSensorChartStrain">Gráfico de tensión</string>
+    <string name="lblSensorChartPower">Gráfico de potencia</string>
+    <string name="lblSensorChartCounter">Gráfico de conteo</string>
+    <!-- SensorInfo Activity End -->
+    <!-- QRCode Activity Init -->
+    <string name="msg_QRIntentError">No se ha encontrado Intent para leer códigos QR, instala Google Googles en el dispositivo</string>
+    <string name="msg_QRFormatError">Formato incorrecto del codigo leido, ha de ser un QRCode.</string>
+    <string name="msg_QRCorrect">Detectado sensor %1$s</string>
+    <!-- QRCode Activity End -->
+    <!-- Settings Init -->
+    <string name="settingOSMnotDeveloped">Open Street Map no implementado</string>
+    <string name="settingMapTitle">Configuración de mapas</string>
+    <string name="settingMapType">Tipo de mapa</string>
+    <string name="settingSelectMap">Selecciona el tipo de mapa</string>
+    <string name="settingSelectMapDialog">Selecciona mapa:</string>
+    <string name="settingNetCloserTitle">Configuración de redes cercanas</string>
+    <string name="settingDistanceUnit">Unidad de distancia</string>
+    <string name="settingSelectDistanceUnit">Selecciona la unidad de distancia</string>
+    <string name="settingDistanceUnitDialog">Selecciona unidad:</string>
+    <string name="settingDistanceRangeTitle">Radio de acción</string>
+    <string name="settingDistanceRange">Selecciona el radio de acción a utilitzar</string>
+    <string name="settingTimeRangeTitle">Tiempo de espera</string>
+    <string name="settingTimeRange">Selecciona el tiempo de espera</string>
+    <!-- Settings End -->
+    <!-- Maps Activity Init -->
+    <string name="strNetDescrip">Situada en %1$s con %2$d sensores</string>
+    <!-- Maps Activity End -->
+    <!-- Menu Init -->
+    <string name="strSearch">Buscar</string>
+    <string name="strFilter">Filtrar</string>
+    <string name="strMapMode">Cambiar vista</string>
+    <!-- Menu End -->
+    <!-- SD Error Messages Init -->
+    <string name="msgSDReadOnly">La tarjeta SDCard sólo se puede leer. Esto impedirá el buen funcionamiento de la aplicación de escritura.</string>
+    <string name="msgSDBadFormat">La tarjeta SDCard no se puede usar, no tiene un formato aceptado o no está correctamente formateada.</string>
+    <string name="msgSDNotFound">La tarjeta SDCard no se encuentra, para utilizar el lector necesita insertar una tarjeta SD Card en el móvil.</string>
+    <string name="msgSDShared">La tarjeta SDCard no está montada porque se está utilizando conectada mediante USB. Desconectela y vuelva a intentarlo.</string>
+    <string name="msgSDUnmountable">La tarjeta SDCard no puede montarse. Esto puede deberse a que se encuentra corrupta o dañada."</string>
+    <string name="msgSDUnmounted">La tarjeta SDCard está presente en el móvil pero no está montada. Móntela antes de usar el programa.</string>
+    <!-- SD Error Messages End -->
+
+
+    <!-- Help Init -->
+   		<string name="help_message">Más ayuda pulsando sobre las funcionalidades</string>
+   		<string name="help_homNetList">Da la posibilidad de mostrar el listado de todas las redes registradas en el sistema a les que el usuario tiene acceso.</string> 
+	    <string name="help_homNetMaps">Da la posibilidad de visualizar todas las redes registradas en el sistema a las que el usuario tiene acceso.</string>
+	    <string name="help_homQRCode">Se puede acceder directamente al dispositivo leyendo el bidicode/QR Code y acceder a la información del nodo.</string>
+	    <string name="help_homFaves">Muestra las redes, sensores e imágenes que el usuario tiene como favoritas para poder tenerlas accesibles más rapidamente.</string>
+	    <string name="help_homAugReal">Estando in situ en la misma zona donde se encuentra la red a analizar, se puede geoposicionar cada nodo de la red observando en tiempo real la posición del nodo.</string>
+	    <string name="help_homNetCloser">Permite, mediante el GPS del dispositivo, detectar las redes cercanas a la ubicación en la que se encuentra.</string>
+	    <string name="help_listnet_situation">Situación de la red.</string>
+	    <string name="help_listnet_numsensor">Número de sensores que forman la red.</string>
+    <!-- Help End -->
+    <!-- Context Menu Init -->
+
+    <string name="add_faves">Añadir a favoritos</string>
+    <string name="del_faves">Quitar de favoritos</string>
+    <!-- Context Menu End -->
+    <!-- Settings Init -->
+    <string name="settingTitle">Configuración</string>
+    <string name="settingMapType">Tipo de mapa</string>
+    <!-- Settings End -->
+    <!-- About Activity Ini -->
+    <string name="aboutCaption">LS App es una aplicación desarrollada, como proyecto de final del Master de Software Libre de la <a href="http://www.uoc.edu">UOC</a>, por:</string>
+    <string name="aboutDeveloper1">- Sergio González Díez [sergio.gd@gmail.com]</string>
+    <string name="aboutDeveloper2">- Sergio Postigo Collado [spostigoc@gmail.com]</string>
+    <string name="aboutTitleDescrition">Descripción:</string>
+    <string name="aboutColaboration">El desarrollo se ha hecho en colaboración con la empresa <a href="http://www.worldsensing.com">WorldSensing</a>, que es una empresa dedicada a desarrollar sistemas de comunicación y ofrecer servicios relacionados con el ámbito de redes de sensores.</string>
+    <string name="aboutContent">LS App es una aplicación que permite el acceso remoto a la información en tiempo real i histórica de la monitoritzación de estructuras de la aplicación de LoadSensing, información obtenida a partir de los nodos que se encuentran distribuidos en diversas áreas formando redes.</string>
+    <string name="aboutTitleLibraries">Librerías:</string>
+    <string name="aboutLibrary1">-<a href="https://github.com/cyrilmottier/GreenDroid">GreenDroid</a>: para mejorar el desarrollo de las interfícies de usuario.</string>
+    <string name="aboutLibrary2">-<a href="https://github.com/jgilfelt/android-mapviewballoons">mapviewballoons</a>: para mostrar los globos informativos en los mapas.</string>
+    <string name="aboutLibrary3">-<a href="http://www.jjoe64.com/p/graphview-library.html">GraphView</a>: para generar les gráficas de información histórica de los sensores.</string>
+    <string name="aboutLibrary4">-<a href="http://www.mixare.org/">Mixare</a>: para mostrar la información de las redes utilizando realidad aumentada.</string>
+    <string name="aboutLibrary5">-<a href="http://code.google.com/p/mapsforge/">mapsforge</a>: para la visualización de mapas OpenStreetMap.</string>
+    <string name="aboutTitleImgResources">Recursos de imagen:</string>
+
+    <!-- About Activity End -->
+    <!-- Mixare Library Ini -->
+    <string name="search_hint">Buscar Localización</string>
+    <string name="empty_list">Lo sentimos, \nNo hay información de ninguna localización \ndisponible en este radio de acción.\nPor favor, intentalo ampliando el radio de acción.</string>
+    <string name="option_not_available">Lo sentimos, opción en desarrollo... \nEsta opción estará disponible proximamente!</string>
+    <string name="menu_item_1">Fuente de datos</string>
+    <string name="menu_item_2">Vista en listado</string>
+    <string name="menu_item_3">Vista en mapa</string>
+    <string name="menu_item_4">Nivel de zoom</string>
+    <string name="menu_item_5">Buscar</string>
+    <string name="menu_item_6">Información</string>
+    <string name="menu_item_7">Licencia</string>
+    <string name="cancel">Cancelar</string>
+    <string name="data_source_edit_err">Esta fuente de datos no puede ser editada.</string>
+    <string name="data_source_delete_err">Esta fuente de datos no puede ser borrada.</string>
+    <string name="connection_error_dialog">Lo sentimos, detectado error en la connexión! \nPor favor comprueva tu conexión a Internet.</string>
+    <string name="connection_error_dialog_button1">Reintentar</string>
+    <string name="connection_error_dialog_button2">Abrir configuración</string>
+    <string name="connection_error_dialog_button3">Cerrar</string>
+    <string name="connection_GPS_dialog_text">La localización GPS no puede ser actualizada... \nSi continuas es posible que la información 
+			\nno sea mostrada en el lugar correcto.</string>
+    <string name="connection_GPS_dialog_button1">Continuar</string>
+    <string name="connection_GPS_dialog_button2">Cerrar</string>
+    <string name="no_website_available">Lo sentimos, no hay más \ninformación disponible.</string>
+    <string name="license_title">Licencia</string>
+    <string name="close_button">Cerrar</string>
+    <string name="general_info_title">Información General</string>
+    <string name="general_info_text">GPS info: </string>
+    <string name="longitude">Longitud: </string>
+    <string name="latitude">Latitud: </string>
+    <string name="altitude">Altitud: </string>
+    <string name="speed">Velocidad: </string>
+    <string name="accuracy">Precisión: </string>
+    <string name="gps_last_fix">Última corrección GPS: </string>
+    <string name="map_menu_normal_mode">Mapa</string>
+    <string name="map_menu_satellite_mode">Satélite</string>
+    <string name="map_menu_cam_mode">Cámara</string>
+    <string name="map_my_location">Mi localización</string>
+    <string name="map_current_location_click">Tu localización actual</string>
+    <string name="data_source_add">Añadir fuente de datos</string>
+    <string name="data_source_edit">Editar fuente de datos</string>
+    <string name="data_source_delete">Borrar fuente de datos</string>
+    <string name="data_source_change_wikipedia">Cambiar a la fuente de datos de Wikipedia</string>
+    <string name="data_source_change_twitter">Cambiar a la fuente de datos de Twitter</string>
+    <string name="data_source_change_osm">Cambiar a la fuente de datos d\'OpenStreetMap</string>
+    <string name="search_failed_notification">No se ha encontrado ningún resultado</string>
+    <string name="source_openstreetmap">Estaciones cercanas</string>
+    <string name="search_active_1">Buscar en la fuente de datos</string>
+    <string name="search_active_2">. Tocar para terminar la busqueda</string>
+    <string name="download_error">Error en la descarga</string>
+    <string name="download_received">Recibida información desde</string>
+    <string name="add_osm_menu">Añadir OpenStreetMap URL</string>
+    <string name="insert_osm_url">Insertar OpenStreetMap URL</string>
+    <string name="osm_max_object_menu">Fijar máximo POI por URL</string>
+    <string name="set_osm_max_object">Máximo POIs por URL</string>
+    <!-- Mixare Library End -->
+
+</resources>

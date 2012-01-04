@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lsn.LoadSensing"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="7" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:debuggable="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:name=".LSApplication"
+        android:theme="@style/Theme.LSTheme" >
+        <activity
+            android:label="@string/app_name"
+            android:name=".LSLoginActivity" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/act_lbl_homHome"
+            android:name=".LSHomeActivity" >
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/act_lbl_homNetList"
+            android:name=".LSNetListActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_homNetMaps"
+            android:name=".LSNetMapsActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_homQRCode"
+            android:name=".LSQRCodeActivity" >
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/act_lbl_homFaves"
+            android:name=".LSFavesActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_homAugReal"
+            android:name=".LSAugRealActivity" >
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/act_lbl_homNetCloser"
+            android:name=".LSNetCloserActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_homConfig"
+            android:name=".LSConfigActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_homHelp"
+            android:name=".LSHelpActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_homAbout"
+            android:name=".LSAboutActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_homInfo"
+            android:name=".LSInfoActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_homLicense"
+            android:name=".LSLicenseActivity" >
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/act_lbl_favNetworks"
+            android:name=".faves.LSFavesNetworksActivity" >
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/act_lbl_favSensors"
+            android:name=".faves.LSFavesSensorsActivity" >
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/act_lbl_favImages"
+            android:name=".faves.LSFavesImagesActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_netinfo"
+            android:name=".LSNetInfoActivity" >
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:name=".mixare.MixView"
+            android:screenOrientation="landscape" >
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:mimeType="application/mixare-lsn-json"
+                    android:scheme="http" />
+                <data
+                    android:mimeType="application/mixare-lsn-json"
+                    android:scheme="content" />
+                <data
+                    android:mimeType="application/mixare-lsn-json"
+                    android:scheme="file" />
+                <data
+                    android:mimeType="application/mixare-lsn-json"
+                    android:scheme="com.lsn.LoadSensing" />
+            </intent-filter>
+            <intent-filter >
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".mixare.MixView" />
+        </activity>
+        <activity
+            android:launchMode="singleTop"
+            android:name=".mixare.MixListView"
+            android:screenOrientation="user" >
+            <intent-filter >
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:launchMode="singleTop"
+            android:name=".mixare.MixMap"
+            android:screenOrientation="user" >
+            <intent-filter >
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:label="@string/act_lbl_netinfo"
+            android:name=".LSNetInfoActivity" >
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/act_lbl_SensorList"
+            android:name=".LSSensorListActivity" >
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/act_lbl_NetImages"
+            android:name=".LSNetImagesActivity" >
+        </activity>
+        <activity android:name=".LSBigImageActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_sensorinfo"
+            android:name=".LSSensorInfoActivity" >
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/act_lbl_sensorchart"
+            android:name=".LSSensorChartActivity" >
+        </activity>
+        <activity
+            android:label="@string/act_lbl_homNetMaps"
+            android:name=".LSNetMapsForgeActivity" >
+        </activity>
+
+        <activity 
+            android:label="@string/act_lbl_homNetList"
+            android:name=".help.LSHelpListNetActivity">
+        </activity>
+        <uses-library android:name="com.google.android.maps" />
+    </application>
+
+</manifest>

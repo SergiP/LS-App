@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="mapTypeEntries">
+        <item>Google Maps</item>
+        <item>Open StreetMap</item>
+    </string-array>
+    <string-array name="mapTypeValues">
+        <item>google</item>
+        <item>openstreetmap</item>
+    </string-array>
+    <string-array name="lsnetmaps_options">
+        <item name="lsnetmaps_opt_mapStreet" type="string">Street View</item>
+        <item name="lsnetmaps_opt_mapSat" type="string">Satellite View</item>
+    </string-array>
+    <string-array name="datasourcetypelist">
+        <item>@string/OSM</item>
+        <item>@string/MIXARE</item>
+    </string-array>
+    <string-array name="displaytypelist">
+        <item>@string/CIRCLE_MARKER</item>
+        <item>@string/NAVIGATION_MARKER</item>
+    </string-array>
+
+</resources>

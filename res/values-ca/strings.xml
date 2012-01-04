@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, LoadSensingActivity!</string>
+    <string name="app_name">LoadSensing App</string>
+    <string name="app_team">EQUIP LSN</string>
+    <string name="info_LoadSensing">Per més informació sobre LoadSensing, es pot consultar la següent web:</string>
+    <string name="app_url">http://www.loadsensing.com</string>
+    <string name="infoTabAbout">Sobre...</string>
+    <string name="infoTabLicense">Llicència</string>
+
+    <!-- Messages Init -->
+    <string name="msg_BadLoginPass">Login/Password incorrectes</string>
+    <string name="msg_Welcome">Benvingut usuari</string>
+    <string name="msg_NOLocServ">No s\'han trobat serveis de localització actius</string>
+    <string name="msg_PleaseWait">Processant...</string>
+    <string name="msg_retrievNetworks">Recuperant xarxes...</string>
+    <string name="msg_retrievImages">Recuperant imatges...</string>
+    <string name="msg_retrievSensors">Recuperant sensors...</string>
+    <string name="msg_ErrMarketAccess">Error al accedir a Android Market</string>
+    <string name="msg_ActionCancelled">Acció cancel·lada</string>
+    <string name="msg_NotConnected">Connexió a Internet necessaria per accedir a l\'aplicació</string>
+    <string name="msg_CommError">Error de comunicació amb el servidor</string>
+    <string name="msg_ErrorSavingFile">Error emmagatzemant fitxer localment</string>
+    <string name="msg_ProcessError">Error carregant informació</string>
+    <string name="msg_NetworkNotFound">Xarxa no trobada al servidor</string>
+    <string name="msg_SensorNotFound">Sensor no trobat al servidor</string>
+    <string name="msg_UnderDevelopment">Opció en desenvolupament</string>
+    
+    <!-- Messages End -->
+    <!-- Activity Labels Init -->
+    <string name="act_lbl_homHome">LoadSensing App</string>
+    <string name="act_lbl_homConfig">Configuració</string>
+    <string name="act_lbl_homAbout">Sobre...</string>
+    <string name="act_lbl_homLicense">Llicència</string>
+    <string name="act_lbl_homInfo">Informació</string>
+    <string name="act_lbl_homHelp">Ajuda</string>
+    <string name="act_lbl_homNetList">Xarxes en llistat</string>
+    <string name="act_lbl_homNetMaps">Xarxes en mapes</string>
+    <string name="act_lbl_homQRCode">Llegir QR Code</string>
+    <string name="act_lbl_homFaves">Favorits</string>
+    <string name="act_lbl_homAugReal">Realitat Augmentada</string>
+    <string name="act_lbl_homNetCloser">Xarxes properes</string>
+    <string name="act_lbl_favNetwork">Xarxes favorites</string>
+    <string name="act_lbl_favSensor">Sensors favorits</string>
+    <string name="act_lbl_favImage">Imatges favorites</string>
+    <string name="act_lbl_netinfo">Informació de xarxa</string>
+    <string name="act_lbl_SensorList">Llistat de sensors</string>
+    <string name="act_lbl_NetImages">Imatges de xarxa</string>
+    <string name="act_lbl_BigImage">Imatge %1$d de %2$d</string>
+    <string name="act_lbl_sensorinfo">Informació de sensor</string>
+    <string name="act_lbl_sensorchart">Gràfic de sensor</string>
+
+    <!-- Activity Labels End -->
+
+
+    <!-- Login Init -->
+    <string name="strUser">Usuari:</string>
+    <string name="strPassword">Contrasenya:</string>
+    <string name="strLogin">Accedir</string>
+    <string name="strExit">Sortir</string>
+    <!-- Login End -->
+    <!-- ActionBar Text Init -->
+    <string name="abtxtLogOut">Sortir</string>
+    <string name="abtxtConfiguration">Configuració</string>
+    <string name="abtxtInformation">Informació</string>
+    <!-- ActionBar Text End -->
+    <!-- Dialog Text Init -->
+    <string name="dialogLogOut">Desitja canviar d\'usuari?</string>
+    <string name="txtYes">Si</string>
+    <string name="txtNo">No</string>
+    <string name="txtExit">Sortir</string>
+    <!-- Dialog Text End -->
+    <!-- Faves Activity Init -->
+    <string name="act_lbl_favNetworks">Xarxes Favorites</string>
+    <string name="act_lbl_favSensors">Sensors Favorits</string>
+    <string name="act_lbl_favImages">Imatges Favorites</string>
+    <string name="tab_fav_networks">Xarxes</string>
+    <string name="tab_fav_sensors">Sensors</string>
+    <string name="tab_fav_images">Imatges</string>
+    <string name="message_error_network">La xarxa ja hi és a favorits</string>
+    <string name="message_error_sensor">El sensor ja hi és a favorits</string>
+    <string name="message_error_image">La imatge ja hi és a favorits</string>
+    <string name="message_add_network">Xarxa afegida a favorits</string>
+    <string name="message_add_sensor">Sensor afegit a favorits</string>
+    <string name="message_add_image">Imatge afegida a favorits</string>
+
+    <!-- Faves Activity End -->
+    <!-- NetList Activity Init -->
+    <string name="strSituation">Situació:</string>
+    <string name="strNumSensors">Nombre de sensors:</string>
+    <!-- NetList Activity End -->
+    <!-- SensorList Activity Init -->
+    <string name="strSensorType">Tipus:</string>
+    <string name="strSensorChannel">Canal:</string>
+    <!-- SensorList Activity End -->
+    <!-- NetCloser Activity Init -->
+    <string name="strGetLocation">Obtenint ubicació...</string>
+    <string name="strYourLocation">La teva ubicació - (lat: %1$s,lon: %2$s)</string>
+    <string name="strErrorLocation">No es pot obtenir la teva ubicació</string>
+    <string name="strDisplayInfo">Radi: %1$s - Xarxes trobades: %2$d</string>
+    <!-- NetCloser Activity End -->
+    <!-- FavesSensors Activity Init -->
+    <string name="strNetName">Xarxa:</string>
+
+    <!-- FavesSensors Activity End -->
+    <!-- NetInfo Activity Init -->
+
+    <string name="lblNetName">Xarxa:</string>
+    <string name="lblnetSituation">Situació:</string>
+    <string name="lblnetPosition">Posició:</string>
+    <string name="lblnetPosLatitude">Latitud</string>
+    <string name="lblnetPosLongitude">Longitud</string>
+    <string name="lblnetPosAltitude">Altitud</string>
+    <string name="lblnetNumSensors">Sensors:</string>
+    <string name="lblnetLoadSensors">Veure sensors</string>
+    <string name="lblnetLoadImages">Veure imatges</string>
+
+    <!-- NetInfo Activity End -->
+    <!-- SensorInfo Activity Init -->
+    <string name="lblSensorSituation">Situació:</string>
+    <string name="lblSensorType">Tipus:</string>
+    <string name="lblSensorChannel">Canal:</string>
+    <string name="lblSensorName">Sensor:</string>
+    <string name="lblSensorDescription">Descripció:</string>
+    <string name="lblSensorValues">Valors:</string>
+    <string name="lblSensorMeasure">Mesura:</string>
+    <string name="lblSensorMaxLoad">Màxim:</string>
+    <string name="lblSensorSensitivity">Sensitivitat:</string>
+    <string name="lblSensorOffset">Compensació:</string>
+    <string name="lblSensorAlarmAt">Alarma a:</string>
+    <string name="lblSensorLastTare">Última avaria:</string>
+    <string name="lblSensorLoadChart">Carregar gràfic</string>
+    <string name="lblSensorChartType">Tipus de gràfic:</string>
+    <string name="lblSensorChartStrain">Gràfic de tensió</string>
+    <string name="lblSensorChartPower">Gràfic de potència</string>
+    <string name="lblSensorChartCounter">Gràfic de compteig</string>
+    <!-- SensorInfo Activity End -->
+    <!-- QRCode Activity Init -->
+    <string name="msg_QRIntentError">No s\'ha trobat Intent per llegir codis QR, instal·la Google Googles al dispositiu</string>
+    <string name="msg_QRFormatError">Format incorrecte del codi llegit, ha de ser un QRCode.</string>
+    <string name="msg_QRCorrect">Detectat sensor %1$s</string>
+
+    <!-- QRCode Activity End -->
+    <!-- Settings Init -->
+    <string name="settingOSMnotDeveloped">Open Street Map no implementat</string>
+    <string name="settingMapTitle">Configuració de mapes</string>
+    <string name="settingMapType">Tipus de mapa</string>
+    <string name="settingSelectMap">Selecciona el tipus de mapa</string>
+    <string name="settingSelectMapDialog">Selecciona mapa:</string>
+    <string name="settingNetCloserTitle">Configuració de xarxes properes</string>
+    <string name="settingDistanceUnit">Unitat de distància</string>
+    <string name="settingSelectDistanceUnit">Selecciona la unitat de distància</string>
+    <string name="settingDistanceUnitDialog">Selecciona unitat:</string>
+    <string name="settingDistanceRangeTitle">Radi d\'acció</string>
+    <string name="settingDistanceRange">Selecciona el radi d\'acció</string>
+    <string name="settingTimeRangeTitle">Temps d\'espera</string>
+    <string name="settingTimeRange">Selecciona el temps d\'espera</string>
+
+    <!-- Settings End -->
+    <!-- Maps Activity Init -->
+    <string name="strNetDescrip">Situada a %1$s amb %2$d sensors</string>
+    <!-- Maps Activity End -->
+
+
+    <!-- Menu Init -->
+    <string name="strSearch">Cercar</string>
+    <string name="strFilter">Filtrar</string>
+    <string name="strMapMode">Canviar vista</string>
+
+    <!-- Menu End -->
+    <!-- SD Error Messages Init -->
+    <string name="msgSDReadOnly">La targeta SDCard només pot ser llegida. Això impedirà el correcte funcionament de l\'aplicació d\'escritura.</string>
+    <string name="msgSDBadFormat">La targeta SDCard no pot ser utilitzada, no té un format acceptat o no està correctament formatada.</string>
+    <string name="msgSDNotFound">La targeta SDCard no es troba, per utilitzar el lector necessita insertar una targeta SD Card al mòbil.</string>
+    <string name="msgSDShared">La targeta SDCard no està muntada perque s\'està utilitzant connectada mitjaçant USB. Desconnecti-la i torni a intentar-ho.</string>
+    <string name="msgSDUnmountable">La targeta SDCard no pot muntarse. Això pot estar provocat per que es trobi corrupta o danyada."</string>
+    <string name="msgSDUnmounted">La targeta SDCard està present al mòbil pero no està muntada. Munti-la abans d\'utilitzar el programa.</string>
+    <!-- SD Error Messages End -->
+
+
+    <!-- Help Init -->
+    	<string name="help_message">Més ajuda pulsant sobre les funcionalitats</string>
+   		<string name="help_homNetList">Dona la possibilitat de mostrar el llistat de totes les xarxes registrades al sistema a les que l\'usuari té accés.</string> 
+	    <string name="help_homNetMaps">Dona la possibilitat de visualitzar totes les xarxes registrades al sistema on l\'usuari té accés.</string>
+	    <string name="help_homQRCode">Es pot accedir directament al dispositiu llegint el bidicode/QR Code i accedir la informació del node.</string>
+	    <string name="help_homFaves">Mostra les xarxes, sensors i imatges que l\'usuari té com a preferides per poder tenir-les accessible més ràpidament.</string>
+	    <string name="help_homAugReal">Estant in situ en la mateixa zona on es troba la xarxa a analitzar, es pot geoposicionar cada node de la xarxa observant en temps real la posició dels nodes.</string>
+	    <string name="help_homNetCloser">Permet, mitjançant el GPS del dispositiu, detectar les xarxes properes a la ubicació en la que es troba.</string>
+	    <string name="help_listnet_situation">Situació de la xarxa.</string>
+	    <string name="help_listnet_numsensor">Nombre de sensors que formen la xarxa.</string>
+    <!-- Help End -->
+
+
+    <!-- Context Menu Init -->
+
+    <string name="add_faves">Afegir a favorits</string>
+    <string name="del_faves">Treure de favorits</string>
+    <!-- Context Menu End -->
+
+
+    <!-- Settings Init -->
+
+    <string name="settingTitle">Configuració</string>
+    <string name="settingMapType">Tipus de mapa</string>
+    <string name="settingSelectMap">Selecciona el tipus de mapa</string>
+    <string name="settingSelectMapDialog">Selecciona:</string>
+    <!-- Settings End -->
+    <!-- About Activity Ini -->
+    <string name="aboutCaption">LS App és una aplicació desenvolupada, com a projecte de final del Master de Programari Lliure de la <a href="http://www.uoc.edu">UOC</a>, per:</string>
+    <string name="aboutDeveloper1">- Sergio Gonzàlez Díez [sergio.gd@gmail.com]</string>
+    <string name="aboutDeveloper2">- Sergio Postigo Collado [spostigoc@gmail.com]</string>
+    <string name="aboutTitleDescrition">Descripció:</string>
+    <string name="aboutColaboration">El desenvolupament ha estat en col·laboració amb l\'empresa <a href="http://www.worldsensing.com">WorldSensing</a>, que és una empresa dedicada a desenvolupar sistemes de comunicació i oferir serveis relacionats amb l\'àmbit de xarxes de sensors.</string>
+    <string name="aboutContent">LS App és una aplicació que permet l\'accés remot a la informació en temps real i històrica de la monitorització d\'estructures de l\'aplicació de LoadSensing, informació obtinguda a partir dels nodes que es troben distribuïts en diverses àrees formant xarxes.</string>
+    <string name="aboutTitleLibraries">Llibreries:</string>
+    <string name="aboutLibrary1">-<a href="https://github.com/cyrilmottier/GreenDroid">GreenDroid</a>: per millorar el desenvolupament de les interfícies d\'usuari.</string>
+    <string name="aboutLibrary2">-<a href="https://github.com/jgilfelt/android-mapviewballoons">mapviewballoons</a>: per mostrar els globus informatius als mapes.</string>
+    <string name="aboutLibrary3">-<a href="http://www.jjoe64.com/p/graphview-library.html">GraphView</a>: per generar les gràfiques d\'informació històrica dels sensors.</string>
+    <string name="aboutLibrary4">-<a href="http://www.mixare.org/">Mixare</a>: per mostrar la informació de les xarxes utilitzant realitat augmentada.</string>
+    <string name="aboutLibrary5">-<a href="http://code.google.com/p/mapsforge/">mapsforge</a>: per la visualització de mapes d\'OpenStreetMap.</string>
+    <string name="aboutTitleImgResources">Recursos d\'imatge:</string>
+
+    <!-- About Activity End -->
+    <!-- Mixare Library Ini -->
+    <string name="search_hint">Cercar Localització</string>
+    <string name="empty_list">Ho sentim, \nNo hi ha informació de cap localització \ndisponible en aquest radi d\'acció.\nPer favor, intenta-ho ampliant el radi d\'acció.</string>
+    <string name="option_not_available">Ho sentim, opció en desenvolupament... \nAquesta opció estarà disponible proximament!</string>
+    <string name="menu_item_1">Font de dades</string>
+    <string name="menu_item_2">Vista en llistat</string>
+    <string name="menu_item_3">Vista en mapa</string>
+    <string name="menu_item_4">Nivell de zoom</string>
+    <string name="menu_item_5">Cercar</string>
+    <string name="menu_item_6">Informació</string>
+    <string name="menu_item_7">Llicència</string>
+    <string name="cancel">Cancel·lar</string>
+    <string name="data_source_edit_err">Aquesta font de dades no pot ser editada.</string>
+    <string name="data_source_delete_err">Aquesta font de dades no pot ser esborrada.</string>
+    <string name="connection_error_dialog">Ho sentim, detectat error en la connexió! \nPer favor comprova la teva connexió a Internet.</string>
+    <string name="connection_error_dialog_button1">Reintentar</string>
+    <string name="connection_error_dialog_button2">Obrir configuració</string>
+    <string name="connection_error_dialog_button3">Tancar</string>
+    <string name="connection_GPS_dialog_text">La localització GPS no pot ser actualitzada... \nSi continues es possible que la informació 
+			\nno sigui mostrada en el lloc correcte.</string>
+    <string name="connection_GPS_dialog_button1">Continuar</string>
+    <string name="connection_GPS_dialog_button2">Tancar</string>
+    <string name="no_website_available">Ho semtim, no hi ha més \ninformació disponible.</string>
+    <string name="license_title">Llicència</string>
+    <string name="close_button">Tancar</string>
+    <string name="general_info_title">Informació General</string>
+    <string name="general_info_text">GPS info: </string>
+    <string name="longitude">Longitud: </string>
+    <string name="latitude">Latitud: </string>
+    <string name="altitude">Altitud: </string>
+    <string name="speed">Velocitat: </string>
+    <string name="accuracy">Precissió: </string>
+    <string name="gps_last_fix">Última correcció GPS: </string>
+    <string name="map_menu_normal_mode">Mapa</string>
+    <string name="map_menu_satellite_mode">Satèl·lit</string>
+    <string name="map_menu_cam_mode">Càmera</string>
+    <string name="map_my_location">La meva localització</string>
+    <string name="map_current_location_click">La teva localització actual</string>
+    <string name="data_source_add">Afegir font de dades</string>
+    <string name="data_source_edit">Editar font de dades</string>
+    <string name="data_source_delete">Esborrar font de dades</string>
+    <string name="data_source_change_wikipedia">Canviar a la font de dades de Wikipedia</string>
+    <string name="data_source_change_twitter">Canviar a la font de dades de Twitter</string>
+    <string name="data_source_change_osm">Canviar a la font de dades d\'OpenStreetMap</string>
+    <string name="search_failed_notification">No s\'ha trobat cap resultat</string>
+    <string name="source_openstreetmap">Estacions properes</string>
+    <string name="search_active_1">Cerca en la font de dades</string>
+    <string name="search_active_2">. Tocar per terminar la cerca</string>
+    <string name="download_error">Error en la descàrrega</string>
+    <string name="download_received">Rebuda informació des de</string>
+    <string name="add_osm_menu">Afegir OpenStreetMap URL</string>
+    <string name="insert_osm_url">Insertar OpenStreetMap URL</string>
+    <string name="osm_max_object_menu">Fixar màxim POI per URL</string>
+    <string name="set_osm_max_object">Màxim POIs per URL</string>
+    <!-- Mixare Library End -->
+
+</resources>

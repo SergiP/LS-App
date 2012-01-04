@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <!-- Google Maps API Ini -->
+    <string name="googleMaps_API_key_debug">0ddH1jyvjXmfm9XQKuERdr5XpTyvpjWOOA3K4Og</string>
+    <!-- Google Maps API End -->
+
+
+    <!-- About Activity Ini -->
+    <string name="aboutLicenseGPL">GNU Lesser General Public License</string>
+    <string name="aboutLicenseFreeware">Freeware</string>
+    <string name="aboutLicenseFreewareNC">Free for non-comercial use</string>
+    <string name="aboutLicenseCC_ANS">CC Attribution-Noncommercial-Share Alike 3.0</string>
+    <string name="aboutImgLink1"><a href="http://www.iconarchive.com/show/oxygen-icons-by-oxygen-icons.org/Actions-view-list-details-icon.html">web</a></string>
+    <string name="aboutImgLink2"><a href="http://www.iconarchive.com/show/mobile-icons-by-webiconset/maps-icon.html">web</a></string>
+    <string name="aboutImgLink3"><a href="http://www.iconspedia.com/icon/android-qr-code-16-46.html">web</a></string>
+    <string name="aboutImgLink4"><a href="http://www.iconarchive.com/show/aeon-icons-by-kyo-tux/Misc-Favourites-icon.html">web</a></string>
+    <string name="aboutImgLink5"><a href="http://www.iconarchive.com/show/gis-gps-map-icons-by-icons-land/Layers-icon.html">web</a></string>
+    <string name="aboutImgLink6"><a href="http://www.iconarchive.com/show/oxygen-icons-by-oxygen-icons.org/Devices-network-wireless-connected-100-icon.html">web</a></string>
+    <!-- About Activity End -->
+
+
+    <!-- Mixare Library Ini -->
+    <string name="N">N</string>
+    <string name="NE">NE</string>
+    <string name="E">E</string>
+    <string name="SE">SE</string>
+    <string name="S">S</string>
+    <string name="SW">SW</string>
+    <string name="W">W</string>
+    <string name="NW">NW</string>
+    <string name="OSM">Openstreetmap</string>
+    <string name="MIXARE">Mixare</string>
+    <string name="CIRCLE_MARKER">Circles</string>
+    <string name="NAVIGATION_MARKER">Arrows</string>
+    <string name="license">Copyright (C) 2010- Peer internet solutions 
+		\n\nThis program is free software: 	you can redistribute it and/or modify it under the terms of the 
+		GNU General Public License as published by the Free Software Foundation, either version 3 of the License, 
+		or at your option) any later version. 
+		\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even 
+		the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public 
+		License for more details. 
+		\n\n You should have received a copy of the GNU General Public License along with this program. 
+		If not, see &lt;http://www.gnu.org/licenses/>
+	</string>
+    <!-- Mixare Library End -->
+
+</resources>

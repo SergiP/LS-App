@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/selectorsLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TableLayout
+        android:id="@+id/selectorsTable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ImageButton01"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16px" >
+
+        <TableRow
+            android:id="@+id/selectorsRow01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/Button"
+                android:layout_width="80dip"
+                android:layout_height="80dip"
+                android:layout_marginBottom="10dip"
+                android:layout_marginLeft="8dip"
+                android:layout_marginRight="8dip"
+                android:layout_marginTop="10dip"
+                android:background="@drawable/buttons"
+                android:drawableTop="@drawable/logo_ls"
+                android:text="CLICK ME"
+                android:textColor="@android:color/white" />
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selectorsTable"
+        android:text="This launcher will get the current position of the phone and then launch mixare displaying four points. North, East, South and West. These points are not related to anything real you can find around, it is just to show how mixare works." />
+
+    <TextView
+        android:id="@+id/urlText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextView01"
+        android:text="" />
+
+</RelativeLayout>
