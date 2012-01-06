@@ -172,7 +172,7 @@ public class LSSensorChartActivity extends GDActivity {
 
 					paint.setColor(Color.parseColor("#bcd9f2"));
 					paint.setTextAlign(Align.CENTER);
-/*
+
 					// draw data
 					for (int i = 0; i < values.length; i++) {
 						float valY = (float) (values[i].valueY - minY);
@@ -180,7 +180,7 @@ public class LSSensorChartActivity extends GDActivity {
 						float y = graphheight * ratY;
 						canvas.drawRect((i * colwidth) + horstart, (border - y) + graphheight, ((i * colwidth) + horstart) + (colwidth - 1), graphheight + border - 1, paint);
 					}
-*/
+
 				}
 			};
 
