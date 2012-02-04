@@ -19,6 +19,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.lsn.LoadSensing;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,99 +32,139 @@ import com.lsn.LoadSensing.encript.LSSecurity;
 import com.lsn.LoadSensing.func.LSFunctions;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-
 public class LSLoginActivity extends Activity {
-	private String strUser;
-	private String strPass;
+
 	private SharedPreferences prefs;
+	private EditText edtLogin;
+	private EditText edtPassword;
+	private Button btnLogin;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.act_login);
+		btnLogin = (Button) findViewById(R.id.btnLogin);
+		edtLogin = (EditText) findViewById(R.id.edtLogin);
+		edtPassword = (EditText) findViewById(R.id.edtPassword);
 
-		prefs = getSharedPreferences("LSLogin",Context.MODE_PRIVATE);
-
-		Button btnLogin = (Button)findViewById(R.id.btnLogin);
-		EditText edtLogin = (EditText)findViewById(R.id.edtLogin);
-		EditText edtPassword = (EditText)findViewById(R.id.edtPassword);
+		// get shared preferences
+		prefs = getSharedPreferences("LSLogin", Context.MODE_PRIVATE);
 
 		edtLogin.setText(LSSecurity.rot13Decode(prefs.getString("user", "")));
-		edtPassword.setText(LSSecurity.rot13Decode(prefs.getString("pass", "")));
+		edtPassword
+				.setText(LSSecurity.rot13Decode(prefs.getString("pass", "")));
 
-		btnLogin.setOnClickListener(new OnClickListener(){
+		btnLogin.setOnClickListener(loginOnClickListener);
+	}
 
-			@Override
-			public void onClick(View v) {
+	protected OnClickListener loginOnClickListener = new OnClickListener() {
+		public void onClick(View v) {
+			ProgressDialog progressDialog = new ProgressDialog(LSLoginActivity.this);
+			progressDialog.setMessage(getString(R.string.msg_PleaseWait));
+			progressDialog.setCancelable(false);
 
-				EditText edtLogin = (EditText)findViewById(R.id.edtLogin);
-				EditText edtPassword = (EditText)findViewById(R.id.edtPassword);
-				strUser = edtLogin.getText().toString();
-				strPass = edtPassword.getText().toString();
+			LoginTask loginTask = new LoginTask(LSLoginActivity.this,progressDialog);
+			loginTask.execute(edtLogin.getText().toString(), edtPassword
+					.getText().toString());
+		}
+	};
 
-				if (!LSFunctions.checkConnection(LSLoginActivity.this))
-				{
-					CustomToast.showCustomToast(LSLoginActivity.this,R.string.msg_NotConnected,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-				}
-				else
-				{
+	public void showLoginError(String result) {
+		CustomToast.showCustomToast(LSLoginActivity.this, result,
+				CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
+
+		edtLogin.setText("");
+		edtPassword.setText("");
+	}
+
+	public void login(String pSessionValue) {
+		Intent intent = new Intent(LSLoginActivity.this, LSHomeActivity.class);
+
+		Bundle bundle = new Bundle();
+		bundle.putString("USER", edtLogin.getText().toString());
+		bundle.putString("SESSION", pSessionValue);
+		intent.putExtras(bundle);
+
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString("user",
+				LSSecurity.rot13Encode(edtLogin.getText().toString()));
+		editor.putString("pass",
+				LSSecurity.rot13Encode(edtPassword.getText().toString()));
+		editor.commit();
+
+		startActivity(intent);
+	}
+
+	public class LoginTask extends AsyncTask<String, Void, String> {
+		private ProgressDialog progressDialog;
+		private Activity activity;
+		private String messageReturn = null;
+		private Boolean loginValue = false;
+
+		public LoginTask(Activity activity, ProgressDialog progressDialog) {
+			this.activity = activity;
+			this.progressDialog = progressDialog;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			progressDialog.show();
+		}
+
+		@Override
+		protected String doInBackground(String... arg0) {
+			try {
+				if (!LSFunctions.checkConnection(LSLoginActivity.this)) {
+					messageReturn = getString(R.string.msg_NotConnected);
+				} else {
 					Map<String, String> params = new HashMap<String, String>();
-					params.put("user", strUser);
-					params.put("pass", LSSecurity.encrypt(strPass,LSSecurity.Code_MD5));
-					JSONObject response = LSFunctions.urlRequestJSONObject("http://viuterrassa.com/Android/login.php",params);
-					if (response!=null)
-					{
-						Boolean loginValue = null;
-						String sessionValue = null;
+					params.put("user", edtLogin.getText().toString());
+					params.put("pass", LSSecurity.encrypt(edtPassword.getText()
+							.toString(), LSSecurity.Code_MD5));
+
+					JSONObject response = LSFunctions.urlRequestJSONObject(
+							"http://viuterrassa.com/Android/login.php", params);
+					
+					if (response != null) {
 						try {
 							loginValue = (Boolean) response.get("login");
-							sessionValue = response.get("session").toString();
-
+							if (loginValue) {
+								messageReturn = response.get("session").toString();
+							} else {
+								messageReturn = getString(R.string.msg_BadLoginPass);
+							}
 						} catch (JSONException e) {
-
 							e.printStackTrace();
 						}
-
-						//if ((strUser.equals("sergio")) && (strPass.equals("sergio"))) {
-						if (loginValue) {
-
-							Intent intent = new Intent(LSLoginActivity.this,LSHomeActivity.class);
-
-							Bundle bundle = new Bundle();
-							bundle.putString("USER", strUser);
-							bundle.putString("SESSION", sessionValue);
-							intent.putExtras(bundle);
-
-							SharedPreferences.Editor editor = prefs.edit();
-							editor.putString("user", LSSecurity.rot13Encode(strUser));
-							editor.putString("pass", LSSecurity.rot13Encode(strPass));
-							editor.commit();
-
-							startActivity(intent);
-						}
-						else // user doesn't exist
-						{ 
-							CustomToast.showCustomToast(LSLoginActivity.this,R.string.msg_BadLoginPass,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-							edtLogin.setText("");
-							edtPassword.setText("");
-						}
-					}
-					else
-					{
-						CustomToast.showCustomToast(LSLoginActivity.this,R.string.msg_CommError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
+					} else {
+						messageReturn = getString(R.string.msg_CommError);
 					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		});
+			return messageReturn;
+		}
+
+		@Override
+		protected void onPostExecute(String pMessageReturn) {
+			progressDialog.dismiss();
+			if (loginValue)
+				((LSLoginActivity) activity).login(pMessageReturn);
+			else
+				((LSLoginActivity) activity).showLoginError(pMessageReturn);
+		}
 	}
 }
