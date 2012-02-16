@@ -53,17 +53,4 @@
         </com.lsn.LoadSensing.ui.DashboardLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txtHomeMessage"
-        android:layout_width="fill_parent"
-        android:layout_height="12dip"
-        android:layout_gravity="bottom|center_horizontal"
-        android:background="#DD5A54"
-        android:gravity="bottom|center_horizontal"
-        android:text="There is an update available"
-        android:textColor="#FFFFFF"
-        android:textSize="9dip"
-        android:textStyle="bold"
-        android:visibility="invisible" />
-
 </FrameLayout>

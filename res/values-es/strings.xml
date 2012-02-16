@@ -155,11 +155,19 @@
     <!-- Maps Activity Init -->
     <string name="strNetDescrip">Situada en %1$s con %2$d sensores</string>
     <!-- Maps Activity End -->
+    
     <!-- Menu Init -->
+    <string name="menu_exit">Salir</string>
+    <string name="menu_overflow">OverFlow</string>
+    <string name="menu_info">Información</string>
+    <string name="menu_config">Configuración</string>
+    <string name="menu_help">Ayuda</string>
+      
     <string name="strSearch">Buscar</string>
     <string name="strFilter">Filtrar</string>
     <string name="strMapMode">Cambiar vista</string>
     <!-- Menu End -->
+    
     <!-- SD Error Messages Init -->
     <string name="msgSDReadOnly">La tarjeta SDCard sólo se puede leer. Esto impedirá el buen funcionamiento de la aplicación de escritura.</string>
     <string name="msgSDBadFormat">La tarjeta SDCard no se puede usar, no tiene un formato aceptado o no está correctamente formateada.</string>

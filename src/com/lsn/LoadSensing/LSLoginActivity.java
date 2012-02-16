@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import com.lsn.LoadSensing.R;
 import com.lsn.LoadSensing.ui.CustomToast;
+import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 import com.lsn.LoadSensing.encript.LSSecurity;
 import com.lsn.LoadSensing.func.LSFunctions;
 
@@ -43,7 +44,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class LSLoginActivity extends Activity {
+public class LSLoginActivity extends ActionBarActivity {
 
 	private SharedPreferences prefs;
 	private EditText edtLogin;
@@ -53,8 +54,8 @@ public class LSLoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.act_login);
+				
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		edtLogin = (EditText) findViewById(R.id.edtLogin);
 		edtPassword = (EditText) findViewById(R.id.edtPassword);

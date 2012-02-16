@@ -157,11 +157,19 @@
     <!-- Maps Activity Init -->
     <string name="strNetDescrip">Located in %1$s with %2$d sensors</string>
     <!-- Maps Activity End -->
+    
     <!-- Menu Init -->
+    <string name="menu_exit">Exit</string>
+    <string name="menu_overflow">OverFlow</string>
+    <string name="menu_info">Information</string>
+    <string name="menu_config">Configuration</string>
+    <string name="menu_help">Help</string>
+    
     <string name="strSearch">Find</string>
     <string name="strFilter">Filter</string>
     <string name="strMapMode">Switch view</string>
     <!-- Menu End -->
+    
     <!-- SD Error Messages Init -->
     <string name="msgSDReadOnly">SD Card is in read only mode. This will prevent the proper functioning of the writing functionality</string>
     <string name="msgSDBadFormat">SD Card cannot be used, it does not have an acceptable format or it has been incorrectly formatted.</string>
