@@ -26,6 +26,8 @@
     <string name="msg_NetworkNotFound">Network not found in server</string>
     <string name="msg_NetworkNotFound">Sensor not found in server</string>
     <string name="msg_UnderDevelopment">Under development option</string>
+    <string name="msg_register_before">Register before</string>
+    
     <!-- Messages End -->
     <!-- Activity Labels Init -->
     <string name="act_lbl_homHome">LoadSensing App</string>

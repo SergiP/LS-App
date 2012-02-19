@@ -1,314 +1,319 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@android:color/white"
-    android:padding="8dp" >
-
-    <LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:orientation="vertical" >
+	
+	<ScrollView 
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:background="@android:color/white"
+    	android:padding="8dp" >
 
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            android:src="@drawable/logo_ls" />
+    	<LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/about_caption"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@string/aboutCaption"
-            android:textColor="@android:color/black" />
+        	<ImageView
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:scaleType="centerInside"
+            	android:src="@drawable/logo_ls" />
 
-        <TextView
-            android:id="@+id/about_developer1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@string/aboutDeveloper1"
-            android:textColor="@android:color/black" />
+        	<TextView
+            	android:id="@+id/about_caption"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="5dp"
+            	android:text="@string/aboutCaption"
+            	android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/about_developer2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/aboutDeveloper2"
-            android:textColor="@android:color/black" />
+        	<TextView
+        	    android:id="@+id/about_developer1"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="5dp"
+            	android:text="@string/aboutDeveloper1"
+            	android:textColor="@android:color/black" />
+	
+    	    <TextView
+        	    android:id="@+id/about_developer2"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:text="@string/aboutDeveloper2"
+            	android:textColor="@android:color/black" />
+	
+    	    <TextView
+        	    android:id="@+id/about_titleDescription"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="10dp"
+            	android:text="@string/aboutTitleDescrition"
+            	android:textColor="@android:color/black"
+            	android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/about_titleDescription"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/aboutTitleDescrition"
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
+        	<TextView
+           		android:id="@+id/about_content"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="5dp"
+            	android:text="@string/aboutContent"
+            	android:textColor="@android:color/black" />
+	
+    	    <TextView
+        	    android:id="@+id/about_colaboration"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="10dp"
+            	android:text="@string/aboutColaboration"
+            	android:textColor="@android:color/black" />
+	
+    	    <TextView
+        	    android:id="@+id/about_titleLibraries"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="10dp"
+            	android:text="@string/aboutTitleLibraries"
+            	android:textColor="@android:color/black"
+            	android:textStyle="bold" />
+	
+    	    <TextView
+        	    android:id="@+id/about_library1"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="5dp"
+            	android:text="@string/aboutLibrary1"
+            	android:textColor="@android:color/black" />
+	
+    	    <TextView
+        	    android:id="@+id/about_library2"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:text="@string/aboutLibrary2"
+            	android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/about_content"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@string/aboutContent"
-            android:textColor="@android:color/black" />
+        	<TextView
+            	android:id="@+id/about_library3"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:text="@string/aboutLibrary3"
+            	android:textColor="@android:color/black" />
+	
+    	    <TextView
+        	    android:id="@+id/about_library4"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:text="@string/aboutLibrary4"
+            	android:textColor="@android:color/black" />
+	
+	        <TextView
+    	        android:id="@+id/about_library5"
+        	    android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:text="@string/aboutLibrary5"
+            	android:textColor="@android:color/black" />
+	
+    	    <TextView
+        	    android:id="@+id/about_titleResources"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="10dp"
+            	android:text="@string/aboutTitleImgResources"
+            	android:textColor="@android:color/black"
+            	android:textStyle="bold" />
+	
+    	    <LinearLayout
+        	    android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:orientation="horizontal" >
+	
+    	        <ImageView
+        	        android:layout_width="wrap_content"
+            	    android:layout_height="wrap_content"
+            	    android:src="@drawable/btn_hom_01_netlist_def" />
+	
+    	        <LinearLayout
+        	        android:layout_width="fill_parent"
+            	    android:layout_height="wrap_content"
+                	android:layout_gravity="center_vertical"
+                	android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/about_colaboration"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/aboutColaboration"
-            android:textColor="@android:color/black" />
+                	<TextView
+              	    	android:id="@+id/about_ImgLicense1"
+                	    android:layout_width="fill_parent"
+                    	android:layout_height="wrap_content"
+                    	android:text="@string/aboutLicenseGPL"
+                    	android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/about_titleLibraries"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/aboutTitleLibraries"
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
+                	<TextView
+                	    android:id="@+id/about_ImgLink1"
+                	    android:layout_width="fill_parent"
+                	    android:layout_height="wrap_content"
+                	    android:text="@string/aboutImgLink1"
+                	    android:textColor="@android:color/black" />
+        		</LinearLayout>
+    	   	</LinearLayout>
 
-        <TextView
-            android:id="@+id/about_library1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@string/aboutLibrary1"
-            android:textColor="@android:color/black" />
+			<LinearLayout
+    			android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/about_library2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/aboutLibrary2"
-            android:textColor="@android:color/black" />
+           		<ImageView
+                	android:layout_width="wrap_content"
+                	android:layout_height="wrap_content"
+                	android:src="@drawable/btn_hom_02_netmaps_def" />
+	
+    	        <LinearLayout
+        	        android:layout_width="fill_parent"
+            	    android:layout_height="wrap_content"
+                	android:layout_gravity="center_vertical"
+                	android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/about_library3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/aboutLibrary3"
-            android:textColor="@android:color/black" />
+	                <TextView
+    	                android:id="@+id/about_ImgLicense2"
+        	            android:layout_width="fill_parent"
+            	        android:layout_height="wrap_content"
+                	    android:text="@string/aboutLicenseFreeware"
+                    	android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/about_library4"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/aboutLibrary4"
-            android:textColor="@android:color/black" />
+	                <TextView
+    	                android:id="@+id/about_ImgLink2"
+        	            android:layout_width="fill_parent"
+            	        android:layout_height="wrap_content"
+                	    android:text="@string/aboutImgLink2"
+                    	android:textColor="@android:color/black" />
+            	</LinearLayout>
+        	</LinearLayout>
 
-        <TextView
-            android:id="@+id/about_library5"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/aboutLibrary5"
-            android:textColor="@android:color/black" />
+        	<LinearLayout
+           		android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+           		android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/about_titleResources"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/aboutTitleImgResources"
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
+            	<ImageView
+                	android:layout_width="wrap_content"
+                	android:layout_height="wrap_content"
+                	android:src="@drawable/btn_hom_03_qrcode_def" />
+	
+	            <LinearLayout
+    	            android:layout_width="fill_parent"
+        	        android:layout_height="wrap_content"
+            	    android:layout_gravity="center_vertical"
+                	android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+                	<TextView
+                	    android:id="@+id/about_ImgLicense3"
+                	    android:layout_width="fill_parent"
+                    	android:layout_height="wrap_content"
+                    	android:text="@string/aboutLicenseFreeware"
+                  		android:textColor="@android:color/black" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_hom_01_netlist_def" />
+                	<TextView
+                    	android:id="@+id/about_ImgLink3"
+                    	android:layout_width="fill_parent"
+                    	android:layout_height="wrap_content"
+                    	android:text="@string/aboutImgLink3"
+                    	android:textColor="@android:color/black" />
+            	</LinearLayout>
+        	</LinearLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical" >
+        	<LinearLayout
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:orientation="horizontal" >
+	
+    	        <ImageView
+        	        android:layout_width="wrap_content"
+            	    android:layout_height="wrap_content"
+                	android:src="@drawable/btn_hom_04_faves_def" />
 
-                <TextView
-                    android:id="@+id/about_ImgLicense1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutLicenseGPL"
-                    android:textColor="@android:color/black" />
+            	<LinearLayout
+                	android:layout_width="fill_parent"
+                	android:layout_height="wrap_content"
+               		android:layout_gravity="center_vertical"
+                	android:orientation="vertical" >
+	
+    	            <TextView
+        	            android:id="@+id/about_ImgLicense4"
+            	        android:layout_width="fill_parent"
+                	    android:layout_height="wrap_content"
+                    	android:text="@string/aboutLicenseCC_ANS"
+                    	android:textColor="@android:color/black" />
 
-                <TextView
-                    android:id="@+id/about_ImgLink1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutImgLink1"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-        </LinearLayout>
+	                <TextView
+    	                android:id="@+id/about_ImgLink4"
+        	            android:layout_width="fill_parent"
+            	        android:layout_height="wrap_content"
+                	    android:text="@string/aboutImgLink4"
+                    	android:textColor="@android:color/black" />
+            	</LinearLayout>
+        	</LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+			<LinearLayout
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:orientation="horizontal" >
+	
+    	        <ImageView
+        	        android:layout_width="wrap_content"
+            	    android:layout_height="wrap_content"
+                	android:src="@drawable/btn_hom_05_augrel_def" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_hom_02_netmaps_def" />
+	            <LinearLayout
+    	            android:layout_width="fill_parent"
+        	        android:layout_height="wrap_content"
+            	    android:layout_gravity="center_vertical"
+                	android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical" >
+	                <TextView
+    	                android:id="@+id/about_ImgLicense5"
+        	            android:layout_width="fill_parent"
+            	        android:layout_height="wrap_content"
+                	    android:text="@string/aboutLicenseFreewareNC"
+                    	android:textColor="@android:color/black" />
 
-                <TextView
-                    android:id="@+id/about_ImgLicense2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutLicenseFreeware"
-                    android:textColor="@android:color/black" />
+	                <TextView
+    	                android:id="@+id/about_ImgLink5"
+        	            android:layout_width="fill_parent"
+            	        android:layout_height="wrap_content"
+                	    android:text="@string/aboutImgLink5"
+                    	android:textColor="@android:color/black" />
+	            </LinearLayout>
+    	    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/about_ImgLink2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutImgLink2"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-        </LinearLayout>
+        	<LinearLayout
+           		android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:orientation="horizontal" >
+	
+    	        <ImageView
+        	        android:layout_width="wrap_content"
+            	    android:layout_height="wrap_content"
+                	android:src="@drawable/btn_hom_06_closernet_def" />
+	
+    	        <LinearLayout
+        	        android:layout_width="fill_parent"
+            	    android:layout_height="wrap_content"
+                	android:layout_gravity="center_vertical"
+                	android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+                	<TextView
+                	    android:id="@+id/about_ImgLicense6"
+                    	android:layout_width="fill_parent"
+                    	android:layout_height="wrap_content"
+                    	android:text="@string/aboutLicenseGPL"
+                    	android:textColor="@android:color/black" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_hom_03_qrcode_def" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/about_ImgLicense3"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutLicenseFreeware"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/about_ImgLink3"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutImgLink3"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_hom_04_faves_def" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/about_ImgLicense4"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutLicenseCC_ANS"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/about_ImgLink4"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutImgLink4"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_hom_05_augrel_def" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/about_ImgLicense5"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutLicenseFreewareNC"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/about_ImgLink5"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutImgLink5"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_hom_06_closernet_def" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/about_ImgLicense6"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutLicenseGPL"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/about_ImgLink6"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aboutImgLink6"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-</ScrollView>
+                	<TextView
+                	    android:id="@+id/about_ImgLink6"
+                    	android:layout_width="fill_parent"
+                    	android:layout_height="wrap_content"
+                    	android:text="@string/aboutImgLink6"
+                    	android:textColor="@android:color/black" />
+            	</LinearLayout>
+        	</LinearLayout>
+    	</LinearLayout>
+	</ScrollView>
+</LinearLayout>

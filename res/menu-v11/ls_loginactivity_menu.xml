@@ -1,10 +1,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/menu_help"
-        android:title="@string/menu_help"
-        android:icon="@drawable/ic_action_help_green_droid"
-        android:orderInCategory="2"
-        android:showAsAction="always" />
-    
     <item android:id="@+id/menu_over_flow"
         android:title="@string/menu_overflow"
         android:icon="@drawable/ic_action_overflow"
@@ -14,9 +8,6 @@
         	<item
             	android:id="@+id/menu_info"
             	android:title="@string/act_lbl_homInfo" />
-        	<item
-        	    android:id="@+id/menu_config"
-        	    android:title="@string/act_lbl_homConfig" />
     	</menu>    
 	</item>
 </menu>

@@ -26,6 +26,8 @@
     <string name="msg_NetworkNotFound">Red no encontrada en el servidor</string>
     <string name="msg_NetworkNotFound">Sensor no encontrado en el servidor</string>
     <string name="msg_UnderDevelopment">Opción en desarrollo</string>
+    <string name="msg_register_before">Registrar antes</string>
+    
     <!-- Messages End -->
     <!-- Activity Labels Init -->
     <string name="act_lbl_homHome">LoadSensing App</string>

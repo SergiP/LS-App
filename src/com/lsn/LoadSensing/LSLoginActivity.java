@@ -39,6 +39,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -75,7 +78,7 @@ public class LSLoginActivity extends ActionBarActivity {
 			ProgressDialog progressDialog = new ProgressDialog(LSLoginActivity.this);
 			progressDialog.setMessage(getString(R.string.msg_PleaseWait));
 			progressDialog.setCancelable(false);
-
+ 
 			LoginTask loginTask = new LoginTask(LSLoginActivity.this,progressDialog);
 			loginTask.execute(edtLogin.getText().toString(), edtPassword
 					.getText().toString());
@@ -106,6 +109,36 @@ public class LSLoginActivity extends ActionBarActivity {
 		editor.commit();
 
 		startActivity(intent);
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ls_loginactivity_menu, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		
+		switch (item.getItemId()) {
+		case R.id.menu_config:
+			CustomToast.showCustomToast(LSLoginActivity.this,R.string.msg_register_before,
+					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSLoginActivity.this,LSInfoActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("ACTIVITY_BEFORE", true);
+			i.putExtras(bundle);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 	public class LoginTask extends AsyncTask<String, Void, String> {

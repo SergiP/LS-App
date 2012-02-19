@@ -20,14 +20,59 @@
 
 package com.lsn.LoadSensing;
 
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import com.lsn.LoadSensing.actionbar.ActionBarPreferenceActivity;
 
-public class LSConfigActivity extends PreferenceActivity {
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.Window;
+
+public class LSConfigActivity extends ActionBarPreferenceActivity {
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		
 		super.onCreate(savedInstanceState);
+		
+		getActionBarHelper().changeIconHome();
 
 		addPreferencesFromResource(R.xml.config); 
+	}
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ls_actionbar_null_menu, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			i = new Intent(LSConfigActivity.this,LSHomeActivity.class);
+			break;
+		
+		case R.id.menu_config:
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSConfigActivity.this,LSInfoActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putChar("ACTIVITY_BEFORE", 'C');
+			i.putExtras(bundle);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 }

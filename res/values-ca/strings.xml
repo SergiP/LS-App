@@ -26,6 +26,7 @@
     <string name="msg_NetworkNotFound">Xarxa no trobada al servidor</string>
     <string name="msg_SensorNotFound">Sensor no trobat al servidor</string>
     <string name="msg_UnderDevelopment">Opció en desenvolupament</string>
+    <string name="msg_register_before">Registrar abans</string>
     
     <!-- Messages End -->
     <!-- Activity Labels Init -->

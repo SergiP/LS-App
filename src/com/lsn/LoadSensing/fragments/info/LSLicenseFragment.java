@@ -1,4 +1,5 @@
 //    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+//										 https://github.com/SergiP/LS-App
 //    
 //    Copyright (C) 2011-2012
 //    Authors:
@@ -18,28 +19,49 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package com.lsn.LoadSensing;
+package com.lsn.LoadSensing.fragments.info;
 
-import greendroid.app.GDActivity;
+import com.lsn.LoadSensing.R;
+
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 
-public class LSLicenseActivity extends GDActivity {
+/* GreenDroid -----
+import greendroid.app.GDActivity;
 
-	public static final String EXTRA_CONTENT_URL = "com.lsn.LoadSensing.extra.CONTENT_URL";
-
+public class LSLicenseFragment extends GDActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		final String contentUrl = getIntent().getStringExtra(EXTRA_CONTENT_URL);
 		if (!TextUtils.isEmpty(contentUrl)) {
 			setActionBarContentView(R.layout.license);
 			final WebView webView = (WebView) findViewById(R.id.license);
 			webView.loadUrl(contentUrl);
-
 		}
-	}
+----------
+ */
 
+public class LSLicenseFragment extends Fragment {
+
+	/** (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     */
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+    			
+    	if (container == null) {      
+            return null;
+        }
+    	
+    	WebView webView = (WebView) inflater.inflate(R.layout.license, container, false);
+		webView.loadUrl("file:///android_asset/LICENSE.txt");
+
+        return webView;
+    }
 }
