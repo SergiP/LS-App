@@ -22,8 +22,6 @@ package com.lsn.LoadSensing.mixare;
 import com.lsn.LoadSensing.mixare.data.DataSource;
 import com.lsn.LoadSensing.mixare.gui.PaintScreen;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 
 /**

@@ -78,6 +78,7 @@ public class MixMap extends MapActivity implements OnTouchListener{
 		return false;
 	}
 
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -264,6 +265,7 @@ public class MixMap extends MapActivity implements OnTouchListener{
 		handleIntent(intent);
 	}
 
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	private void doMixSearch(String query) {
 		DataHandler jLayer = dataView.getDataHandler();
 		if (!dataView.isFrozen()) {
@@ -292,6 +294,7 @@ public class MixMap extends MapActivity implements OnTouchListener{
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		dataView.setFrozen(false);

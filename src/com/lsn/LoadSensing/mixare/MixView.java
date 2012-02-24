@@ -61,7 +61,6 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -71,7 +70,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
@@ -179,7 +177,6 @@ public class MixView extends Activity implements SensorEventListener, OnTouchLis
 		builder.setPositiveButton(DataView.CONNECTION_ERROR_DIALOG_BUTTON1, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				fError=false;
-				//TODO improve
 				try {
 					repaint();	       		
 				}
@@ -310,6 +307,7 @@ public class MixView extends Activity implements SensorEventListener, OnTouchLis
 		handleIntent(intent);
 	}
 
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	private void doMixSearch(String query) {
 		DataHandler jLayer = dataView.getDataHandler();
 		if(!dataView.isFrozen()){
@@ -361,6 +359,7 @@ public class MixView extends Activity implements SensorEventListener, OnTouchLis
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void onResume() {
 		super.onResume();

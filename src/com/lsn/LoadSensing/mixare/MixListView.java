@@ -183,6 +183,7 @@ public class MixListView extends ListActivity {
 		handleIntent(intent);
 	}
 
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	private void doMixSearch(String query) {
 		DataHandler jLayer = dataView.getDataHandler();
 		if (!dataView.isFrozen()) {
@@ -243,6 +244,7 @@ public class MixListView extends ListActivity {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void clickOnListView(int position){
 		/*if no website is available for this item*/
 		String selectedURL = position < selectedItemURL.size() ? selectedItemURL.get(position) : null;
@@ -348,6 +350,7 @@ public class MixListView extends ListActivity {
 	}
 
 
+	@SuppressWarnings("unused")
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		int base = Menu.FIRST;

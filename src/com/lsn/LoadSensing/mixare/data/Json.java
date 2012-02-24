@@ -28,7 +28,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.lsn.LoadSensing.mixare.Marker;
-import com.lsn.LoadSensing.mixare.MixContext;
 import com.lsn.LoadSensing.mixare.MixView;
 import com.lsn.LoadSensing.mixare.NavigationMarker;
 import com.lsn.LoadSensing.mixare.POIMarker;

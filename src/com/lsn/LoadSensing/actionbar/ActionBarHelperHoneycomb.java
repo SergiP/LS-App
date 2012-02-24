@@ -24,7 +24,8 @@ import android.view.Menu;
  * Honeycomb tablets. It thus requires API level 11.
  */
 public class ActionBarHelperHoneycomb extends ActionBarHelper {
-    private Menu mOptionsMenu;
+    @SuppressWarnings("unused")
+	private Menu mOptionsMenu;
     
     protected ActionBarHelperHoneycomb(Activity activity) {
         super(activity);

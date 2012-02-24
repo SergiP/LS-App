@@ -22,8 +22,6 @@ import java.text.BreakIterator;
 import java.util.ArrayList;
 
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 
 /**
  *  This class stores the properties of the displayed text and uses the

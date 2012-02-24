@@ -21,7 +21,6 @@ package com.lsn.LoadSensing.mixare.gui;
 import com.lsn.LoadSensing.mixare.DataView;
 import com.lsn.LoadSensing.mixare.Marker;
 import com.lsn.LoadSensing.mixare.data.DataHandler;
-import com.lsn.LoadSensing.mixare.data.DataSource;
 
 import android.graphics.Color;
 

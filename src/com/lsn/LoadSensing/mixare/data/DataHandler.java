@@ -64,6 +64,7 @@ public class DataHandler {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void updateActivationStatus(MixContext mixContext) {
 		
 		Hashtable<Class, Integer> map = new Hashtable<Class, Integer>();
@@ -91,6 +92,7 @@ public class DataHandler {
 	/**
 	 * @deprecated Nobody should get direct access to the list
 	 */
+	@SuppressWarnings("rawtypes")
 	public List getMarkerList() {
 		return markerList;
 	}
@@ -98,6 +100,7 @@ public class DataHandler {
 	/**
 	 * @deprecated Nobody should get direct access to the list
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setMarkerList(List markerList) {
 		this.markerList = markerList;
 	}
