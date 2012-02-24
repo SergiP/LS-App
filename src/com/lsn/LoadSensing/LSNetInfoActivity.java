@@ -20,7 +20,6 @@
 
 package com.lsn.LoadSensing;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 import com.lsn.LoadSensing.element.LSNetwork;
 import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
@@ -35,22 +35,32 @@ import com.readystatesoftware.mapviewballoons.R;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+
+/* GreenDroid -----
 import greendroid.app.GDActivity;
 
-public class LSNetInfoActivity extends GDActivity {
-
+//public class LSNetInfoActivity extends GDActivity {
+----------
+ */
+public class LSNetInfoActivity extends ActionBarActivity {
 	private String netID = null;
 	private LSNetwork networkObj = null;
-	private ArrayList<LSNetwork> m_networks = null;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setActionBarContentView(R.layout.act_netinfo);
+		/* GreenDroid -----
+		//setActionBarContentView(R.layout.act_netinfo);
+		----------
+		 */
+		setContentView(R.layout.act_netinfo);
 
 		Bundle bundle = getIntent().getExtras();
 
@@ -59,12 +69,12 @@ public class LSNetInfoActivity extends GDActivity {
 			netID = bundle.getString("NETID");
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
 		}
-
+		
+		getActionBarHelper().changeIconHome();
+		
 		if ((netID != null) && (networkObj == null))
 		{
-			m_networks = new ArrayList<LSNetwork>();
-
-			JSONObject jsonData;
+			JSONObject jsonData = null;
 			try {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session", LSHomeActivity.idSession);
@@ -72,18 +82,22 @@ public class LSNetInfoActivity extends GDActivity {
 
 				if (jArray != null)
 				{
+					boolean trobat = false;
 					for (int i = 0; i<jArray.length(); i++)
 					{
-
 						jsonData = jArray.getJSONObject(i);
 
-						LSNetwork network = new LSNetwork();
-						network.setNetworkName(jsonData.getString("Nom"));
-						network.setNetworkPosition(jsonData.getString("Lat"),jsonData.getString("Lon"));
-						network.setNetworkNumSensors(jsonData.getString("Sensors"));
-						network.setNetworkId(jsonData.getString("IdXarxa"));
-						network.setNetworkSituation(jsonData.getString("Poblacio"));
-						m_networks.add(network);
+						if ((jsonData.getString("IdXarxa").equals(netID) && !trobat)){
+							LSNetwork network = new LSNetwork();			
+							network.setNetworkName(jsonData.getString("Nom"));
+							network.setNetworkPosition(jsonData.getString("Lat"),jsonData.getString("Lon"));
+							network.setNetworkNumSensors(jsonData.getString("Sensors"));
+							network.setNetworkId(jsonData.getString("IdXarxa"));
+							network.setNetworkSituation(jsonData.getString("Poblacio"));
+
+							trobat = true;
+							networkObj = network;
+						}
 					}
 				}
 				else
@@ -94,20 +108,13 @@ public class LSNetInfoActivity extends GDActivity {
 				e.printStackTrace();
 				CustomToast.showCustomToast(this,R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
 			}
-
-			for (int i = 0; i<m_networks.size(); i++)
-			{
-				if (netID.equals(m_networks.get(i).getNetworkId()))
-				{
-					networkObj = m_networks.get(i);
-				}
-			}
 		}
 
 		if (networkObj!=null)
 		{
 			TextView txtNetName = (TextView) findViewById(R.id.netName);
 			txtNetName.setText(networkObj.getNetworkName());
+			
 			TextView txtNetSituation = (TextView) findViewById(R.id.netSituation);
 			txtNetSituation.setText(networkObj.getNetworkSituation());
 			TextView txtNetPosLatitude = (TextView) findViewById(R.id.netPosLatitude);
@@ -184,5 +191,37 @@ public class LSNetInfoActivity extends GDActivity {
 
 		});
 	}
-
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ab_item_help, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			i = new Intent(LSNetInfoActivity.this, LSNetListActivity.class);
+			break;
+		case R.id.menu_help:
+			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_config:
+			i = new Intent(LSNetInfoActivity.this,LSConfigActivity.class);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSNetInfoActivity.this,LSInfoActivity.class);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}	
 }

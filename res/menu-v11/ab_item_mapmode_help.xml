@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menu_mapmode"
+        android:title="@string/menu_mapmode"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:orderInCategory="0"
+        android:showAsAction="always" />
+        
+	<item android:id="@+id/menu_help"
+        android:title="@string/menu_help"
+        android:icon="@drawable/ic_action_help_green_droid"
+        android:orderInCategory="1"
+        android:showAsAction="always" />
+        
+    <item android:id="@+id/menu_over_flow"
+        android:title="@string/menu_overflow"
+        android:icon="@drawable/ic_action_overflow"
+        android:orderInCategory="2"
+        android:showAsAction="always" >
+        <menu>
+        	<item
+            	android:id="@+id/menu_info"
+            	android:title="@string/act_lbl_homInfo" />
+        	<item
+        	    android:id="@+id/menu_config"
+        	    android:title="@string/act_lbl_homConfig" />
+    	</menu>    
+	</item>
+</menu>

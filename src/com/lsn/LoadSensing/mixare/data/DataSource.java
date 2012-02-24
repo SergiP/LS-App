@@ -22,7 +22,6 @@ package com.lsn.LoadSensing.mixare.data;
 import com.lsn.LoadSensing.R;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -87,7 +86,6 @@ public class DataSource extends Activity {
 			final Spinner displaySpinner = (Spinner) findViewById(R.id.displaytype);
 			int displayId = (int) displaySpinner.getItemIdAtPosition(displaySpinner.getSelectedItemPosition());
 
-			//TODO: fix the weird hack for type!
 			DataSource newDS = new DataSource(name, url, typeId+3, displayId, true);
 
 			SharedPreferences settings = getSharedPreferences(DataSourceList.SHARED_PREFS, 0);
@@ -226,9 +224,6 @@ public class DataSource extends Activity {
 		switch(this.type) {
 			case BUZZ:		
 				ret=R.drawable.buzz; 
-				break;
-			case TWITTER:	
-				ret=R.drawable.twitter; 
 				break;
 			case OSM:		
 				ret=R.drawable.osm;

@@ -1,87 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<greendroid.widget.ActionBarHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/gd_action_bar_host"
-    android:layout_width="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#FFF"
     android:orientation="vertical" >
 
-    <greendroid.widget.ActionBar
-        android:id="@id/gd_action_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/gd_action_bar_height"
-        android:background="?attr/gdActionBarBackground" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="1dip" >
 
-    <FrameLayout
-        android:id="@id/gd_action_bar_content_view"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <!--
+		<ImageView
+			android:id="@+id/imgLocation"
+		    android:layout_width="fill_parent"
+		    android:layout_weight="1"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="right"
+		    android:src="@drawable/img_location" />
+        -->
+       
+        <TextView
+        	android:id="@+id/txtLocation"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="#FFF"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#75b0e4"
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/strGetLocation"
+            android:textColor="#FFF" />
 
-            <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="1dip" >
+	</LinearLayout>
 
-                <!--
-			   <ImageView
-		            android:id="@+id/imgLocation"
-		            android:layout_width="fill_parent"
-		            android:layout_weight="1"
-		            android:layout_height="wrap_content"
-		            android:layout_gravity="right"
-		            android:src="@drawable/img_location"
-		             />
-                -->
-                <!-- android:adjustViewBounds="true" android:scaleType="fitXY" -->
+    <LinearLayout
+	    android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="1dip" >
 
-                <TextView
-                    android:id="@+id/txtLocation"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#75b0e4"
-                    android:gravity="center_horizontal"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
-                    android:text="@string/strGetLocation"
-                    android:textColor="#FFF" />
-                <!-- android:textSize="15dp" android:background="#000000" android:textColor="#ffffff" -->
-            </LinearLayout>
+        <TextView
+    	    android:id="@+id/txtDisplayInfo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+        	android:layout_weight="1"
+            android:background="#75b0e4"
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/strDisplayInfo"
+            android:textColor="#FFF" />
+	</LinearLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="1dip" >
-
-                <TextView
-                    android:id="@+id/txtDisplayInfo"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#75b0e4"
-                    android:gravity="center_horizontal"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
-                    android:text="@string/strDisplayInfo"
-                    android:textColor="#FFF" />
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/android:list"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:cacheColorHint="#FFF" />
-        </LinearLayout>
-    </FrameLayout>
-
-</greendroid.widget.ActionBarHost>
+	<ListView
+    	android:id="@+id/android:list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#FFF" />
+ 
+ </LinearLayout>

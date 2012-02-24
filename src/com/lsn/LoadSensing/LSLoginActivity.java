@@ -113,7 +113,7 @@ public class LSLoginActivity extends ActionBarActivity {
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ls_loginactivity_menu, menu);
+		menuInflater.inflate(R.menu.ab_item_overflow, menu);
         
 		return super.onCreateOptionsMenu(menu);
 	}

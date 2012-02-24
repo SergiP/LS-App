@@ -48,7 +48,7 @@ import greendroid.app.GDTabActivity;
  */
 public class LSInfoActivity extends ActionBarFragmentActivity implements TabHost.OnTabChangeListener {
 	
-	private static boolean predecessor;
+	private static boolean predecessor = false;
 	
 	private TabHost mTabHost;
 	private HashMap<String, TabInfo> mapTabInfo = new HashMap<String, TabInfo>();
@@ -220,7 +220,7 @@ public class LSInfoActivity extends ActionBarFragmentActivity implements TabHost
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ls_actionbar_null_menu, menu);
+		menuInflater.inflate(R.menu.ab_item_overflow, menu);
         
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -232,16 +232,15 @@ public class LSInfoActivity extends ActionBarFragmentActivity implements TabHost
 		case android.R.id.home:
 			if (predecessor) { // LSLoingActivity.java
 				i = new Intent(LSInfoActivity.this,LSLoginActivity.class);
+				predecessor = false;
 				break;
 			} else {
 				i = new Intent(LSInfoActivity.this,LSHomeActivity.class);
+				predecessor = false;
 				break;
 			}
 		case R.id.menu_config:
 			i = new Intent(LSInfoActivity.this,LSConfigActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putChar("ACTIVITY_BEFORE", 'I');
-			i.putExtras(bundle);
 			break; 
 		case R.id.menu_info:
 			break;

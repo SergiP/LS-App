@@ -28,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.lsn.LoadSensing.actionbar.ActionBarListActivity;
 import com.lsn.LoadSensing.adapter.LSNetworkAdapter;
 import com.lsn.LoadSensing.element.LSNetwork;
 import com.lsn.LoadSensing.ui.CustomToast;
@@ -48,13 +49,21 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+
+/* GreenDroid -----
 import greendroid.app.GDListActivity;
 
 public class LSNetCloserActivity extends GDListActivity{
+----------
+ */
 
+public class LSNetCloserActivity extends ActionBarListActivity{
 
 	private LocationManager  locManager;
 	private LocationListener locationListenerGPS;
@@ -81,6 +90,8 @@ public class LSNetCloserActivity extends GDListActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_06_netcloser);
 
+		getActionBarHelper().changeIconHome();
+		
 		m_networks = new ArrayList<LSNetwork>();
 		this.m_adapter = new LSNetworkAdapter(this,R.layout.row_list_network,m_networks);
 		setListAdapter(this.m_adapter);
@@ -632,7 +643,6 @@ public class LSNetCloserActivity extends GDListActivity{
 			return null;
 		}
 
-
 		@Override
 		protected void onCancelled() {
 
@@ -641,19 +651,14 @@ public class LSNetCloserActivity extends GDListActivity{
 			super.onCancelled();
 		}
 
-
 		@Override
 		protected void onPostExecute(Void result) {
-
 		}
 
 
 		@Override
 		protected void onPreExecute() {
-
-
 		}
-
 
 		@Override
 		protected void onProgressUpdate(ArrayList<LSNetwork>... values) {
@@ -675,7 +680,41 @@ public class LSNetCloserActivity extends GDListActivity{
 				txtDisplayInfo.setText(strDisplayInfo);
 			}
 		}
-
 	}
-
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ab_item_search_help, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			i = new Intent(LSNetCloserActivity.this, LSHomeActivity.class);
+			break;
+		case R.id.menu_help:
+			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_search:
+			CustomToast.showCustomToast(LSNetCloserActivity.this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_config:
+			i = new Intent(LSNetCloserActivity.this,LSConfigActivity.class);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSNetCloserActivity.this,LSInfoActivity.class);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
 }

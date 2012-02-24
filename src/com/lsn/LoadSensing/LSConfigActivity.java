@@ -33,7 +33,6 @@ public class LSConfigActivity extends ActionBarPreferenceActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		
 		super.onCreate(savedInstanceState);
 		
@@ -45,7 +44,7 @@ public class LSConfigActivity extends ActionBarPreferenceActivity {
 	@Override 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ls_actionbar_null_menu, menu);
+		menuInflater.inflate(R.menu.ab_item_overflow, menu);
         
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -58,14 +57,10 @@ public class LSConfigActivity extends ActionBarPreferenceActivity {
 		case android.R.id.home:
 			i = new Intent(LSConfigActivity.this,LSHomeActivity.class);
 			break;
-		
 		case R.id.menu_config:
 			break; 
 		case R.id.menu_info:
 			i = new Intent(LSConfigActivity.this,LSInfoActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putChar("ACTIVITY_BEFORE", 'C');
-			i.putExtras(bundle);
 			break;
 		}	
 		

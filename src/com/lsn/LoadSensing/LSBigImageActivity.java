@@ -31,6 +31,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,18 +42,24 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 import com.lsn.LoadSensing.element.LSImage;
+import com.lsn.LoadSensing.element.LSNetwork;
 import com.lsn.LoadSensing.element.LSSensor;
 import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
+/* GreenDroid -----
 import greendroid.app.GDActivity;
 
 public class LSBigImageActivity extends GDActivity implements OnGestureListener {
-
+----------
+ */
+public class LSBigImageActivity extends ActionBarActivity implements OnGestureListener {
 	private LSImage imageObj;
 	private Integer position;
+	private LSNetwork networkObj;
 
 	private GestureDetector gestureScanner;
 	private String strTitle=null;
@@ -64,8 +73,14 @@ public class LSBigImageActivity extends GDActivity implements OnGestureListener 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		setContentView(R.layout.act_bigimage);
+		
+		/* GreenDroid -----
 		setActionBarContentView(R.layout.act_bigimage);
-
+		----------
+		 */
+		
 		Bundle bundle = getIntent().getExtras();
 
 		if (bundle != null)
@@ -74,6 +89,8 @@ public class LSBigImageActivity extends GDActivity implements OnGestureListener 
 			strTitle = bundle.getString("TITLE");
 			imageObj = bundle.getParcelable("IMAGE_OBJ");
 			position = bundle.getInt("POSITION");
+			
+			networkObj = bundle.getParcelable("NETWORK_OBJ");
 		}  
 
 		if (strTitle!=null)
@@ -93,6 +110,8 @@ public class LSBigImageActivity extends GDActivity implements OnGestureListener 
 		}
 		TextView txtNetName = (TextView) findViewById(R.id.netName);
 		txtNetName.setText(imageObj.getImageNetwork());
+		
+		getActionBarHelper().changeIconHome();
 	}
 
 	@Override
@@ -286,4 +305,40 @@ public class LSBigImageActivity extends GDActivity implements OnGestureListener 
 			rl.removeView(imgButton);
 		}
 	}
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ab_item_help, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			i = new Intent(LSBigImageActivity.this, LSNetImagesActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putParcelable("NETWORK_OBJ", networkObj);
+			i.putExtras(bundle);
+			break;
+		case R.id.menu_help:
+			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_config:
+			i = new Intent(LSBigImageActivity.this,LSConfigActivity.class);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSBigImageActivity.this,LSInfoActivity.class);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}	
 }

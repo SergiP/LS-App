@@ -26,25 +26,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
 import com.lsn.LoadSensing.SQLite.LSNSQLiteHelper;
+import com.lsn.LoadSensing.actionbar.ActionBarListActivity;
 import com.lsn.LoadSensing.adapter.LSSensorAdapter;
 import com.lsn.LoadSensing.element.LSNetwork;
 import com.lsn.LoadSensing.element.LSSensor;
 import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
-
-import greendroid.app.GDListActivity;
-import greendroid.widget.ActionBarItem.Type;
-import greendroid.widget.ActionBarItem;
-import greendroid.widget.QuickAction;
-import greendroid.widget.QuickActionBar;
-import greendroid.widget.QuickActionWidget;
-import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -55,6 +47,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,18 +55,32 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/* GreenDroid -----
+import greendroid.app.GDListActivity;
+import greendroid.widget.ActionBarItem.Type;
+import greendroid.widget.ActionBarItem;
+import greendroid.widget.QuickAction;
+import greendroid.widget.QuickActionBar;
+import greendroid.widget.QuickActionWidget;
+import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
+
 public class LSSensorListActivity extends GDListActivity {
 
 	private final int OPTIONS = 0;
 	private final int HELP = 1;
 	private QuickActionWidget quickActions;
+----------
+ */
 
+public class LSSensorListActivity extends ActionBarListActivity {
 	private ProgressDialog       m_ProgressDialog = null;
 	private ArrayList<LSSensor>  m_sensors = null;
 	private LSSensorAdapter      m_adapter;
 	private Runnable             viewSensors;
 
 	private LSNetwork networkObj;
+	private String netID = null;
+	private String netName = null;
 	private static HashMap<String,Bitmap> hashImages = new HashMap<String,Bitmap>();
 	private Bitmap imgSensor;
 	private Integer  errMessage;
@@ -83,19 +90,58 @@ public class LSSensorListActivity extends GDListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_sensorlist);
 
+		/* GreenDroid -----
 		initActionBar();
 		initQuickActionBar();
-
+		----------
+		 */
+		
+		networkObj = new LSNetwork();
+		
 		Bundle bundle = getIntent().getExtras();
 
 		if (bundle != null)
-		{
-			networkObj = new LSNetwork();
+		{		
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
+			
+			netName = bundle.getString("NETNAME");
 		}  
+		
+		if (netName != null){
+			JSONObject jsonData = null;
+			try {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("session", LSHomeActivity.idSession);
+				JSONArray jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getLlistatXarxes.php",params);
 
+				if (jArray != null)
+				{
+					boolean trobat = false;
+					for (int i = 0; i<jArray.length(); i++)
+					{
+						jsonData = jArray.getJSONObject(i);
+
+						if ((jsonData.getString("Nom").equals(netName) && !trobat)){
+							trobat = true;
+							netID = jsonData.getString("IdXarxa");
+						}
+					}
+				}
+				else
+				{
+					CustomToast.showCustomToast(this,R.string.msg_CommError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+				CustomToast.showCustomToast(this,R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
+			}
+		} else {
+			netName = networkObj.getNetworkName();
+			netID = networkObj.getNetworkId();
+		}
+		
 		TextView txtNetName = (TextView)findViewById(R.id.netName);
-		txtNetName.setText(networkObj.getNetworkName());
+		txtNetName.setText(netName);
 
 		m_sensors = new ArrayList<LSSensor>();
 		this.m_adapter = new LSSensorAdapter(this,R.layout.row_list_sensor,m_sensors);
@@ -112,6 +158,8 @@ public class LSSensorListActivity extends GDListActivity {
 		thread.start();
 		m_ProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.msg_PleaseWait), getResources().getString(R.string.msg_retrievSensors), true);
 
+		getActionBarHelper().changeIconHome();
+		
 		registerForContextMenu(getListView());
 	}
 
@@ -147,7 +195,7 @@ public class LSSensorListActivity extends GDListActivity {
 
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("session", LSHomeActivity.idSession);
-			params.put("IdXarxa", networkObj.getNetworkId());
+			params.put("IdXarxa", netID);
 			JSONArray jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getLlistaSensors.php",params);
 
 			if (jArray != null)
@@ -184,23 +232,7 @@ public class LSSensorListActivity extends GDListActivity {
 				runOnUiThread(returnErr); 
 			}
 
-			//LSNetwork o1 = new LSNetwork();
-			//o1.setNetworkName("Network 1");
-			//o1.setNetworkSituation("lat. XX.XX lon. YY.YY");
-			//o1.setNetworkNumSensors(3);
-			//LSNetwork o2 = new LSNetwork();
-			//o2.setNetworkName("Network 2");
-			//o2.setNetworkSituation("lat. XX.XX lon. YY.YY");
-			//o2.setNetworkNumSensors(2);
-			//LSNetwork o3 = new LSNetwork();
-			//o3.setNetworkName("Network 3");
-			//o3.setNetworkSituation("lat. XX.XX lon. YY.YY");
-			//o3.setNetworkNumSensors(4);
-			//m_networks.add(o1);
-			//m_networks.add(o2);
-			//m_networks.add(o3);
-			//Thread.sleep(1000);
-			Log.i("ARRAY", ""+ m_sensors.size());
+			Log.i("ARRAY SENSORS", ""+ m_sensors.size());
 		} catch (Exception e) { 
 			Log.e("BACKGROUND_PROC", e.getMessage());
 			errMessage = R.string.msg_ProcessError;
@@ -224,48 +256,45 @@ public class LSSensorListActivity extends GDListActivity {
 
 			startActivity(i);
 		}
-
 	}
-
-	private void initActionBar() {
-
-		addActionBarItem(Type.Add,OPTIONS);
-		addActionBarItem(Type.Help,HELP);
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ab_item_search_help, menu);
+        
+		return super.onCreateOptionsMenu(menu);
 	}
-
+	
 	@Override
-	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
-
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
 		switch (item.getItemId()) {
-
-		case OPTIONS:
-
-			quickActions.show(item.getItemView());
+		case android.R.id.home:
+			i = new Intent(LSSensorListActivity.this, LSNetInfoActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("NETID", netID);
+			i.putExtras(bundle);
 			break;
-		case HELP:
-
+		case R.id.menu_help:
 			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_search:
+			CustomToast.showCustomToast(LSSensorListActivity.this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_config:
+			i = new Intent(LSSensorListActivity.this,LSConfigActivity.class);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSSensorListActivity.this,LSInfoActivity.class);
 			break;
-		default:
-			return super.onHandleActionBarItemClick(item, position);
+		}	
+		
+		if (i != null) {
+			startActivity(i);
 		}
-
-		return true;
-	} 
-
-	private void initQuickActionBar()
-	{
-		quickActions = new QuickActionBar(this);
-		quickActions.addQuickAction(new QuickAction(this,R.drawable.ic_menu_search,R.string.strSearch));
-		quickActions.addQuickAction(new QuickAction(this,R.drawable.ic_menu_filter,R.string.strFilter));
-		quickActions.setOnQuickActionClickListener(new OnQuickActionClickListener() {
-
-			@Override
-			public void onQuickActionClicked(QuickActionWidget widget, int position) {
-
-				CustomToast.showCustomToast(LSSensorListActivity.this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
-			}
-		});
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -331,5 +360,48 @@ public class LSSensorListActivity extends GDListActivity {
 			return super.onContextItemSelected(item);
 		}
 	}
+	
+	/* GreenDroid -----
+	private void initActionBar() {
 
+		addActionBarItem(Type.Add,OPTIONS);
+		addActionBarItem(Type.Help,HELP);
+	}
+
+	@Override
+	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
+
+		switch (item.getItemId()) {
+
+		case OPTIONS:
+
+			quickActions.show(item.getItemView());
+			break;
+		case HELP:
+
+			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break;
+		default:
+			return super.onHandleActionBarItemClick(item, position);
+		}
+
+		return true;
+	} 
+
+	private void initQuickActionBar()
+	{
+		quickActions = new QuickActionBar(this);
+		quickActions.addQuickAction(new QuickAction(this,R.drawable.ic_menu_search,R.string.strSearch));
+		quickActions.addQuickAction(new QuickAction(this,R.drawable.ic_menu_filter,R.string.strFilter));
+		quickActions.setOnQuickActionClickListener(new OnQuickActionClickListener() {
+
+			@Override
+			public void onQuickActionClicked(QuickActionWidget widget, int position) {
+
+				CustomToast.showCustomToast(LSSensorListActivity.this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			}
+		});
+	}
+	----------
+	 */
 }

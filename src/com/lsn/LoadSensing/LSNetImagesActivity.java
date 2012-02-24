@@ -44,6 +44,7 @@ import android.provider.MediaStore.Images.Media;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +55,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.lsn.LoadSensing.SQLite.LSNSQLiteHelper;
+import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 import com.lsn.LoadSensing.adapter.LSGalleryAdapter;
 import com.lsn.LoadSensing.element.LSImage;
 import com.lsn.LoadSensing.element.LSNetwork;
@@ -61,13 +63,17 @@ import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
+/* GreenDroid -----
 import greendroid.app.GDActivity;
 import greendroid.widget.ActionBarItem;
 import greendroid.widget.ActionBarItem.Type;
 
 public class LSNetImagesActivity extends GDActivity {
-
 	private final int PHOTO = 0;
+----------
+ */
+public class LSNetImagesActivity extends ActionBarActivity {
+
 	private static final int CAMERA_PIC_REQUEST = 1; 
 
 	private ProgressDialog       m_ProgressDialog = null;
@@ -82,12 +88,14 @@ public class LSNetImagesActivity extends GDActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		/*
 		setActionBarContentView(R.layout.act_netimages);
-
-		GridView imagegrid = (GridView) findViewById(R.id.gridView);
-
-
 		initActionBar();
+		 */
+
+		setContentView(R.layout.act_netimages);
+		
+		GridView imagegrid = (GridView) findViewById(R.id.gridView);		
 
 		Bundle bundle = getIntent().getExtras();
 
@@ -117,6 +125,8 @@ public class LSNetImagesActivity extends GDActivity {
 					try
 					{
 						bundle.putInt("POSITION", position);
+						bundle.putParcelable("NETWORK_OBJ", networkObj);
+						
 						i.putExtras(bundle);
 
 						startActivity(i);
@@ -143,6 +153,8 @@ public class LSNetImagesActivity extends GDActivity {
 		thread.start();
 		m_ProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.msg_PleaseWait), getResources().getString(R.string.msg_retrievImages), true);
 
+		getActionBarHelper().changeIconHome();
+		
 		registerForContextMenu(imagegrid);
 	}
 
@@ -210,22 +222,6 @@ public class LSNetImagesActivity extends GDActivity {
 				errMessage = R.string.msg_CommError;
 				runOnUiThread(returnErr); 
 			}
-			//LSNetwork o1 = new LSNetwork();
-			//o1.setNetworkName("Network 1");
-			//o1.setNetworkSituation("lat. XX.XX lon. YY.YY");
-			//o1.setNetworkNumSensors(3);
-			//LSNetwork o2 = new LSNetwork();
-			//o2.setNetworkName("Network 2");
-			//o2.setNetworkSituation("lat. XX.XX lon. YY.YY");
-			//o2.setNetworkNumSensors(2);
-			//LSNetwork o3 = new LSNetwork();
-			//o3.setNetworkName("Network 3");
-			//o3.setNetworkSituation("lat. XX.XX lon. YY.YY");
-			//o3.setNetworkNumSensors(4);
-			//m_networks.add(o1);
-			//m_networks.add(o2);
-			//m_networks.add(o3);
-			//Thread.sleep(1000);
 			Log.i("ARRAY", ""+ m_images.size());
 		} catch (Exception e) { 
 			Log.e("BACKGROUND_PROC", e.getMessage());
@@ -233,24 +229,6 @@ public class LSNetImagesActivity extends GDActivity {
 			runOnUiThread(returnErr); 
 		}
 		runOnUiThread(returnRes);		
-	}
-
-	@Override
-	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
-
-		switch (item.getItemId()) {
-
-		case PHOTO:
-			Intent photoCamera = null;
-			photoCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-			photoCamera.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,Uri.fromFile(getTempFile(this)));
-			startActivityForResult(photoCamera,CAMERA_PIC_REQUEST);
-			break;
-
-		default:
-			return super.onHandleActionBarItemClick(item, position);
-		}
-		return true;
 	}
 
 	private File getTempFile(Context context){
@@ -261,13 +239,6 @@ public class LSNetImagesActivity extends GDActivity {
 			path.mkdir();
 		}
 		return new File(path, "image.tmp");
-	}
-
-	private void initActionBar() {
-
-		//Define ActionBar items
-		addActionBarItem(Type.TakePhoto,PHOTO);
-
 	}
 
 	@Override  
@@ -305,7 +276,6 @@ public class LSNetImagesActivity extends GDActivity {
 			}
 			else if (resultCode == RESULT_CANCELED)
 			{
-
 				CustomToast.showCustomToast(this,
 						R.string.msg_ActionCancelled,
 						CustomToast.IMG_EXCLAMATION,
@@ -313,6 +283,47 @@ public class LSNetImagesActivity extends GDActivity {
 			}
 		}  
 	}  
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ab_item_photo_help, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			i = new Intent(LSNetImagesActivity.this, LSNetInfoActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("NETID", networkObj.getNetworkId());
+			i.putExtras(bundle);
+			break;
+		case R.id.menu_help:
+			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_photo:
+			Intent photoCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			photoCamera.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,Uri.fromFile(getTempFile(this)));
+			startActivityForResult(photoCamera,CAMERA_PIC_REQUEST);
+			break; 
+		case R.id.menu_config:
+			i = new Intent(LSNetImagesActivity.this,LSConfigActivity.class);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSNetImagesActivity.this,LSInfoActivity.class);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -370,4 +381,32 @@ public class LSNetImagesActivity extends GDActivity {
 			return super.onContextItemSelected(item);
 		}
 	}
+	
+	/* GreenDroid -----
+	private void initActionBar() {
+
+		//Define ActionBar items
+		addActionBarItem(Type.TakePhoto,PHOTO);
+
+	}
+	
+	@Override
+	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
+
+		switch (item.getItemId()) {
+
+		case PHOTO:
+			Intent photoCamera = null;
+			photoCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			photoCamera.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,Uri.fromFile(getTempFile(this)));
+			startActivityForResult(photoCamera,CAMERA_PIC_REQUEST);
+			break;
+
+		default:
+			return super.onHandleActionBarItemClick(item, position);
+		}
+		return true;
+	}
+	----------
+	 */
 }

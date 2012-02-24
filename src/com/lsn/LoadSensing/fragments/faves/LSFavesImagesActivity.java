@@ -18,7 +18,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package com.lsn.LoadSensing.faves;
+package com.lsn.LoadSensing.fragments.faves;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,23 +33,32 @@ import com.lsn.LoadSensing.element.LSImage;
 import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
 
-import greendroid.app.GDListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
+/* GreenDroid -----
+import greendroid.app.GDListActivity;
+
 public class LSFavesImagesActivity extends GDListActivity{
+----------
+ */
+
+public class LSFavesImagesActivity extends ListFragment {
 
 	private ProgressDialog       m_ProgressDialog = null;
 	private ArrayList<LSImage>   m_images = null;
@@ -58,13 +67,17 @@ public class LSFavesImagesActivity extends GDListActivity{
 
 	private Bitmap imgSensor;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.act_04_favesimages);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+			
+		if (container == null) {      
+			return null;
+		}
+			
+		View v = inflater.inflate(R.layout.act_04_favesimages, container, false);
 
 		m_images = new ArrayList<LSImage>();
-		this.m_adapter = new LSImageAdapter(this,R.layout.row_list_image,m_images);
+		this.m_adapter = new LSImageAdapter(getActivity(),R.layout.row_list_image,m_images);
 		setListAdapter(this.m_adapter);
 
 		viewImages = new Runnable()
@@ -77,8 +90,15 @@ public class LSFavesImagesActivity extends GDListActivity{
 		};
 		Thread thread = new Thread(null,viewImages,"ViewImages");
 		thread.start();
-		m_ProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.msg_PleaseWait), getResources().getString(R.string.msg_retrievImages), true);
+		m_ProgressDialog = ProgressDialog.show(getActivity(), getResources().getString(R.string.msg_PleaseWait), getResources().getString(R.string.msg_retrievImages), true);
 
+		return v;
+	}
+	
+	@Override
+	public void onActivityCreated(final Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+	
 		registerForContextMenu(getListView());
 	}
 
@@ -101,7 +121,7 @@ public class LSFavesImagesActivity extends GDListActivity{
 		@Override
 		public void run() {
 
-			CustomToast.showCustomToast(LSFavesImagesActivity.this,R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
+			CustomToast.showCustomToast(getActivity(),R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
 
 		}
 	};
@@ -110,7 +130,7 @@ public class LSFavesImagesActivity extends GDListActivity{
 
 		try {
 			m_images = new ArrayList<LSImage>();
-			LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(this, "DBLSN", null, 1);
+			LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(getActivity(), "DBLSN", null, 1);
 			SQLiteDatabase db = lsndbh.getReadableDatabase();
 
 			if (db != null) {
@@ -150,16 +170,16 @@ public class LSFavesImagesActivity extends GDListActivity{
 			}	
 		} catch (Exception e) {
 			Log.e("BACKGROUND_PROC", e.getMessage());
-			runOnUiThread(returnErr);
+			getActivity().runOnUiThread(returnErr);
 		}
-		runOnUiThread(returnRes);
+		getActivity().runOnUiThread(returnRes);
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
+	public void onListItemClick(ListView l, View v, int position, long id) {
 
 		Intent i = null;
-		i = new Intent(this,LSBigImageActivity.class);
+		i = new Intent(getActivity(),LSBigImageActivity.class);
 
 		if (i!=null){
 			Bundle bundle = new Bundle();
@@ -179,14 +199,14 @@ public class LSFavesImagesActivity extends GDListActivity{
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getActivity().getMenuInflater();
 		menu.setHeaderTitle(R.string.act_lbl_homFaves);
 		inflater.inflate(R.menu.context_menu_del, menu);
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(this, "DBLSN", null, 1);
+		LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(getActivity(), "DBLSN", null, 1);
 		SQLiteDatabase db = lsndbh.getWritableDatabase();
 
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
@@ -201,10 +221,10 @@ public class LSFavesImagesActivity extends GDListActivity{
 				db.close();
 				Bundle bundle = new Bundle();
 				bundle.putInt("par", 2);
-				Intent i = new Intent(this, LSFavesActivity.class);
+				Intent i = new Intent(getActivity(), LSFavesActivity.class);
 				i.putExtras(bundle);
 				startActivity(i);
-				this.finish();
+				getActivity().finish();
 			}
 
 			return true;

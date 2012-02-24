@@ -1,6 +1,7 @@
 package com.lsn.LoadSensing;
 
 
+import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 import com.lsn.LoadSensing.help.LSHelpListNetActivity;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
@@ -9,21 +10,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+/* GreenDroid -----
 import greendroid.app.GDActivity;
 import greendroid.widget.ActionBarItem;
 import greendroid.widget.NormalActionBarItem;
-
-public class LSHelpActivity extends GDActivity { 
-
+public class LSHelpActivity extends ActionBarActivity { 
 	private final int BACK = 0;
+----------
+ */
+
+public class LSHelpActivity extends ActionBarActivity { 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		/*
 		setActionBarContentView(R.layout.help_menu);
-
 		initActionBar();
+		 */
 
+		setContentView(R.layout.help_menu);
+		
 		findViewById(R.id.funcNetList).setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -87,6 +95,7 @@ public class LSHelpActivity extends GDActivity {
 
 	}
 
+	/* GreenDroid
 	private void initActionBar() {
 
 		addActionBarItem(getActionBar()
@@ -111,5 +120,6 @@ public class LSHelpActivity extends GDActivity {
 
 		return true;
 	} 
-
+	----------
+	 */
 }

@@ -166,6 +166,9 @@
     <string name="menu_info">Information</string>
     <string name="menu_config">Configuration</string>
     <string name="menu_help">Help</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_photo">Photo</string>
+     <string name="menu_mapmode">Map mode</string>
     
     <string name="strSearch">Find</string>
     <string name="strFilter">Filter</string>

@@ -25,27 +25,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import greendroid.widget.ActionBar;
-import greendroid.widget.ActionBar.OnActionBarListener;
-import greendroid.widget.ActionBarItem;
-import greendroid.widget.QuickAction;
-import greendroid.widget.QuickActionBar;
-import greendroid.widget.QuickActionWidget;
-import greendroid.widget.ActionBar.Type;
-import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.mapsforge.android.maps.GeoPoint;
-import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapController;
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.MapViewMode;
 import org.mapsforge.android.maps.Overlay;
 import org.mapsforge.android.maps.OverlayItem;
 
+import com.lsn.LoadSensing.actionbar.ActionBarMapOSMActivity;
 import com.lsn.LoadSensing.element.LSNetwork;
 import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.mapsforge.LSNetworksOverlayForge;
@@ -55,28 +46,46 @@ import com.readystatesoftware.mapviewballoons.R;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+/* GreenDroid -----
+import greendroid.widget.ActionBar;
+import greendroid.widget.ActionBar.OnActionBarListener;
+import greendroid.widget.ActionBarItem;
+import greendroid.widget.QuickAction;
+import greendroid.widget.QuickActionBar;
+import greendroid.widget.QuickActionWidget;
+import greendroid.widget.ActionBar.Type;
+import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
 
 public class LSNetMapsForgeActivity extends MapActivity {
+	private final int OPTIONS = 0;
+	private final int HELP = 1;
+	private QuickActionWidget quickActions;
+----------
+ */
+
+public class LSNetMapsForgeActivity extends ActionBarMapOSMActivity {
 
 	private ArrayList<LSNetwork> m_networks = null;
 	private List<Overlay>     mapOverlays;
 	private MapView mapView;
 	private LSNetworksOverlayForge itemizedOverlay;
 
-	private final int OPTIONS = 0;
-	private final int HELP = 1;
-
-	private QuickActionWidget quickActions;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_02_netmapsforge);
+		
+		getActionBarHelper().changeIconHome();
 
+		/* GreenDroid -----
 		initActionBar();
 		initQuickActionBar();
-
+		
 		ActionBar actBar = (ActionBar)findViewById(R.id.gd_action_bar);
 		actBar.setTitle(getResources().getString(R.string.act_lbl_homNetMaps));
 		actBar.setType(Type.Normal);
@@ -93,6 +102,8 @@ public class LSNetMapsForgeActivity extends MapActivity {
 				}
 			}
 		});
+		----------
+		 */
 
 		mapView = (MapView)findViewById(R.id.mapView);
 		mapView.setClickable(true);
@@ -162,7 +173,42 @@ public class LSNetMapsForgeActivity extends MapActivity {
 		mMapController.setCenter(point);
 		mMapController.setZoom(5);
 	}
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ab_item_help, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			i = new Intent(LSNetMapsForgeActivity.this, LSHomeActivity.class);
+			break;
+		case R.id.menu_help:
+			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_config:
+			i = new Intent(LSNetMapsForgeActivity.this,LSConfigActivity.class);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSNetMapsForgeActivity.this,LSInfoActivity.class);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
 
+		return super.onOptionsItemSelected(item);
+		
+	}
+	
+	/* GreenDroid -----
 	private void initActionBar() {
 
 		ActionBar actBar = (ActionBar)findViewById(R.id.gd_action_bar);
@@ -210,4 +256,6 @@ public class LSNetMapsForgeActivity extends MapActivity {
 			}
 		});
 	}
+	----------
+	 */
 }

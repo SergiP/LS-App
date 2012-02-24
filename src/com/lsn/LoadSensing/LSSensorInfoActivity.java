@@ -30,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 import com.lsn.LoadSensing.element.LSSensor;
 import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
@@ -38,16 +39,24 @@ import com.readystatesoftware.mapviewballoons.R;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+/* GreenDroid -----
 import greendroid.app.GDActivity;
 
 public class LSSensorInfoActivity extends GDActivity {
+----------
+ */
 
+public class LSSensorInfoActivity extends ActionBarActivity {
 	private String sensorSerial = null;
 	private LSSensor sensorBundle = null;
 	private LSSensor sensorObj = null;
@@ -58,17 +67,22 @@ public class LSSensorInfoActivity extends GDActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		/* GreenDroid -----
 		setActionBarContentView(R.layout.act_sensorinfo);
-
+		----------
+		 */
+		setContentView(R.layout.act_sensorinfo);
+		
 		Bundle bundle = getIntent().getExtras();
-
 
 		if (bundle != null)
 		{
 			sensorSerial = bundle.getString("SENSOR_SERIAL");
 			sensorBundle = bundle.getParcelable("SENSOR_OBJ");
 		}
-
+		
+		getActionBarHelper().changeIconHome();
+		
 		m_sensors = new ArrayList<LSSensor>();
 		JSONObject jsonData = null;
 		JSONArray jArray = null;
@@ -278,4 +292,40 @@ public class LSSensorInfoActivity extends GDActivity {
 			}
 		});
 	}
+
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ab_item_help, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			i = new Intent(LSSensorInfoActivity.this, LSSensorListActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("NETNAME", sensorObj.getSensorNetwork());
+			i.putExtras(bundle);
+			break;
+		case R.id.menu_help:
+			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_config:
+			i = new Intent(LSSensorInfoActivity.this,LSConfigActivity.class);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSSensorInfoActivity.this,LSInfoActivity.class);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}	
 }

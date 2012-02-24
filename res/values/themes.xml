@@ -19,14 +19,6 @@
 
 <resources>
 
-    <!-- Action Bar GreenDroid Init -->
-    <style name="Theme.LSTheme" parent="@style/Theme.GreenDroid.NoTitleBar">
-        <item name="gdActionBarTitleColor">#FFF</item>
-        <item name="gdActionBarDividerWidth">2px</item>
-        <item name="gdActionBarBackground">@color/actionBarBackground</item>
-    </style>
-    <!-- Action Bar GreenDroid End -->
-
     <style name="LSLogin">
         <item name="android:background">#000</item>
     </style>

@@ -170,6 +170,9 @@
     <string name="menu_info">Informació</string>
     <string name="menu_config">Configuració</string>
     <string name="menu_help">Ajuda</string>
+    <string name="menu_search">Buscar</string>
+    <string name="menu_photo">Fotografia</string>
+    <string name="menu_mapmode">Tipus de mapa</string>
     
     <string name="strSearch">Cercar</string>
     <string name="strFilter">Filtrar</string>

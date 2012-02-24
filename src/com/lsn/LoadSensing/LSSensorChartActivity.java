@@ -36,20 +36,30 @@ import com.jjoe64.graphview.BarGraphView;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphView.GraphViewSeries;
+import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 import com.lsn.LoadSensing.element.LSSensor;
 import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+/* GreenDroid -----
 import greendroid.app.GDActivity;
 
 public class LSSensorChartActivity extends GDActivity {
+----------
+ */
+public class LSSensorChartActivity extends ActionBarActivity {
 
 	private String sensorSerial = null;
 	private LSSensor sensorBundle = null;
@@ -61,8 +71,14 @@ public class LSSensorChartActivity extends GDActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		/* GreenDroid -----
 		setActionBarContentView(R.layout.act_sensorchart);
+		----------
+		 */
 
+		setContentView(R.layout.act_sensorchart);
+		
 		Bundle bundle = getIntent().getExtras();
 
 		if (bundle != null)
@@ -172,7 +188,7 @@ public class LSSensorChartActivity extends GDActivity {
 
 					paint.setColor(Color.parseColor("#bcd9f2"));
 					paint.setTextAlign(Align.CENTER);
-/*
+
 					// draw data
 					for (int i = 0; i < values.length; i++) {
 						float valY = (float) (values[i].valueY - minY);
@@ -180,7 +196,7 @@ public class LSSensorChartActivity extends GDActivity {
 						float y = graphheight * ratY;
 						canvas.drawRect((i * colwidth) + horstart, (border - y) + graphheight, ((i * colwidth) + horstart) + (colwidth - 1), graphheight + border - 1, paint);
 					}
-*/
+
 				}
 			};
 
@@ -201,4 +217,41 @@ public class LSSensorChartActivity extends GDActivity {
 		}
 
 	}
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ab_item_help, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			i = new Intent(LSSensorChartActivity.this, LSSensorInfoActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("SENSOR_SERIAL", sensorSerial);
+			bundle.putParcelable("SENSOR_OBJ", sensorBundle);
+			i.putExtras(bundle);
+			break;
+		case R.id.menu_help:
+			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_config:
+			i = new Intent(LSSensorChartActivity.this,LSConfigActivity.class);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSSensorChartActivity.this,LSInfoActivity.class);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}	
 }

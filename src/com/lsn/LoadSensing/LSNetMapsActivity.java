@@ -34,12 +34,21 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+import com.lsn.LoadSensing.actionbar.ActionBarMapActivity;
 import com.lsn.LoadSensing.element.LSNetwork;
 import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.map.LSNetworksOverlay;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+/* GreenDroid -----
 import greendroid.app.GDMapActivity;
 import greendroid.widget.ActionBarItem;
 import greendroid.widget.QuickAction;
@@ -47,10 +56,15 @@ import greendroid.widget.QuickActionBar;
 import greendroid.widget.QuickActionWidget;
 import greendroid.widget.ActionBarItem.Type;
 import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 
 public class LSNetMapsActivity extends GDMapActivity {
+	private QuickActionWidget quickActions;
+	private final int OPTIONS = 0;
+	private final int HELP = 1;
+----------
+ */
+
+public class LSNetMapsActivity extends ActionBarMapActivity {
 
 	MapView           mapView;
 	List<Overlay>     mapOverlays;
@@ -60,18 +74,12 @@ public class LSNetMapsActivity extends GDMapActivity {
 	LSNetworksOverlay itemizedOverlay2;
 	boolean           modeStreeView;
 
-	private final int OPTIONS = 0;
-	private final int HELP = 1;
-
-	private QuickActionWidget quickActions;
-
-	//private static String idSession;
 	private ArrayList<LSNetwork> m_networks = null;
 
 
 	@Override
 	protected void onResume() {
-
+		getActionBarHelper().changeIconHome();
 		super.onResume();
 
 	}
@@ -84,17 +92,16 @@ public class LSNetMapsActivity extends GDMapActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		/* GreenDroid -----
 		setActionBarContentView(R.layout.act_02_netmap);
-
 		initActionBar();
 		initQuickActionBar();
+		----------
+		 */
 
-		Bundle bundle = getIntent().getExtras();
-
-		if (bundle != null)
-		{
-			//idSession = bundle.getString("SESSION");
-		}  
+		setContentView(R.layout.act_02_netmap);
+		
 		m_networks = new ArrayList<LSNetwork>();
 
 
@@ -165,6 +172,7 @@ public class LSNetMapsActivity extends GDMapActivity {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	private void setStreetView(){
 
 		final MapView mapView = (MapView) findViewById(R.id.netmap);
@@ -173,6 +181,7 @@ public class LSNetMapsActivity extends GDMapActivity {
 		modeStreeView=true;
 	}
 
+	@SuppressWarnings("deprecation")
 	private void setSatelliteView(){
 
 		final MapView mapView = (MapView) findViewById(R.id.netmap);
@@ -193,7 +202,51 @@ public class LSNetMapsActivity extends GDMapActivity {
 	public void setModeStreeView(boolean modeStreeView) {
 		this.modeStreeView = modeStreeView;
 	}
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ab_item_mapmode_help, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			i = new Intent(LSNetMapsActivity.this, LSHomeActivity.class);
+			break;
+		case R.id.menu_mapmode:
+			//Switch map mode
+			if (isModeStreeView()) {
+				setSatelliteView();
+			}
+			else {
+				setStreetView();
+			}
+			break; 
+		case R.id.menu_help:
+			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_config:
+			i = new Intent(LSNetMapsActivity.this,LSConfigActivity.class);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSNetMapsActivity.this,LSInfoActivity.class);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
 
+		return super.onOptionsItemSelected(item);
+		
+	}
+
+	/* GreenDroid -----
 	private void initActionBar() {
 
 		addActionBarItem(Type.Add,OPTIONS);
@@ -253,5 +306,6 @@ public class LSNetMapsActivity extends GDMapActivity {
 			}
 		});
 	}
-
+	----------
+	 */
 }

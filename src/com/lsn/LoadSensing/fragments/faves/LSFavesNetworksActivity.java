@@ -18,8 +18,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package com.lsn.LoadSensing.faves;
-
+package com.lsn.LoadSensing.fragments.faves;
 
 import java.util.ArrayList;
 
@@ -32,37 +31,48 @@ import com.lsn.LoadSensing.element.LSNetwork;
 import com.lsn.LoadSensing.element.Position;
 import com.lsn.LoadSensing.ui.CustomToast;
 
-import greendroid.app.GDListActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
-public class LSFavesNetworksActivity extends GDListActivity{
+/* GreenDroid -----
+import greendroid.app.GDListActivity;
 
+public class LSFavesNetworksActivity extends GDListActivity{
+----------
+ */
+public class LSFavesNetworksActivity extends ListFragment {
 
 	private ProgressDialog       m_ProgressDialog = null;
 	private ArrayList<LSNetwork> m_networks = null;
 	private LSNetworkAdapter       m_adapter;
 	private Runnable             viewNetworks;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.act_04_favesnetworks);
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+		
+		if (container == null) {      
+            return null;
+        }
+		
+		View v = inflater.inflate(R.layout.act_04_favesnetworks, container, false);
+		
 		m_networks = new ArrayList<LSNetwork>();
-		this.m_adapter = new LSNetworkAdapter(this,R.layout.row_list_network,m_networks);
+		
+		this.m_adapter = new LSNetworkAdapter(getActivity(),R.layout.row_list_network,m_networks);
 		setListAdapter(this.m_adapter);
 
 		viewNetworks = new Runnable()
@@ -73,17 +83,18 @@ public class LSFavesNetworksActivity extends GDListActivity{
 				getNetworks();
 			}
 		};
+		
 		Thread thread = new Thread(null,viewNetworks,"ViewNetworks");
 		thread.start();
-		m_ProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.msg_PleaseWait), getResources().getString(R.string.msg_retrievNetworks), true);
-
-		//		ItemAdapter adapter = new ItemAdapter(this);
-		//		adapter.add(createTextItem(0,"Xarxa 1"));
-		//		adapter.add(createTextItem(1,"Xarxa 2"));
-		//		adapter.add(createTextItem(2,"Xarxa 3"));
-		//		adapter.add(createTextItem(3,"Xarxa 4"));
-		//		adapter.add(createTextItem(4,"Xarxa 5"));
-		//		setListAdapter(adapter);
+		m_ProgressDialog = ProgressDialog.show(getActivity(), getResources().getString(R.string.msg_PleaseWait), getResources().getString(R.string.msg_retrievNetworks), true);
+		
+		return v;
+	}
+	
+	@Override
+	public void onActivityCreated(final Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+	
 		registerForContextMenu(getListView());
 	}
 
@@ -105,9 +116,7 @@ public class LSFavesNetworksActivity extends GDListActivity{
 
 		@Override
 		public void run() {
-
-			CustomToast.showCustomToast(LSFavesNetworksActivity.this,R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-
+			CustomToast.showCustomToast(getActivity(),R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
 		}
 	};
 
@@ -115,7 +124,7 @@ public class LSFavesNetworksActivity extends GDListActivity{
 
 		try {
 			m_networks = new ArrayList<LSNetwork>();
-			LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(this, "DBLSN", null, 1);
+			LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(getActivity(), "DBLSN", null, 1);
 			SQLiteDatabase db = lsndbh.getReadableDatabase();
 
 			Log.i("INFO", "Faves getNetwork");
@@ -155,18 +164,16 @@ public class LSFavesNetworksActivity extends GDListActivity{
 			}	
 		} catch (Exception e) {
 			Log.e("BACKGROUND_PROC", e.getMessage());
-			runOnUiThread(returnErr);
+			getActivity().runOnUiThread(returnErr);
 		}
-		runOnUiThread(returnRes);
+		getActivity().runOnUiThread(returnRes);
 	}
 
-
-
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
+	public void onListItemClick(ListView l, View v, int position, long id) {
 
 		Intent i = null;
-		i = new Intent(this, LSNetInfoActivity.class);
+		i = new Intent(getActivity(), LSNetInfoActivity.class);
 
 		if (i != null) {
 			Bundle bundle = new Bundle();
@@ -180,20 +187,18 @@ public class LSFavesNetworksActivity extends GDListActivity{
 		}
 	}
 
-
-
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getActivity().getMenuInflater();
 		menu.setHeaderTitle(R.string.act_lbl_homFaves);
 		inflater.inflate(R.menu.context_menu_del, menu);
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(this, "DBLSN", null, 1);
+		LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(getActivity(), "DBLSN", null, 1);
 		SQLiteDatabase db = lsndbh.getWritableDatabase();
 
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
@@ -208,10 +213,10 @@ public class LSFavesNetworksActivity extends GDListActivity{
 				db.close();
 				Bundle bundle = new Bundle();
 				bundle.putInt("par", 0);
-				Intent i = new Intent(this, LSFavesActivity.class);
+				Intent i = new Intent(getActivity(), LSFavesActivity.class);
 				i.putExtras(bundle);
 				startActivity(i);
-				this.finish();
+				getActivity().finish();
 			}
 
 			return true;
