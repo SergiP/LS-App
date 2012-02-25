@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.android.maps.GeoPoint;
+
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
@@ -41,135 +42,71 @@ import com.lsn.LoadSensing.map.LSNetworksOverlay;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-/* GreenDroid -----
-import greendroid.app.GDMapActivity;
-import greendroid.widget.ActionBarItem;
-import greendroid.widget.QuickAction;
-import greendroid.widget.QuickActionBar;
-import greendroid.widget.QuickActionWidget;
-import greendroid.widget.ActionBarItem.Type;
-import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
-
-public class LSNetMapsActivity extends GDMapActivity {
-	private QuickActionWidget quickActions;
-	private final int OPTIONS = 0;
-	private final int HELP = 1;
-----------
- */
-
 public class LSNetMapsActivity extends ActionBarMapActivity {
 
-	MapView           mapView;
-	List<Overlay>     mapOverlays;
-	Drawable          drawable;
-	Drawable          drawable2;
-	LSNetworksOverlay itemizedOverlay;
-	LSNetworksOverlay itemizedOverlay2;
-	boolean           modeStreeView;
+	MapView				mapView;
+	List<Overlay>		mapOverlays;
+	Drawable			drawable;
+	GeoPoint			point;
+	LSNetworksOverlay	itemizedOverlay;
+	boolean				modeStreeView;
 
 	private ArrayList<LSNetwork> m_networks = null;
-
 
 	@Override
 	protected void onResume() {
 		getActionBarHelper().changeIconHome();
 		super.onResume();
-
 	}
 
 	@Override
 	protected boolean isRouteDisplayed() {
-
 		return false;
 	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		/* GreenDroid -----
-		setActionBarContentView(R.layout.act_02_netmap);
-		initActionBar();
-		initQuickActionBar();
-		----------
-		 */
-
 		setContentView(R.layout.act_02_netmap);
 		
-		m_networks = new ArrayList<LSNetwork>();
-
-
-		final MapView mapView = (MapView) findViewById(R.id.netmap);
+		mapView = (MapView) findViewById(R.id.netmap);
 		mapView.setBuiltInZoomControls(true);
 		setStreetView();
 
-		JSONObject jsonData;
-		try {
-			// Server Request Ini
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("session", LSHomeActivity.idSession);
-			JSONArray jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getLlistatXarxes.php",params);
-			if (jArray != null)
-			{
-				for (int i = 0; i<jArray.length(); i++)
-				{
-
-					jsonData = jArray.getJSONObject(i);
-					LSNetwork network = new LSNetwork();
-					network.setNetworkName(jsonData.getString("Nom"));
-					network.setNetworkPosition(jsonData.getString("Lat"),jsonData.getString("Lon"));
-					network.setNetworkNumSensors(jsonData.getString("Sensors"));
-					network.setNetworkId(jsonData.getString("IdXarxa"));
-					network.setNetworkSituation(jsonData.getString("Poblacio"));
-					m_networks.add(network);
-				}
-			}
-			else
-			{
-				CustomToast.showCustomToast(this,R.string.msg_CommError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-			}
-		} catch (JSONException e) {
-
-			e.printStackTrace();
-			CustomToast.showCustomToast(this,R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-		}
-
 		mapOverlays = mapView.getOverlays();
-
-		// first overlay
+		
+		// overlay
 		drawable = getResources().getDrawable(R.drawable.marker);
 		itemizedOverlay = new LSNetworksOverlay(drawable, mapView,m_networks);
+		
+		ProgressDialog progressDialog = new ProgressDialog(LSNetMapsActivity.this);
+		progressDialog.setTitle(getString(R.string.msg_PleaseWait));
+		progressDialog.setMessage(getString(R.string.msg_retrievNetworks));
+		progressDialog.setCancelable(false);
 
-		GeoPoint point = null;
-		for (int i = 0; i<m_networks.size(); i++)
-		{
-			Integer intLat = (int) (m_networks.get(i).getNetworkPosition().getLatitude()*1e6);
-			Integer intLon = (int) (m_networks.get(i).getNetworkPosition().getLongitude()*1e6);
-			String strName = m_networks.get(i).getNetworkName();
-			String strSituation = m_networks.get(i).getNetworkSituation();
-			Integer strNumSensor = m_networks.get(i).getNetworkNumSensors();
-			String strNetDescripFormat = getResources().getString(R.string.strNetDescrip);
-			String strNetDescrip = String.format(strNetDescripFormat, strSituation, strNumSensor);
-
-
-			point = new GeoPoint(intLat,intLon);
-			OverlayItem overlayItem = new OverlayItem(point, strName, strNetDescrip);
-			itemizedOverlay.addOverlay(overlayItem);
-
-			mapOverlays.add(itemizedOverlay);
-		}
-
+		MapTask mapTask = new MapTask(LSNetMapsActivity.this,progressDialog);
+		mapTask.execute();
+					
 		point = new GeoPoint((int)(40.416369*1E6),(int)(-3.702992*1E6));
 		final MapController mc = mapView.getController();
 		mc.animateTo(point);
 		mc.setZoom(6);
-
+	}
+	
+	public void showError(String result) {
+		if (result != null){
+			CustomToast.showCustomToast(LSNetMapsActivity.this, result,
+					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -246,66 +183,77 @@ public class LSNetMapsActivity extends ActionBarMapActivity {
 		
 	}
 
-	/* GreenDroid -----
-	private void initActionBar() {
-
-		addActionBarItem(Type.Add,OPTIONS);
-		addActionBarItem(Type.Help,HELP);
-
-	}
-
-	@Override
-	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
-
-		switch (item.getItemId()) {
-
-		case OPTIONS:
-
-			quickActions.show(item.getItemView());
-			break;
-		case HELP:
-
-			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
-			break;
-		default:
-			return super.onHandleActionBarItemClick(item, position);
+	public class MapTask extends AsyncTask<String, Void, String> {
+		private Activity activity;
+		private ProgressDialog progressDialog;
+		private String messageReturn = null;
+		
+		public MapTask(Activity activity, ProgressDialog progressDialog) {
+			this.progressDialog = progressDialog;
+			this.activity = activity;
 		}
 
-		return true;
-	} 
+		@Override
+		protected void onPreExecute() {
+			progressDialog.show();
+		}
 
-	private void initQuickActionBar()
-	{
-		quickActions = new QuickActionBar(this);
-		quickActions.addQuickAction(new QuickAction(this,R.drawable.ic_menu_search,R.string.strSearch));
-		quickActions.addQuickAction(new QuickAction(this,R.drawable.ic_menu_filter,R.string.strFilter));
-		quickActions.addQuickAction(new QuickAction(this,android.R.drawable.ic_menu_mapmode,R.string.strMapMode));
-		quickActions.setOnQuickActionClickListener(new OnQuickActionClickListener() {
-
-			@Override
-			public void onQuickActionClicked(QuickActionWidget widget, int position) {
-				switch(position) {
-
-				case 0:
-					CustomToast.showCustomToast(LSNetMapsActivity.this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
-					break;
-				case 1:
-					CustomToast.showCustomToast(LSNetMapsActivity.this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
-					break;
-				case 2:
-					//Switch map mode
-					if (isModeStreeView()) {
-
-						setSatelliteView();
+		@Override
+		protected String doInBackground(String... arg0) {
+			JSONObject jsonData;
+			m_networks = new ArrayList<LSNetwork>();
+			try {
+				// Server Request Ini
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("session", LSHomeActivity.idSession);
+				JSONArray jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getLlistatXarxes.php",params);
+				if (jArray != null)
+				{
+					for (int i = 0; i<jArray.length(); i++)
+					{
+						jsonData = jArray.getJSONObject(i);
+						LSNetwork network = new LSNetwork();
+						network.setNetworkName(jsonData.getString("Nom"));
+						network.setNetworkPosition(jsonData.getString("Lat"),jsonData.getString("Lon"));
+						network.setNetworkNumSensors(jsonData.getString("Sensors"));
+						network.setNetworkId(jsonData.getString("IdXarxa"));
+						network.setNetworkSituation(jsonData.getString("Poblacio"));
+						m_networks.add(network);
 					}
-					else {
-						setStreetView();
-					}
-					break;
 				}
+				else
+				{
+					messageReturn = getString(R.string.msg_CommError);
+				}
+			} catch (JSONException e) {
+				messageReturn = getString(R.string.msg_ProcessError);
 			}
-		});
+			
+			point = null;
+			for (int i = 0; i< m_networks.size(); i++)
+			{
+				Integer intLat = (int) (m_networks.get(i).getNetworkPosition().getLatitude()*1e6);
+				Integer intLon = (int) (m_networks.get(i).getNetworkPosition().getLongitude()*1e6);
+				String strName = m_networks.get(i).getNetworkName();
+				String strSituation = m_networks.get(i).getNetworkSituation();
+				Integer strNumSensor = m_networks.get(i).getNetworkNumSensors();
+				String strNetDescripFormat = getResources().getString(R.string.strNetDescrip);
+				String strNetDescrip = String.format(strNetDescripFormat, strSituation, strNumSensor);
+
+				point = new GeoPoint(intLat,intLon);
+				OverlayItem overlayItem = new OverlayItem(point, strName, strNetDescrip);
+				itemizedOverlay.addOverlay(overlayItem);
+
+				mapOverlays.add(itemizedOverlay);
+			}
+			
+			return messageReturn;
+		}
+
+		@Override
+		protected void onPostExecute(String pMessageReturn) {
+			progressDialog.dismiss();
+			((LSNetMapsActivity) activity).showError(pMessageReturn);
+		}
 	}
-	----------
-	 */
 }

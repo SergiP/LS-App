@@ -37,15 +37,19 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphView.GraphViewSeries;
 import com.lsn.LoadSensing.actionbar.ActionBarActivity;
+import com.lsn.LoadSensing.element.LSNetwork;
 import com.lsn.LoadSensing.element.LSSensor;
 import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,12 +57,6 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-/* GreenDroid -----
-import greendroid.app.GDActivity;
-
-public class LSSensorChartActivity extends GDActivity {
-----------
- */
 public class LSSensorChartActivity extends ActionBarActivity {
 
 	private String sensorSerial = null;
@@ -67,17 +65,16 @@ public class LSSensorChartActivity extends ActionBarActivity {
 	private static HashMap<String,Double> hashValues = new HashMap<String,Double>();
 	private String strNetwork;
 	private String strSensor;
+	private LSNetwork networkObj = null;
+	private JSONObject jsonData = null;
+	private JSONArray jArray = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		/* GreenDroid -----
-		setActionBarContentView(R.layout.act_sensorchart);
-		----------
-		 */
-
 		setContentView(R.layout.act_sensorchart);
+		
+		getActionBarHelper().changeIconHome();
 		
 		Bundle bundle = getIntent().getExtras();
 
@@ -86,32 +83,117 @@ public class LSSensorChartActivity extends ActionBarActivity {
 			sensorSerial = bundle.getString("SENSOR_SERIAL");
 			sensorBundle = bundle.getParcelable("SENSOR_OBJ");
 			chartType = bundle.getInt("CHART_TYPE");
+			networkObj = bundle.getParcelable("NETWORK_OBJ");
+		}
+		
+		ProgressDialog progressDialog = new ProgressDialog(LSSensorChartActivity.this);
+		progressDialog.setTitle(getString(R.string.msg_PleaseWait));
+		progressDialog.setMessage(getString(R.string.msg_retrievData));
+		progressDialog.setCancelable(false);
+
+		SensorCharTask sensorCharTask = new SensorCharTask(LSSensorChartActivity.this,progressDialog);
+		sensorCharTask.execute();
+	}
+	
+	public void showError(String result) {
+		if (result != null){
+			CustomToast.showCustomToast(LSSensorChartActivity.this, result,
+					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
+		}
+	}
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.ab_item_help, menu);
+        
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i = null;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			i = new Intent(LSSensorChartActivity.this, LSSensorInfoActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("SENSOR_SERIAL", sensorSerial);
+			bundle.putParcelable("SENSOR_OBJ", sensorBundle);
+			bundle.putParcelable("NETWORK_OBJ", networkObj);
+			i.putExtras(bundle);
+			break;
+		case R.id.menu_help:
+			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			break; 
+		case R.id.menu_config:
+			i = new Intent(LSSensorChartActivity.this,LSConfigActivity.class);
+			break; 
+		case R.id.menu_info:
+			i = new Intent(LSSensorChartActivity.this,LSInfoActivity.class);
+			break;
+		}	
+		
+		if (i != null) {
+			startActivity(i);
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}	
+	
+	public class SensorCharTask extends AsyncTask<String, Void, String> {
+		private Activity activity;
+		private ProgressDialog progressDialog;
+		private String messageReturn = null;
+		
+		public SensorCharTask(Activity activity, ProgressDialog progressDialog) {
+			this.progressDialog = progressDialog;
+			this.activity = activity;
 		}
 
-		JSONObject jsonData = null;
-		JSONArray jArray = null;
-
-		if (sensorSerial != null)
-		{
-			// Server Request Ini
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("session", LSHomeActivity.idSession);
-			params.put("serialNumber", sensorSerial);
-			params.put("TipusGrafic", chartType.toString());
-			jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getValorsGrafic.php",params);
+		@Override
+		protected void onPreExecute() {
+			progressDialog.show();
 		}
 
-		if (sensorBundle != null)
-		{
+		@Override
+		protected String doInBackground(String... arg0) {
+			if (sensorSerial != null)
+			{
+				// Server Request Ini
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("session", LSHomeActivity.idSession);
+				params.put("serialNumber", sensorSerial);
+				params.put("TipusGrafic", chartType.toString());
+				jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getValorsGrafic.php",params);
+			}
 
-			// Server Request Ini
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("session", LSHomeActivity.idSession);
-			params.put("sensor", sensorBundle.getSensorId());
-			params.put("TipusGrafic", chartType.toString());
-			jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getValorsGrafic.php",params);
+			if (sensorBundle != null)
+			{
+				// Server Request Ini
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("session", LSHomeActivity.idSession);
+				params.put("sensor", sensorBundle.getSensorId());
+				params.put("TipusGrafic", chartType.toString());
+				jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getValorsGrafic.php",params);
+			}
+
+			return messageReturn;
 		}
 
+		@Override
+		protected void onPostExecute(String pMessageReturn) {
+			progressDialog.dismiss();
+			
+			pMessageReturn = getChart();
+			
+			((LSSensorChartActivity) activity).showError(pMessageReturn);
+		}
+	}
+	
+	private String getChart() {
+		
+		String message = null;
+		
 		if (jArray != null)
 		{
 			try {
@@ -121,7 +203,7 @@ public class LSSensorChartActivity extends ActionBarActivity {
 				jArray = jsonData.getJSONArray("ValorsGrafica");
 			} catch (JSONException e1) {
 				e1.printStackTrace();
-				CustomToast.showCustomToast(this,R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
+				message= getString(R.string.msg_ProcessError);
 			}
 
 			int num = jArray.length();
@@ -152,9 +234,9 @@ public class LSSensorChartActivity extends ActionBarActivity {
 
 			} catch (JSONException e) {
 				e.printStackTrace();
-				CustomToast.showCustomToast(this,R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
+				message= getString(R.string.msg_ProcessError);
 			}
-
+			
 			TextView txtNetName = (TextView) findViewById(R.id.netName);
 			txtNetName.setText(strNetwork);
 			TextView txtSensorName = (TextView) findViewById(R.id.sensorName);
@@ -178,7 +260,7 @@ public class LSSensorChartActivity extends ActionBarActivity {
 			txtChartType.setText(strChartType);
 
 
-			GraphView graphView = new BarGraphView(this,sensorBundle.getSensorName())
+			GraphView graphView = new BarGraphView(this, sensorBundle.getSensorName())
 			{
 				@Override
 				public void drawSeries(Canvas canvas, GraphViewData[] values, float graphwidth, float graphheight,
@@ -200,7 +282,6 @@ public class LSSensorChartActivity extends ActionBarActivity {
 				}
 			};
 
-
 			graphView.addSeries(new GraphViewSeries(data));
 			graphView.setViewPort(2, 40);
 			graphView.setScrollable(false);
@@ -210,48 +291,12 @@ public class LSSensorChartActivity extends ActionBarActivity {
 
 			LinearLayout chartLayout = (LinearLayout)findViewById(R.id.sensorChart);
 			chartLayout.addView(graphView);
-		}
-		else // jArray = null
+			
+		} else // jArray = null
 		{
-			CustomToast.showCustomToast(this,R.string.msg_CommError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-		}
-
-	}
-	
-	@Override 
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ab_item_help, menu);
-        
-		return super.onCreateOptionsMenu(menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent i = null;
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			i = new Intent(LSSensorChartActivity.this, LSSensorInfoActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("SENSOR_SERIAL", sensorSerial);
-			bundle.putParcelable("SENSOR_OBJ", sensorBundle);
-			i.putExtras(bundle);
-			break;
-		case R.id.menu_help:
-			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
-			break; 
-		case R.id.menu_config:
-			i = new Intent(LSSensorChartActivity.this,LSConfigActivity.class);
-			break; 
-		case R.id.menu_info:
-			i = new Intent(LSSensorChartActivity.this,LSInfoActivity.class);
-			break;
-		}	
-		
-		if (i != null) {
-			startActivity(i);
+			message= getString(R.string.msg_CommError);
 		}
 		
-		return super.onOptionsItemSelected(item);
-	}	
+		return message;
+	}
 }

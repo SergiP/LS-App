@@ -17,6 +17,7 @@
     <string name="msg_retrievNetworks">Retrieving networks...</string>
     <string name="msg_retrievImages">Retrieving images...</string>
     <string name="msg_retrievSensors">Retrieving sensors...</string>
+    <string name="msg_retrievData">Retrieving data...</string>
     <string name="msg_ErrMarketAccess">Error accessing Android Market</string>
     <string name="msg_ActionCancelled">Action canceled</string>
     <string name="msg_NotConnected">Internet connection necessary to access application</string>

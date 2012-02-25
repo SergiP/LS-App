@@ -17,6 +17,7 @@
     <string name="msg_retrievNetworks">Recuperando redes...</string>
     <string name="msg_retrievImages">Recuperando imágenes...</string>
     <string name="msg_retrievSensors">Recuperando sensores...</string>
+    <string name="msg_retrievData">Recuperando datos...</string>
     <string name="msg_ErrMarketAccess">Error al acceder al Android Market</string>
     <string name="msg_ActionCancelled">Acción cancelada</string>
     <string name="msg_NotConnected">Conexión a Internet necesaría para acceder a la aplicación</string>
@@ -40,7 +41,7 @@
     <string name="act_lbl_homNetMaps">Redes en mapa</string>
     <string name="act_lbl_homQRCode">Leer QR Code</string>
     <string name="act_lbl_homFaves">Favoritos</string>
-    <string name="act_lbl_homAugReal">Realidad Augmentada</string>
+    <string name="act_lbl_homAugReal">Realidad Aumentada</string>
     <string name="act_lbl_homNetCloser">Redes cercanas</string>
     <string name="act_lbl_favNetwork">Redes favoritas</string>
     <string name="act_lbl_favSensor">Sensores favoritos</string>

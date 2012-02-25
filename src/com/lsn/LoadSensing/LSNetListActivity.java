@@ -50,40 +50,21 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
-/* GreenDroid -----
-import greendroid.app.GDListActivity;
-import greendroid.widget.ActionBarItem.Type;
-import greendroid.widget.ActionBarItem;
-import greendroid.widget.QuickAction;
-import greendroid.widget.QuickActionBar;
-import greendroid.widget.QuickActionWidget;
-import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
-
-public class LSNetListActivity extends GDListActivity {
-	private final int OPTIONS = 0;
-	private final int HELP = 1;
-	private QuickActionWidget quickActions;
-----------
- */
-
 public class LSNetListActivity extends ActionBarListActivity {
+
 	private ProgressDialog       m_ProgressDialog = null;
 	private ArrayList<LSNetwork> m_networks = null;
 	private LSNetworkAdapter     m_adapter;
 	private Runnable             viewNetworks;
-	private Integer  errMessage;
+	private Integer  			 errMessage;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_01_netlist);
 
-		/* GreenDroid -----
-		initActionBar();
-		initQuickActionBar();
-		----------
-		 */
-
+		getActionBarHelper().changeIconHome();
+		
 		m_networks = new ArrayList<LSNetwork>();
 		this.m_adapter = new LSNetworkAdapter(this,R.layout.row_list_network,m_networks);
 		setListAdapter(this.m_adapter);
@@ -99,8 +80,6 @@ public class LSNetListActivity extends ActionBarListActivity {
 		Thread thread = new Thread(null,viewNetworks,"ViewNetworks");
 		thread.start();
 		m_ProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.msg_PleaseWait), getResources().getString(R.string.msg_retrievNetworks), true);
-
-		getActionBarHelper().changeIconHome();
 		
 		registerForContextMenu(getListView());
 	}
@@ -275,46 +254,4 @@ public class LSNetListActivity extends ActionBarListActivity {
 			return super.onContextItemSelected(item);
 		}
 	}
-
-	/* GreenDroid -----
-	private void initActionBar() {
-
-		addActionBarItem(Type.Add,OPTIONS);
-		addActionBarItem(Type.Help,HELP);
-	}
-	
-	@Override
-	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
-
-		switch (item.getItemId()) {
-
-		case OPTIONS:
-			quickActions.show(item.getItemView());
-			break;
-		case HELP:
-			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
-			break;
-		default:
-			return super.onHandleActionBarItemClick(item, position);
-		}
-
-		return true;
-	} 
-
-	private void initQuickActionBar()
-	{
-		quickActions = new QuickActionBar(this);
-		quickActions.addQuickAction(new QuickAction(this,R.drawable.ic_menu_search,R.string.strSearch));
-		quickActions.addQuickAction(new QuickAction(this,R.drawable.ic_menu_filter,R.string.strFilter));
-		quickActions.setOnQuickActionClickListener(new OnQuickActionClickListener() {
-
-			@Override
-			public void onQuickActionClicked(QuickActionWidget widget, int position) {
-
-				CustomToast.showCustomToast(LSNetListActivity.this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
-			}
-		});
-	}
-	----------
-	 */
 }

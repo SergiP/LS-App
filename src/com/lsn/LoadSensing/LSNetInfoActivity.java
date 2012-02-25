@@ -20,16 +20,8 @@
 
 package com.lsn.LoadSensing;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 import com.lsn.LoadSensing.element.LSNetwork;
-import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
@@ -43,78 +35,27 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-/* GreenDroid -----
-import greendroid.app.GDActivity;
-
-//public class LSNetInfoActivity extends GDActivity {
-----------
- */
 public class LSNetInfoActivity extends ActionBarActivity {
-	private String netID = null;
+
 	private LSNetwork networkObj = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		/* GreenDroid -----
-		//setActionBarContentView(R.layout.act_netinfo);
-		----------
-		 */
 		setContentView(R.layout.act_netinfo);
 
 		Bundle bundle = getIntent().getExtras();
-
 		if (bundle != null)
 		{
-			netID = bundle.getString("NETID");
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
 		}
 		
 		getActionBarHelper().changeIconHome();
 		
-		if ((netID != null) && (networkObj == null))
-		{
-			JSONObject jsonData = null;
-			try {
-				Map<String, String> params = new HashMap<String, String>();
-				params.put("session", LSHomeActivity.idSession);
-				JSONArray jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getLlistatXarxes.php",params);
-
-				if (jArray != null)
-				{
-					boolean trobat = false;
-					for (int i = 0; i<jArray.length(); i++)
-					{
-						jsonData = jArray.getJSONObject(i);
-
-						if ((jsonData.getString("IdXarxa").equals(netID) && !trobat)){
-							LSNetwork network = new LSNetwork();			
-							network.setNetworkName(jsonData.getString("Nom"));
-							network.setNetworkPosition(jsonData.getString("Lat"),jsonData.getString("Lon"));
-							network.setNetworkNumSensors(jsonData.getString("Sensors"));
-							network.setNetworkId(jsonData.getString("IdXarxa"));
-							network.setNetworkSituation(jsonData.getString("Poblacio"));
-
-							trobat = true;
-							networkObj = network;
-						}
-					}
-				}
-				else
-				{
-					CustomToast.showCustomToast(this,R.string.msg_CommError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-				CustomToast.showCustomToast(this,R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-			}
-		}
-
 		if (networkObj!=null)
 		{
 			TextView txtNetName = (TextView) findViewById(R.id.netName);
 			txtNetName.setText(networkObj.getNetworkName());
-			
 			TextView txtNetSituation = (TextView) findViewById(R.id.netSituation);
 			txtNetSituation.setText(networkObj.getNetworkSituation());
 			TextView txtNetPosLatitude = (TextView) findViewById(R.id.netPosLatitude);
@@ -144,8 +85,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 
 					if (i!=null){
 						Bundle bundle = new Bundle();
-
-						bundle.putString("SESSION", LSHomeActivity.idSession);
 						bundle.putParcelable("NETWORK_OBJ", networkObj);
 						i.putExtras(bundle);
 
@@ -187,8 +126,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 					CustomToast.showCustomToast(LSNetInfoActivity.this,R.string.msg_NetworkNotFound,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
 				}
 			}
-
-
 		});
 	}
 	

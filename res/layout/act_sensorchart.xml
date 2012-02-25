@@ -25,6 +25,7 @@
 
         <TextView
             android:id="@+id/netName"
+            android:text=""
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -59,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="TextView"
+            android:text=""
             android:textColor="#000"
             android:textSize="20dip" />
     </LinearLayout>

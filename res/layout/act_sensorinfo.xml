@@ -25,6 +25,7 @@
 
         <TextView
             android:id="@+id/netName"
+            android:text=""
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -93,11 +94,11 @@
 
                 <TextView
                     android:id="@+id/sensorName"
+                    android:text=""
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:text="TextView"
                     android:textColor="#000"
                     android:textSize="20dip" />
             </LinearLayout>
@@ -126,11 +127,11 @@
 
                 <TextView
                     android:id="@+id/sensorSituation"
+                    android:text=""
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:text="TextView"
                     android:textColor="#000"
                     android:textSize="20dip" />
             </LinearLayout>
@@ -178,11 +179,11 @@
 
                         <TextView
                             android:id="@+id/sensorType"
+                            android:text=""
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="TextView"
                             android:textColor="#000"
                             android:textSize="15dip" />
                     </LinearLayout>
@@ -204,11 +205,11 @@
 
                         <TextView
                             android:id="@+id/sensorChannel"
+                            android:text=""
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="TextView"
                             android:textColor="#000"
                             android:textSize="15dip" />
                     </LinearLayout>
@@ -245,10 +246,10 @@
 
                 <TextView
                     android:id="@+id/sensorDescription"
+                    android:text=""
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView"
                     android:textColor="#000"
                     android:textSize="20dip" />
             </LinearLayout>
@@ -293,12 +294,12 @@
 
                 <TextView
                     android:id="@+id/sensorMeasure"
+                    android:text=""
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
                     android:paddingRight="5dip"
-                    android:text="TextView"
                     android:textColor="#000"
                     android:textSize="15dip" />
             </LinearLayout>
@@ -321,12 +322,12 @@
 
                 <TextView
                     android:id="@+id/sensorMaxLoad"
+                    android:text=""
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
                     android:paddingRight="5dip"
-                    android:text="TextView"
                     android:textColor="#000"
                     android:textSize="15dip" />
             </LinearLayout>
@@ -349,12 +350,12 @@
 
                 <TextView
                     android:id="@+id/sensorSensitivity"
+                    android:text=""
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
                     android:paddingRight="5dip"
-                    android:text="TextView"
                     android:textColor="#000"
                     android:textSize="15dip" />
             </LinearLayout>
@@ -377,12 +378,12 @@
 
                 <TextView
                     android:id="@+id/sensorOffset"
+                    android:text=""
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
                     android:paddingRight="5dip"
-                    android:text="TextView"
                     android:textColor="#000"
                     android:textSize="15dip" />
             </LinearLayout>
@@ -405,12 +406,12 @@
 
                 <TextView
                     android:id="@+id/sensorAlarmAt"
+                    android:text=""
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
                     android:paddingRight="5dip"
-                    android:text="TextView"
                     android:textColor="#000"
                     android:textSize="15dip" />
             </LinearLayout>
@@ -439,11 +440,11 @@
 
                 <TextView
                     android:id="@+id/sensorLastTare"
+                    android:text=""
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:text="TextView"
                     android:textColor="#000"
                     android:textSize="20dip" />
             </LinearLayout>
