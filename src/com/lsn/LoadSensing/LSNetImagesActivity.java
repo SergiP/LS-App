@@ -63,15 +63,6 @@ import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
-/* GreenDroid -----
-import greendroid.app.GDActivity;
-import greendroid.widget.ActionBarItem;
-import greendroid.widget.ActionBarItem.Type;
-
-public class LSNetImagesActivity extends GDActivity {
-	private final int PHOTO = 0;
-----------
- */
 public class LSNetImagesActivity extends ActionBarActivity {
 
 	private static final int CAMERA_PIC_REQUEST = 1; 
@@ -88,11 +79,6 @@ public class LSNetImagesActivity extends ActionBarActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		/*
-		setActionBarContentView(R.layout.act_netimages);
-		initActionBar();
-		 */
-
 		setContentView(R.layout.act_netimages);
 		
 		GridView imagegrid = (GridView) findViewById(R.id.gridView);		
@@ -299,7 +285,7 @@ public class LSNetImagesActivity extends ActionBarActivity {
 		case android.R.id.home:
 			i = new Intent(LSNetImagesActivity.this, LSNetInfoActivity.class);
 			Bundle bundle = new Bundle();
-			bundle.putString("NETID", networkObj.getNetworkId());
+			bundle.putParcelable("NETWORK_OBJ", networkObj);
 			i.putExtras(bundle);
 			break;
 		case R.id.menu_help:
@@ -381,32 +367,4 @@ public class LSNetImagesActivity extends ActionBarActivity {
 			return super.onContextItemSelected(item);
 		}
 	}
-	
-	/* GreenDroid -----
-	private void initActionBar() {
-
-		//Define ActionBar items
-		addActionBarItem(Type.TakePhoto,PHOTO);
-
-	}
-	
-	@Override
-	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
-
-		switch (item.getItemId()) {
-
-		case PHOTO:
-			Intent photoCamera = null;
-			photoCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-			photoCamera.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,Uri.fromFile(getTempFile(this)));
-			startActivityForResult(photoCamera,CAMERA_PIC_REQUEST);
-			break;
-
-		default:
-			return super.onHandleActionBarItemClick(item, position);
-		}
-		return true;
-	}
-	----------
-	 */
 }

@@ -113,8 +113,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 
 					if (i!=null){
 						Bundle bundle = new Bundle();
-
-						bundle.putString("SESSION", LSHomeActivity.idSession);
 						bundle.putParcelable("NETWORK_OBJ", networkObj);
 						i.putExtras(bundle);
 

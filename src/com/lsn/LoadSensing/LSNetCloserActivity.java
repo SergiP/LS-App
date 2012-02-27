@@ -56,13 +56,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-/* GreenDroid -----
-import greendroid.app.GDListActivity;
-
-public class LSNetCloserActivity extends GDListActivity{
-----------
- */
-
 public class LSNetCloserActivity extends ActionBarListActivity{
 
 	private LocationManager  locManager;

@@ -28,13 +28,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-/* GreenDroid -----
-import greendroid.app.GDActivity;
-
-public class LSQRCodeActivity extends GDActivity {
-----------
- */
-	
 public class LSQRCodeActivity extends Activity {
 
 	private static boolean fromQRReader = false;
@@ -154,5 +147,4 @@ public class LSQRCodeActivity extends Activity {
 			}
 		}
 	}
-
 }

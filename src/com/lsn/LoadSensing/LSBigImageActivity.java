@@ -24,9 +24,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -50,22 +54,22 @@ import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
-/* GreenDroid -----
-import greendroid.app.GDActivity;
-
-public class LSBigImageActivity extends GDActivity implements OnGestureListener {
-----------
- */
-public class LSBigImageActivity extends ActionBarActivity implements OnGestureListener {
+public class LSBigImageActivity extends ActionBarActivity implements
+		OnGestureListener {
 	private LSImage imageObj;
 	private Integer position;
 	private LSNetwork networkObj;
 
 	private GestureDetector gestureScanner;
-	private String strTitle=null;
 	private boolean moveLeft;
 	private boolean moveRight;
 	private ImageButton[] imageButtonArray;
+
+	JSONArray jArray = null;
+	LSSensor s1 = null;
+
+	RelativeLayout rl;
+	RelativeLayout.LayoutParams params1;
 
 	Integer imgHeight = 0;
 	Integer imgWidth = 0;
@@ -73,55 +77,53 @@ public class LSBigImageActivity extends ActionBarActivity implements OnGestureLi
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.act_bigimage);
-		
-		/* GreenDroid -----
-		setActionBarContentView(R.layout.act_bigimage);
-		----------
-		 */
-		
+
 		Bundle bundle = getIntent().getExtras();
 
-		if (bundle != null)
-		{
-			imageObj = new LSImage();
-			strTitle = bundle.getString("TITLE");
-			imageObj = bundle.getParcelable("IMAGE_OBJ");
+		if (bundle != null) {
+			// imageObj = bundle.getParcelable("IMAGE_OBJ");
+
 			position = bundle.getInt("POSITION");
-			
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
-		}  
-
-		if (strTitle!=null)
-		{
-			this.setTitle(strTitle);
-
-			ImageView imgNetwork = (ImageView) findViewById(R.id.imageView);
-			imgNetwork.setImageBitmap(imageObj.getImageBitmap());
-			setSensors();
 		}
-		else
-		{
 
-			gestureScanner = new GestureDetector(this);
-			updateTitle();
-			updateImage();
-		}
+		/*
+		 * if (imageObj!=null) { this.setTitle(imageObj.getImageName());
+		 * 
+		 * ImageView imgNetwork = (ImageView) findViewById(R.id.imageView);
+		 * imgNetwork.setImageBitmap(imageObj.getImageBitmap()); setSensors(); }
+		 * else {
+		 * 
+		 * gestureScanner = new GestureDetector(this); updateTitle();
+		 * updateImage(); }
+		 */
+		rl = (RelativeLayout) findViewById(R.id.relative);
+		params1 = new RelativeLayout.LayoutParams(15, 15);
+
+		gestureScanner = new GestureDetector(this);
+		updateTitle();
+		updateImage();
+
 		TextView txtNetName = (TextView) findViewById(R.id.netName);
 		txtNetName.setText(imageObj.getImageNetwork());
-		
+
 		getActionBarHelper().changeIconHome();
 	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent me)
-	{
-		if (gestureScanner!=null)
-		{
-			return gestureScanner.onTouchEvent(me);
+	public void showError(String result) {
+		if (result != null) {
+			CustomToast.showCustomToast(LSBigImageActivity.this, result,
+					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
-		else return false;
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent me) {
+		if (gestureScanner != null) {
+			return gestureScanner.onTouchEvent(me);
+		} else
+			return false;
 
 	}
 
@@ -134,25 +136,24 @@ public class LSBigImageActivity extends ActionBarActivity implements OnGestureLi
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
 
-		if (moveLeft)
-		{
-			if (position<LSNetImagesActivity.m_images.size()-1)
-			{
+		if (moveLeft) {
+			if (position < LSNetImagesActivity.m_images.size() - 1) {
 				++position;
-			}
-		}
-		
-		if (moveRight)
-		{
-			if (position>0)
-			{
-				--position;
+				delSensors();
+				updateTitle();
+				updateImage();
+				return true;
 			}
 		}
 
-		delSensors();
-		updateTitle();
-		updateImage();
+		if (moveRight) {
+			if (position > 0) {
+				--position;
+				delSensors();
+				updateTitle();
+				updateImage();
+			}
+		}
 		return true;
 	}
 
@@ -164,12 +165,11 @@ public class LSBigImageActivity extends ActionBarActivity implements OnGestureLi
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
 
-		if (distanceX > 0) //Scroll left
+		if (distanceX > 0) // Scroll left
 		{
 			moveLeft = true;
 			moveRight = false;
-		}
-		else //Scroll right
+		} else // Scroll right
 		{
 			moveLeft = false;
 			moveRight = true;
@@ -188,132 +188,122 @@ public class LSBigImageActivity extends ActionBarActivity implements OnGestureLi
 		return false;
 	}
 
-	private void updateTitle()
-	{
-		String strTitleFormat = getResources().getString(R.string.act_lbl_BigImage);
-		String strTitle = String.format(strTitleFormat, position+1,LSNetImagesActivity.m_images.size());
+	private void updateTitle() {
+		String strTitleFormat = getResources().getString(
+				R.string.act_lbl_BigImage);
+		String strTitle = String.format(strTitleFormat, position + 1,
+				LSNetImagesActivity.m_images.size());
 
 		this.setTitle(strTitle);
 	}
 
-	private void updateImage()
-	{
+	private void updateImage() {
 
 		imageObj = LSNetImagesActivity.m_images.get(position);
 		final ImageView imgNetwork = (ImageView) findViewById(R.id.imageView);
 
-//		Bitmap image = imageObj.getImageBitmap();
-//		Integer bmpHeight = image.getHeight();
-//		Integer bmpWidth = image.getWidth();
-
 		imgNetwork.setImageBitmap(imageObj.getImageBitmap());
 
-		//        imgNetwork.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY),
-		//                MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY));
-		//        ViewTreeObserver vto = imgNetwork.getViewTreeObserver();
-		//        vto.addOnPreDrawListener(new OnPreDrawListener() {
-		//
-		//			@Override
-		//			public boolean onPreDraw() {
-		//				imgHeight = imgNetwork.getMeasuredHeight();
-		//		        imgWidth = imgNetwork.getMeasuredWidth();
-		//				return true;
-		//			}
-		//        	
-		//        });
+		ProgressDialog progressDialog = new ProgressDialog(
+				LSBigImageActivity.this);
+		progressDialog.setTitle(getString(R.string.msg_PleaseWait));
+		progressDialog.setMessage(getString(R.string.msg_retrievData));
+		progressDialog.setCancelable(false);
 
-
-//		CustomToast.showCustomToast(this,"BMP height:" + bmpHeight +" BMP width:" + bmpWidth + 
-//				" IMG height:" + imgHeight +" IMG width:" + imgWidth,CustomToast.IMG_INFORMATION,CustomToast.LENGTH_LONG);
-
-		setSensors();
+		BigImageTask bigImageTask = new BigImageTask(LSBigImageActivity.this,
+				progressDialog);
+		bigImageTask.execute();
 	}
 
 	public void setSensors() {
-		RelativeLayout rl = (RelativeLayout) findViewById(R.id.relative);
-		RelativeLayout.LayoutParams params1;
-
-		try {
-			// Server Request Ini
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("session", LSHomeActivity.idSession);
-			params.put("IdImatge", imageObj.getImageId());
-			JSONArray jArray = LSFunctions.urlRequestJSONArray(
-					"http://viuterrassa.com/Android/getLlistaSensorsImatges.php",
-					params);
-			if (jArray != null)
-			{	
+		if (jArray != null) {
+			try {
 				imageButtonArray = new ImageButton[jArray.length()];
 
 				for (int i = 0; i < jArray.length(); i++) {
-					JSONObject jsonData = jArray.getJSONObject(i);
+					JSONObject jsonData;
+
+					jsonData = jArray.getJSONObject(i);
+
 					String x = jsonData.getString("x");
 					String y = jsonData.getString("y");
 
-					final LSSensor s1 = new LSSensor();
+					s1 = new LSSensor();
 					s1.setSensorId(jsonData.getString("id"));
 					s1.setSensorName(jsonData.getString("sensor"));
-					s1.setSensorChannel(jsonData.getString("canal"));
-					s1.setSensorType(jsonData.getString("tipus"));
-					s1.setSensorImageName(jsonData.getString("imatge"));
-					s1.setSensorDesc(jsonData.getString("Descripcio"));
-					s1.setSensorSituation(jsonData.getString("Poblacio"));
-					s1.setSensorNetwork(jsonData.getString("Nom"));			
+					/*
+					 * s1.setSensorChannel(jsonData.getString("canal"));
+					 * s1.setSensorType(jsonData.getString("tipus"));
+					 * s1.setSensorImageName(jsonData.getString("imatge"));
+					 * s1.setSensorDesc(jsonData.getString("Descripcio"));
+					 * s1.setSensorSituation(jsonData.getString("Poblacio"));
+					 * s1.setSensorNetwork(jsonData.getString("Nom"));
+					 */
 
-					params1 = new RelativeLayout.LayoutParams(15, 15); 
-					params1.leftMargin = Integer.parseInt(x)+5;
-					params1.topMargin = Integer.parseInt(y)+60; 
+					params1 = new RelativeLayout.LayoutParams(15, 15);
+					
+					if (!x.equals("null")) {
+						params1.leftMargin = Integer.parseInt(x) + 5;
+					}
+					if (!y.equals("null")) {
+						params1.topMargin = Integer.parseInt(y) + 60;
+					}
+
 					imageButtonArray[i] = new ImageButton(this);
 					imageButtonArray[i].setImageResource(R.drawable.loc_icon);
-					imageButtonArray[i].setOnClickListener(new OnClickListener() {
 
-						public void onClick(View v) {
-							Intent i = null;
-							i = new Intent(LSBigImageActivity.this,LSSensorInfoActivity.class);
+					imageButtonArray[i]
+							.setOnClickListener(new OnClickListener() {
 
-							if (i!=null){
-								Bundle bundle = new Bundle();
+								public void onClick(View v) {
+									Intent i = null;
+									i = new Intent(LSBigImageActivity.this,
+											LSSensorInfoActivity.class);
 
-								bundle.putParcelable("SENSOR_OBJ", s1);
+									if (i != null) {
+										Bundle bundle = new Bundle();
 
-								i.putExtras(bundle);
+										bundle.putParcelable("SENSOR_OBJ", s1);
+										bundle.putParcelable("NETWORK_OBJ",
+												networkObj);
+										i.putExtras(bundle);
 
-								startActivity(i);
-							} 
-						}
-					});
+										startActivity(i);
+									}
+								}
+							});
 
-					rl.addView(imageButtonArray[i], params1); 
+					rl.addView(imageButtonArray[i], params1);
 				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+				CustomToast.showCustomToast(this, R.string.msg_ProcessError,
+						CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);	
 			}
-			else
-			{
-				CustomToast.showCustomToast(this,R.string.msg_CommError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-			}
-		} catch (Exception e) {
-			Log.e("BACKGROUND_PROC", e.getMessage());
-			CustomToast.showCustomToast(this,R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
+		} else {
+			CustomToast.showCustomToast(this, R.string.msg_CommError,
+					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
 	}
-	
+
 	public void delSensors() {
-		
+
 		RelativeLayout rl = (RelativeLayout) findViewById(R.id.relative);
-		
+
 		for (ImageButton imgButton : imageButtonArray) {
-		
+
 			rl.removeView(imgButton);
 		}
 	}
-	
-	@Override 
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.ab_item_help, menu);
-        
+
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent i = null;
@@ -325,20 +315,64 @@ public class LSBigImageActivity extends ActionBarActivity implements OnGestureLi
 			i.putExtras(bundle);
 			break;
 		case R.id.menu_help:
-			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
-			break; 
-		case R.id.menu_config:
-			i = new Intent(LSBigImageActivity.this,LSConfigActivity.class);
-			break; 
-		case R.id.menu_info:
-			i = new Intent(LSBigImageActivity.this,LSInfoActivity.class);
+			CustomToast.showCustomToast(this, R.string.msg_UnderDevelopment,
+					CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_SHORT);
 			break;
-		}	
-		
+		case R.id.menu_config:
+			i = new Intent(LSBigImageActivity.this, LSConfigActivity.class);
+			break;
+		case R.id.menu_info:
+			i = new Intent(LSBigImageActivity.this, LSInfoActivity.class);
+			break;
+		}
+
 		if (i != null) {
 			startActivity(i);
 		}
-		
+
 		return super.onOptionsItemSelected(item);
-	}	
+	}
+
+	public class BigImageTask extends AsyncTask<String, Void, String> {
+		private Activity activity;
+		private ProgressDialog progressDialog;
+		private String messageReturn = null;
+
+		public BigImageTask(Activity activity, ProgressDialog progressDialog) {
+			this.progressDialog = progressDialog;
+			this.activity = activity;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			progressDialog.show();
+		}
+
+		@Override
+		protected String doInBackground(String... arg0) {
+			try {
+				// Server Request Ini
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("session", LSHomeActivity.idSession);
+				params.put("IdImatge", imageObj.getImageId());
+				jArray = LSFunctions
+						.urlRequestJSONArray(
+								"http://viuterrassa.com/Android/getLlistaSensorsImatges.php",
+								params);
+			} catch (Exception e) {
+				Log.e("BACKGROUND_PROC", e.getMessage());
+				messageReturn = getString(R.string.msg_ProcessError);
+			}
+
+			return messageReturn;
+		}
+
+		@Override
+		protected void onPostExecute(String pMessageReturn) {
+			progressDialog.dismiss();
+			((LSBigImageActivity) activity).showError(pMessageReturn);
+
+			setSensors();
+		}
+	}
 }
