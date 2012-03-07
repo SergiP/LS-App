@@ -51,13 +51,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
-/* GreenDroid -----
-import greendroid.app.GDListActivity;
-
-public class LSFavesImagesActivity extends GDListActivity{
-----------
- */
-
 public class LSFavesImagesActivity extends ListFragment {
 
 	private ProgressDialog       m_ProgressDialog = null;
@@ -184,10 +177,6 @@ public class LSFavesImagesActivity extends ListFragment {
 		if (i!=null){
 			Bundle bundle = new Bundle();
 
-			String strTitleFormat = getResources().getString(R.string.act_lbl_BigImage);
-			String strTitle = String.format(strTitleFormat, 1, 1);
-
-			bundle.putString("TITLE", strTitle);
 			bundle.putParcelable("IMAGE_OBJ", m_images.get(position));
 			i.putExtras(bundle);
 

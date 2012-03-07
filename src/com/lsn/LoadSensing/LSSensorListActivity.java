@@ -65,6 +65,8 @@ public class LSSensorListActivity extends ActionBarListActivity {
 	private static HashMap<String,Bitmap> 	hashImages = new HashMap<String,Bitmap>();
 	private Bitmap 							imgSensor;
 	private Integer 						errMessage;
+	
+	private String							networkId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +84,12 @@ public class LSSensorListActivity extends ActionBarListActivity {
 		if (bundle != null)
 		{		
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
-		}  
+			networkId = bundle.getString("NETWORK_ID");
+		} 
+		
+		if (networkId == null){
+			networkId = networkObj.getNetworkId();
+		}
 		
 		TextView txtNetName = (TextView)findViewById(R.id.netName);
 		txtNetName.setText(networkObj.getNetworkName());

@@ -24,8 +24,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +32,7 @@ import org.json.JSONObject;
 import com.lsn.LoadSensing.element.Position;
 import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.ui.CustomToast;
+import com.readystatesoftware.mapviewballoons.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -60,6 +59,8 @@ public class LSAugRealActivity extends Activity{
 	static boolean           fromMixare = false;
 
 	JSONObject               mixareInfo;
+	JSONArray jArray;
+	JSONArray arrayObj= new JSONArray();
 
 	@Override
 	protected void onPause() {
@@ -154,42 +155,11 @@ public class LSAugRealActivity extends Activity{
 	protected boolean generateJSONFile() {
 
 		boolean retStatus=false;
-
+		mixareInfo = new JSONObject();
+		
 		try {
-
-			mixareInfo = new JSONObject();
-			JSONArray arrayObj= new JSONArray();
-
-			// Server Request
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("session", LSHomeActivity.idSession);
-			JSONArray jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getLlistatXarxes.php",params);
 			if (jArray != null)
 			{
-				try {
-					for (int i = 0; i<jArray.length(); i++)
-					{
-						JSONObject jsonData = jArray.getJSONObject(i);
-
-						JSONObject jsonObj = new JSONObject();
-
-						jsonObj.put("id", String.valueOf(i+1));
-						jsonObj.put("lat", jsonData.getString("Lat"));
-						jsonObj.put("lng", jsonData.getString("Lon"));
-						jsonObj.put("elevation", "0");
-						jsonObj.put("title", jsonData.getString("Nom"));
-						jsonObj.put("has_detail_page", "0");
-						jsonObj.put("webpage", "");
-						jsonObj.put("netid", jsonData.getString("IdXarxa"));
-						arrayObj.put(jsonObj);
-					}
-
-				} catch (JSONException e) {
-
-					e.printStackTrace();
-					return retStatus;
-				}
-
 				mixareInfo.put("results",arrayObj);
 				mixareInfo.put("num_results", new Integer(6));
 				mixareInfo.put("status", "OK");
@@ -207,73 +177,7 @@ public class LSAugRealActivity extends Activity{
 				CustomToast.showCustomToast(this,R.string.msg_CommError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
 				retStatus=false;
 			}
-			//			JSONObject obj1 = new JSONObject();
-			//			obj1.put("id", "1");
-			//			obj1.put("lat", "41.416556");
-			//			obj1.put("lng", "2.152194");
-			//			obj1.put("elevation", "0");
-			//			obj1.put("title", "LSN Network 1");
-			//			obj1.put("has_detail_page", "0");
-			//			obj1.put("webpage", "");
-			//			obj1.put("netid", "AAAAAAAAA");
-			//			
-			//			JSONObject obj2 = new JSONObject();
-			//			obj2.put("id", "2");
-			//			obj2.put("lat", "41.379183");
-			//			obj2.put("lng", "2.174445");
-			//			obj2.put("elevation", "0");
-			//			obj2.put("title", "LSN Network 2");
-			//			obj2.put("has_detail_page", "0");
-			//			obj2.put("webpage", "");
-			//			obj2.put("netid", "BBBBBBBBB");
-			//			
-			//			JSONObject obj3 = new JSONObject();
-			//			obj3.put("id", "3");
-			//			obj3.put("lat", "41.397583");
-			//			obj3.put("lng", "2.163028");
-			//			obj3.put("elevation", "0");
-			//			obj3.put("title", "LSN Network 3");
-			//			obj3.put("has_detail_page", "0");
-			//			obj3.put("webpage", "");
-			//			obj3.put("netid", "CCCCCCCCC");
-			//			
-			//			JSONObject obj4 = new JSONObject();
-			//			obj4.put("id", "4");
-			//			obj4.put("lat", "41.380694");
-			//			obj4.put("lng", "2.175167");
-			//			obj4.put("elevation", "0");
-			//			obj4.put("title", "LSN Network 4");
-			//			obj4.put("has_detail_page", "0");
-			//			obj4.put("webpage", "");
-			//			obj4.put("netid", "DDDDDDDDD");
-			//			
-			//			JSONObject obj5 = new JSONObject();
-			//			obj5.put("id", "5");
-			//			obj5.put("lat", "41.340784");
-			//			obj5.put("lng", "2.154187");
-			//			obj5.put("elevation", "0");
-			//			obj5.put("title", "LSN Network 5");
-			//			obj5.put("has_detail_page", "0");
-			//			obj5.put("webpage", "");
-			//			obj5.put("netid", "EEEEEEEEE");
-			//			
-			//			JSONObject obj6 = new JSONObject();
-			//			obj5.put("id", "5");
-			//			obj5.put("lat", "41.340784");
-			//			obj5.put("lng", "2.154187");
-			//			obj5.put("elevation", "0");
-			//			obj5.put("title", "LSN Network 6");
-			//			obj5.put("has_detail_page", "0");
-			//			obj5.put("webpage", "");
-			//			obj5.put("netid", "FFFFFFFFF");
-			//			
-			//			
-			//			arrayObj.put(obj1);
-			//			arrayObj.put(obj2);
-			//			arrayObj.put(obj3);
-			//			arrayObj.put(obj4);
-			//			arrayObj.put(obj5);
-			//			arrayObj.put(obj6);
+			
 		}
 		catch (JSONException e)
 		{
@@ -344,8 +248,35 @@ public class LSAugRealActivity extends Activity{
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+				
+		Intent intent = getIntent();
+        String jsonArray = intent.getStringExtra("jsonArray");
 
+        try {
+              jArray = new JSONArray(jsonArray);
+            
+            for (int i = 0; i<jArray.length(); i++)
+			{
+				JSONObject jsonData = jArray.getJSONObject(i);
+
+				JSONObject jsonObj = new JSONObject();
+
+				jsonObj.put("id", String.valueOf(i+1));
+				jsonObj.put("lat", jsonData.getString("Lat"));
+				jsonObj.put("lng", jsonData.getString("Lon"));
+				jsonObj.put("elevation", "0");
+				jsonObj.put("title", jsonData.getString("Nom"));
+				jsonObj.put("has_detail_page", "0");
+				jsonObj.put("webpage", "");
+				jsonObj.put("netid", jsonData.getString("IdXarxa"));
+				arrayObj.put(jsonObj);
+			}
+           
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
+        super.onCreate(savedInstanceState);
 	}
 
 	public class GetLocation extends AsyncTask<Void,Position,Void>

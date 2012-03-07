@@ -67,7 +67,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 
 	JSONArray jArray = null;
 	LSSensor s1 = null;
-
+	
 	RelativeLayout rl;
 	RelativeLayout.LayoutParams params1;
 
@@ -82,28 +82,39 @@ public class LSBigImageActivity extends ActionBarActivity implements
 		Bundle bundle = getIntent().getExtras();
 
 		if (bundle != null) {
-			// imageObj = bundle.getParcelable("IMAGE_OBJ");
+			imageObj = bundle.getParcelable("IMAGE_OBJ");
 
 			position = bundle.getInt("POSITION");
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
 		}
 
-		/*
-		 * if (imageObj!=null) { this.setTitle(imageObj.getImageName());
-		 * 
-		 * ImageView imgNetwork = (ImageView) findViewById(R.id.imageView);
-		 * imgNetwork.setImageBitmap(imageObj.getImageBitmap()); setSensors(); }
-		 * else {
-		 * 
-		 * gestureScanner = new GestureDetector(this); updateTitle();
-		 * updateImage(); }
-		 */
+		if (imageObj != null) {
+			this.setTitle(imageObj.getImageName());
+			ImageView imgNetwork = (ImageView) findViewById(R.id.imageView);
+			imgNetwork.setImageBitmap(imageObj.getImageBitmap());
+
+			ProgressDialog progressDialog = new ProgressDialog(
+					LSBigImageActivity.this);
+			progressDialog.setTitle(getString(R.string.msg_PleaseWait));
+			progressDialog.setMessage(getString(R.string.msg_retrievData));
+			progressDialog.setCancelable(false);
+
+			BigImageTask bigImageTask = new BigImageTask(LSBigImageActivity.this,
+					progressDialog);
+			bigImageTask.execute();
+
+			BackTask backTask = new BackTask(
+					LSBigImageActivity.this, progressDialog);
+			backTask.execute();
+			
+		} else {
+			gestureScanner = new GestureDetector(this);
+			updateTitle();
+			updateImage();
+		}
+
 		rl = (RelativeLayout) findViewById(R.id.relative);
 		params1 = new RelativeLayout.LayoutParams(15, 15);
-
-		gestureScanner = new GestureDetector(this);
-		updateTitle();
-		updateImage();
 
 		TextView txtNetName = (TextView) findViewById(R.id.netName);
 		txtNetName.setText(imageObj.getImageNetwork());
@@ -117,7 +128,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
 	}
-
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent me) {
 		if (gestureScanner != null) {
@@ -200,7 +211,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 	private void updateImage() {
 
 		imageObj = LSNetImagesActivity.m_images.get(position);
-		final ImageView imgNetwork = (ImageView) findViewById(R.id.imageView);
+		ImageView imgNetwork = (ImageView) findViewById(R.id.imageView);
 
 		imgNetwork.setImageBitmap(imageObj.getImageBitmap());
 
@@ -241,7 +252,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 					 */
 
 					params1 = new RelativeLayout.LayoutParams(15, 15);
-					
+
 					if (!x.equals("null")) {
 						params1.leftMargin = Integer.parseInt(x) + 5;
 					}
@@ -278,7 +289,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 			} catch (JSONException e) {
 				e.printStackTrace();
 				CustomToast.showCustomToast(this, R.string.msg_ProcessError,
-						CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);	
+						CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 			}
 		} else {
 			CustomToast.showCustomToast(this, R.string.msg_CommError,
@@ -373,6 +384,63 @@ public class LSBigImageActivity extends ActionBarActivity implements
 			((LSBigImageActivity) activity).showError(pMessageReturn);
 
 			setSensors();
+		}
+	}
+
+	public class BackTask extends AsyncTask<String, Void, String> {
+		private Activity activity;
+		private ProgressDialog progressDialog;
+		private String messageReturn = null;
+
+		public BackTask(Activity activity, ProgressDialog progressDialog) {
+			this.progressDialog = progressDialog;
+			this.activity = activity;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			progressDialog.show();
+		}
+
+		@Override
+		protected String doInBackground(String... arg0) {
+			try {
+				// Server Request Ini
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("session", LSHomeActivity.idSession);
+				JSONArray jArray = LSFunctions.urlRequestJSONArray(
+						"http://viuterrassa.com/Android/getLlistatXarxes.php",
+						params);
+
+				if (jArray != null) {
+					boolean trobat = false;
+					for (int i = 0; i < jArray.length(); i++) {
+						JSONObject jsonData = jArray.getJSONObject(i);
+						if ((imageObj.getImageNetwork().equals(jsonData.getString("Nom")) && !trobat)){
+							LSNetwork o1 = new LSNetwork();
+							o1.setNetworkName(jsonData.getString("Nom"));
+							o1.setNetworkPosition(jsonData.getString("Lat"),
+									jsonData.getString("Lon"));
+							o1.setNetworkNumSensors(jsonData.getString("Sensors"));
+							o1.setNetworkId(jsonData.getString("IdXarxa"));
+							o1.setNetworkSituation(jsonData.getString("Poblacio"));
+							
+							networkObj = o1;
+						} 
+					}
+				} else {
+					messageReturn = getString(R.string.msg_CommError);
+				}
+			} catch (Exception e) {
+				messageReturn = getString(R.string.msg_ProcessError);
+			}
+			return messageReturn;
+		}
+
+		@Override
+		protected void onPostExecute(String pMessageReturn) {
+			progressDialog.dismiss();
+			((LSBigImageActivity) activity).showError(pMessageReturn);
 		}
 	}
 }

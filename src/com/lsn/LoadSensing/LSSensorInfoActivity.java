@@ -75,6 +75,7 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		if (bundle != null)
 		{
 			sensorSerial = bundle.getString("SENSOR_SERIAL");
+			
 			sensorBundle = bundle.getParcelable("SENSOR_OBJ");
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
 		}
@@ -86,6 +87,12 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 
 		SensorInfoTask sensorInfoTask = new SensorInfoTask(LSSensorInfoActivity.this,progressDialog);
 		sensorInfoTask.execute();
+		
+		if (sensorSerial == null){
+			BackTask backTask = new BackTask(LSSensorInfoActivity.this,progressDialog);
+			backTask.execute();
+		}
+		
 	}
 	
 	public void showError(String result) {
@@ -108,10 +115,14 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		Intent i = null;
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			i = new Intent(LSSensorInfoActivity.this, LSSensorListActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putParcelable("NETWORK_OBJ", networkObj);
-			i.putExtras(bundle);
+			if (sensorSerial == null){
+				i = new Intent(LSSensorInfoActivity.this, LSSensorListActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putParcelable("NETWORK_OBJ", networkObj);
+				i.putExtras(bundle);
+			} else {
+				i = new Intent(LSSensorInfoActivity.this, LSHomeActivity.class);
+			}
 			break;
 		case R.id.menu_help:
 			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
@@ -343,4 +354,61 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 			}	
 		});
 	}	
+	
+	public class BackTask extends AsyncTask<String, Void, String> {
+		private Activity activity;
+		private ProgressDialog progressDialog;
+		private String messageReturn = null;
+
+		public BackTask(Activity activity, ProgressDialog progressDialog) {
+			this.progressDialog = progressDialog;
+			this.activity = activity;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			progressDialog.show();
+		}
+
+		@Override
+		protected String doInBackground(String... arg0) {
+			try {
+				// Server Request Ini
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("session", LSHomeActivity.idSession);
+				JSONArray jArray = LSFunctions.urlRequestJSONArray(
+						"http://viuterrassa.com/Android/getLlistatXarxes.php",
+						params);
+
+				if (jArray != null) {
+					boolean trobat = false;
+					for (int i = 0; i < jArray.length(); i++) {
+						JSONObject jsonData = jArray.getJSONObject(i);
+						if ((sensorBundle.getSensorNetwork().equals(jsonData.getString("Nom")) && !trobat)){
+							LSNetwork o1 = new LSNetwork();
+							o1.setNetworkName(jsonData.getString("Nom"));
+							o1.setNetworkPosition(jsonData.getString("Lat"),
+									jsonData.getString("Lon"));
+							o1.setNetworkNumSensors(jsonData.getString("Sensors"));
+							o1.setNetworkId(jsonData.getString("IdXarxa"));
+							o1.setNetworkSituation(jsonData.getString("Poblacio"));
+							
+							networkObj = o1;
+						} 
+					}
+				} else {
+					messageReturn = getString(R.string.msg_CommError);
+				}
+			} catch (Exception e) {
+				messageReturn = getString(R.string.msg_ProcessError);
+			}
+			return messageReturn;
+		}
+
+		@Override
+		protected void onPostExecute(String pMessageReturn) {
+			progressDialog.dismiss();
+			((LSSensorInfoActivity) activity).showError(pMessageReturn);
+		}
+	}
 }
