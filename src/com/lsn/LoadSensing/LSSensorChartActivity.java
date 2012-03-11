@@ -120,6 +120,7 @@ public class LSSensorChartActivity extends ActionBarActivity {
 			bundle.putString("SENSOR_SERIAL", sensorSerial);
 			bundle.putParcelable("SENSOR_OBJ", sensorBundle);
 			bundle.putParcelable("NETWORK_OBJ", networkObj);
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtras(bundle);
 			break;
 		case R.id.menu_help:

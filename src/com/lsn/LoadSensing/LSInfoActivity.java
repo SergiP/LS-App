@@ -38,14 +38,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
-/* GreenDroid ------
 
-import greendroid.app.ActionBarActivity;
-import greendroid.app.GDTabActivity;
 
-//public class LSInfoActivity extends GDTabActivity {
-----------
- */
 public class LSInfoActivity extends ActionBarFragmentActivity implements TabHost.OnTabChangeListener {
 	
 	private static boolean predecessor = false;
@@ -109,30 +103,7 @@ public class LSInfoActivity extends ActionBarFragmentActivity implements TabHost
 		if (bundle != null) {
 			predecessor = bundle.getBoolean("ACTIVITY_BEFORE");
 		}
-	
-        /* GreenDroid -----
-		//Setting Information Tab
-		final String aboutText =  getString(R.string.infoTabAbout);
-		final Intent aboutIntent = new Intent(this, LSAboutActivity.class);
-		aboutIntent.putExtra(ActionBarActivity.GD_ACTION_BAR_VISIBILITY, View.GONE);
-		addTab(aboutText, aboutText, aboutIntent);
-
-		//Setting License Tab
-		final String licenseText =  getString(R.string.infoTabLicense);
-		final Intent licenseIntent = new Intent(this, LSLicenseActivity.class);
-		licenseIntent.putExtra(ActionBarActivity.GD_ACTION_BAR_VISIBILITY, View.GONE);
-		licenseIntent.putExtra(LSLicenseActivity.EXTRA_CONTENT_URL, "file:///android_asset/LICENSE.txt");
-		addTab(licenseText, licenseText, licenseIntent);
-		-----------
-		 */
 	}
-    /* GreenDroid
-	@Override
-	public int createLayout() {
-		return R.layout.info;
-	}
-	----------
-	 */
 	
 	public void onAppUrlClicked(View v) {
 		final Uri appUri = Uri.parse(getString(R.string.app_url));

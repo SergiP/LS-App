@@ -119,6 +119,7 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 				i = new Intent(LSSensorInfoActivity.this, LSSensorListActivity.class);
 				Bundle bundle = new Bundle();
 				bundle.putParcelable("NETWORK_OBJ", networkObj);
+				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 				i.putExtras(bundle);
 			} else {
 				i = new Intent(LSSensorInfoActivity.this, LSHomeActivity.class);

@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +37,7 @@ import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -46,27 +49,26 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
 
-public class LSAugRealActivity extends Activity{
+public class LSAugRealActivity extends Activity {
 
-	private LocationManager  locManager;
+	private LocationManager locManager;
 	private LocationListener locationListenerGPS;
 	private LocationListener locationListenerNetwork;
-	private GetLocation      getLocation;
-	private Position         curPosition;
+	private GetLocation getLocation;
+	private Position curPosition;
 
-	private boolean          gpsStatus;
-	private boolean          netStatus;
-	static boolean           fromMixare = false;
+	private boolean gpsStatus;
+	private boolean netStatus;
+	static boolean fromMixare = false;
 
-	JSONObject               mixareInfo;
+	JSONObject mixareInfo;
 	JSONArray jArray;
-	JSONArray arrayObj= new JSONArray();
+	JSONArray arrayObj;
 
 	@Override
 	protected void onPause() {
 
-		if (gpsStatus || netStatus)
-		{
+		if (gpsStatus || netStatus) {
 			if (gpsStatus) {
 				locManager.removeUpdates(locationListenerGPS);
 			}
@@ -83,8 +85,7 @@ public class LSAugRealActivity extends Activity{
 	@Override
 	public void onBackPressed() {
 
-		if (gpsStatus || netStatus)
-		{
+		if (gpsStatus || netStatus) {
 			if (gpsStatus) {
 				locManager.removeUpdates(locationListenerGPS);
 			}
@@ -102,48 +103,40 @@ public class LSAugRealActivity extends Activity{
 	protected void onResume() {
 
 		super.onResume();
-		if (locManager == null)
-		{
-			//Obtain reference to LocationManager
-			locManager = 
-					(LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		if (locManager == null) {
+			// Obtain reference to LocationManager
+			locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		}
-		//Check status of location services
+		// Check status of location services
 		checkGPSStatus();
 		checkNETStatus();
 
-
-		if (!gpsStatus && !netStatus)
-		{
-			//Show error message if there are no active services
-			CustomToast.showCustomToast(this,
-					R.string.msg_NOLocServ,
-					CustomToast.IMG_ERROR,
-					CustomToast.LENGTH_LONG);
-		}
-		else
-		{
-			//Obtain location using Async Task
+		if (!gpsStatus && !netStatus) {
+			// Show error message if there are no active services
+			CustomToast.showCustomToast(this, R.string.msg_NOLocServ,
+					CustomToast.IMG_ERROR, CustomToast.LENGTH_LONG);
+		} else {
+			// Obtain location using Async Task
 			getLocation = new GetLocation();
 			getLocation.execute();
 			curPosition = getLocation.getPosition();
 
-			if (!fromMixare)
-			{
+			if (!fromMixare) {
 				boolean fileGenerated = generateJSONFile();
-				if (fileGenerated)
-				{
+				if (fileGenerated) {
 					Intent i = new Intent();
 					i.setAction(Intent.ACTION_VIEW);
-					i.setDataAndType(Uri.parse("file://"+Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator +"LSN/LSApp_mixare.json"), "application/mixare-lsn-json");
+					i.setDataAndType(Uri.parse("file://"
+							+ Environment.getExternalStorageDirectory()
+									.getAbsolutePath() + File.separator
+							+ "LSN/LSApp_mixare.json"),
+							"application/mixare-lsn-json");
 
-					fromMixare= true;
+					fromMixare = true;
 					startActivity(i);
 				}
-			}
-			else
-			{
-				fromMixare=false;
+			} else {
+				fromMixare = false;
 				onBackPressed();
 			}
 
@@ -151,38 +144,31 @@ public class LSAugRealActivity extends Activity{
 
 	}
 
-
 	protected boolean generateJSONFile() {
 
-		boolean retStatus=false;
+		boolean retStatus = false;
+
 		mixareInfo = new JSONObject();
-		
+		arrayObj = new JSONArray();
 		try {
-			if (jArray != null)
-			{
-				mixareInfo.put("results",arrayObj);
+			if (jArray != null) {
+
+				mixareInfo.put("results", arrayObj);
 				mixareInfo.put("num_results", new Integer(6));
 				mixareInfo.put("status", "OK");
 
 				boolean result = saveJSONFile(mixareInfo.toString());
-				if (!result)
-				{
-					CustomToast.showCustomToast(this,R.string.msg_ErrorSavingFile,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-					retStatus=false;
+				if (!result) {
+					CustomToast.showCustomToast(this,
+							R.string.msg_ErrorSavingFile,
+							CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 				}
-				retStatus=true;
+				retStatus = true;
 			}
-			else
-			{
-				CustomToast.showCustomToast(this,R.string.msg_CommError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
-				retStatus=false;
-			}
-			
-		}
-		catch (JSONException e)
-		{
+		} catch (JSONException e) {
 			e.printStackTrace();
-			retStatus=false;
+			CustomToast.showCustomToast(LSAugRealActivity.this, R.string.msg_CommError,
+					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
 
 		return retStatus;
@@ -190,21 +176,21 @@ public class LSAugRealActivity extends Activity{
 
 	protected boolean saveJSONFile(String info) {
 
-		boolean retStatus=false;
+		boolean retStatus = false;
 
-		if (LSFunctions.checkSDCard(this))
-		{
-			String folder   = "LSN";
+		if (LSFunctions.checkSDCard(this)) {
+			String folder = "LSN";
 			String filename = "LSN/LSApp_mixare.json";
 
-			File LSNFolder = new File(Environment.getExternalStorageDirectory(),folder);
+			File LSNFolder = new File(
+					Environment.getExternalStorageDirectory(), folder);
 
-			if (!LSNFolder.exists())
-			{
+			if (!LSNFolder.exists()) {
 				LSNFolder.mkdir();
 			}
 
-			File file = new File(Environment.getExternalStorageDirectory(), filename);
+			File file = new File(Environment.getExternalStorageDirectory(),
+					filename);
 			FileOutputStream fos;
 			byte[] data = info.getBytes();
 
@@ -213,7 +199,7 @@ public class LSAugRealActivity extends Activity{
 				fos.write(data);
 				fos.flush();
 				fos.close();
-				retStatus=true;
+				retStatus = true;
 
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -226,68 +212,48 @@ public class LSAugRealActivity extends Activity{
 		return retStatus;
 	}
 
-
 	private void checkNETStatus() {
 
-		try
-		{
-			gpsStatus = locManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		try {
+			gpsStatus = locManager
+					.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		} catch (Exception ex) {
 		}
-		catch(Exception ex) {}
 
 	}
 
 	private void checkGPSStatus() {
 
-		try
-		{
-			netStatus = locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		try {
+			netStatus = locManager
+					.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		} catch (Exception ex) {
 		}
-		catch(Exception ex) {}
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-				
-		Intent intent = getIntent();
-        String jsonArray = intent.getStringExtra("jsonArray");
+		super.onCreate(savedInstanceState);
 
-        try {
-              jArray = new JSONArray(jsonArray);
-            
-            for (int i = 0; i<jArray.length(); i++)
-			{
-				JSONObject jsonData = jArray.getJSONObject(i);
+		ProgressDialog progressDialog = new ProgressDialog(
+				LSAugRealActivity.this);
+		progressDialog.setTitle(getString(R.string.msg_PleaseWait));
+		progressDialog.setMessage(getString(R.string.msg_retrievData));
+		progressDialog.setCancelable(false);
 
-				JSONObject jsonObj = new JSONObject();
+		AugRealTask augRealTask = new AugRealTask(LSAugRealActivity.this,
+				progressDialog);
+		augRealTask.execute();
 
-				jsonObj.put("id", String.valueOf(i+1));
-				jsonObj.put("lat", jsonData.getString("Lat"));
-				jsonObj.put("lng", jsonData.getString("Lon"));
-				jsonObj.put("elevation", "0");
-				jsonObj.put("title", jsonData.getString("Nom"));
-				jsonObj.put("has_detail_page", "0");
-				jsonObj.put("webpage", "");
-				jsonObj.put("netid", jsonData.getString("IdXarxa"));
-				arrayObj.put(jsonObj);
-			}
-           
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        
-        super.onCreate(savedInstanceState);
 	}
 
-	public class GetLocation extends AsyncTask<Void,Position,Void>
-	{
+	public class GetLocation extends AsyncTask<Void, Position, Void> {
 		private boolean running = true;
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
 
-			while (running)
-			{
+			while (running) {
 				getCurrentLocation();
 				publishProgress(curPosition);
 				SystemClock.sleep(5000);
@@ -295,24 +261,21 @@ public class LSAugRealActivity extends Activity{
 			return null;
 		}
 
-
 		@Override
 		protected void onCancelled() {
 
-			running=false;
+			running = false;
 			super.onCancelled();
 		}
-
 
 		@Override
 		protected void onPostExecute(Void result) {
 
-			locManager.requestLocationUpdates(
-					LocationManager.GPS_PROVIDER, 15000, 0, locationListenerGPS);
-			locManager.requestLocationUpdates(
-					LocationManager.NETWORK_PROVIDER, 15000, 0, locationListenerNetwork);
+			locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+					15000, 0, locationListenerGPS);
+			locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+					15000, 0, locationListenerNetwork);
 		}
-
 
 		@Override
 		protected void onPreExecute() {
@@ -320,8 +283,7 @@ public class LSAugRealActivity extends Activity{
 			curPosition = new Position();
 
 			super.onPreExecute();
-			locationListenerGPS = new LocationListener()
-			{
+			locationListenerGPS = new LocationListener() {
 
 				@Override
 				public void onLocationChanged(Location location) {
@@ -329,18 +291,21 @@ public class LSAugRealActivity extends Activity{
 				}
 
 				@Override
-				public void onProviderDisabled(String provider) {}
+				public void onProviderDisabled(String provider) {
+				}
 
 				@Override
-				public void onProviderEnabled(String provider) {}
+				public void onProviderEnabled(String provider) {
+				}
 
 				@Override
-				public void onStatusChanged(String provider, int status, Bundle extras) {}
+				public void onStatusChanged(String provider, int status,
+						Bundle extras) {
+				}
 
 			};
 
-			locationListenerNetwork = new LocationListener()
-			{
+			locationListenerNetwork = new LocationListener() {
 				@Override
 				public void onLocationChanged(Location location) {
 
@@ -348,73 +313,135 @@ public class LSAugRealActivity extends Activity{
 				}
 
 				@Override
-				public void onProviderDisabled(String provider) {}
+				public void onProviderDisabled(String provider) {
+				}
 
 				@Override
-				public void onProviderEnabled(String provider) {}
+				public void onProviderEnabled(String provider) {
+				}
 
 				@Override
-				public void onStatusChanged(String provider, int status, Bundle extras) {}
+				public void onStatusChanged(String provider, int status,
+						Bundle extras) {
+				}
 			};
 
-			if (gpsStatus) locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGPS);
-			if (netStatus) locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
+			if (gpsStatus)
+				locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+						0, 0, locationListenerGPS);
+			if (netStatus)
+				locManager.requestLocationUpdates(
+						LocationManager.NETWORK_PROVIDER, 0, 0,
+						locationListenerNetwork);
 
 		}
-
 
 		@Override
 		protected void onProgressUpdate(Position... values) {
 
-
-
-			locManager.requestLocationUpdates(
-					LocationManager.GPS_PROVIDER, 15000, 0, locationListenerGPS);
-			locManager.requestLocationUpdates(
-					LocationManager.NETWORK_PROVIDER, 15000, 0, locationListenerNetwork);
+			locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+					15000, 0, locationListenerGPS);
+			locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+					15000, 0, locationListenerNetwork);
 		}
 
-		private void getCurrentLocation()
-		{
+		private void getCurrentLocation() {
 			locManager.removeUpdates(locationListenerGPS);
 			locManager.removeUpdates(locationListenerNetwork);
 
-			Location gpsLocation=null;
-			Location netLocation=null;
+			Location gpsLocation = null;
+			Location netLocation = null;
 
-			if (gpsStatus) gpsLocation = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			if (netStatus) netLocation = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			if (gpsStatus)
+				gpsLocation = locManager
+						.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			if (netStatus)
+				netLocation = locManager
+						.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-			if (gpsLocation!=null && netLocation != null)
-			{
-				if (gpsLocation.getTime() > netLocation.getTime())
-				{
+			if (gpsLocation != null && netLocation != null) {
+				if (gpsLocation.getTime() > netLocation.getTime()) {
 					curPosition.setPosition(gpsLocation);
-				}
-				else
-				{
+				} else {
 					curPosition.setPosition(netLocation);
 				}
-			}
-			else if (gpsLocation !=  null)
-			{
-				curPosition.setPosition(gpsLocation);			
-			}
-			else if (netLocation !=  null)
-			{
-				curPosition.setPosition(netLocation);			
-			}
-			else
-			{
+			} else if (gpsLocation != null) {
+				curPosition.setPosition(gpsLocation);
+			} else if (netLocation != null) {
+				curPosition.setPosition(netLocation);
+			} else {
 				return;
 			}
 		}
 
-		public Position getPosition()
-		{
+		public Position getPosition() {
 			return curPosition;
 		}
 
+	}
+
+	public class AugRealTask extends AsyncTask<String, Void, String> {
+		private Activity activity;
+		private ProgressDialog progressDialog;
+		private String messageReturn = null;
+
+		public AugRealTask(Activity activity, ProgressDialog progressDialog) {
+			this.progressDialog = progressDialog;
+			this.activity = activity;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			progressDialog.show();
+		}
+
+		@Override
+		protected String doInBackground(String... arg0) {
+			// Server Request
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("session", LSHomeActivity.idSession);
+			jArray = LSFunctions.urlRequestJSONArray(
+					"http://viuterrassa.com/Android/getLlistatXarxes.php",
+					params);
+			if (jArray != null) {
+				try {
+					for (int i = 0; i < jArray.length(); i++) {
+						JSONObject jsonData = jArray.getJSONObject(i);
+
+						JSONObject jsonObj = new JSONObject();
+
+						jsonObj.put("id", String.valueOf(i + 1));
+						jsonObj.put("lat", jsonData.getString("Lat"));
+						jsonObj.put("lng", jsonData.getString("Lon"));
+						jsonObj.put("elevation", "0");
+						jsonObj.put("title", jsonData.getString("Nom"));
+						jsonObj.put("has_detail_page", "0");
+						jsonObj.put("webpage", "");
+						jsonObj.put("netid", jsonData.getString("IdXarxa"));
+						arrayObj.put(jsonObj);
+					}
+
+				} catch (JSONException e) {
+					messageReturn = getString(R.string.msg_CommError);
+				}
+			}
+
+			return messageReturn;
+		}
+
+		@Override
+		protected void onPostExecute(String pMessageReturn) {
+			progressDialog.dismiss();
+			((LSAugRealActivity) activity).showError(pMessageReturn);
+
+		}
+	}
+
+	public void showError(String result) {
+		if (result != null) {
+			CustomToast.showCustomToast(LSAugRealActivity.this, result,
+					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
+		}
 	}
 
 }

@@ -278,7 +278,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 										bundle.putParcelable("NETWORK_OBJ",
 												networkObj);
 										i.putExtras(bundle);
-
+										
 										startActivity(i);
 									}
 								}
@@ -323,6 +323,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 			i = new Intent(LSBigImageActivity.this, LSNetImagesActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putParcelable("NETWORK_OBJ", networkObj);
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtras(bundle);
 			break;
 		case R.id.menu_help:

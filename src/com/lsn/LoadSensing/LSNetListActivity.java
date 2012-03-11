@@ -61,6 +61,9 @@ public class LSNetListActivity extends ActionBarListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Log.i("TAG", "onCreate() LSNetList");
+		
 		setContentView(R.layout.act_01_netlist);
 
 		getActionBarHelper().changeIconHome();
@@ -253,5 +256,45 @@ public class LSNetListActivity extends ActionBarListActivity {
 		default:
 			return super.onContextItemSelected(item);
 		}
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		Log.i("TAG", "onResume() LSNetList");
+		
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		
+		Log.i("TAG", "onStart() LSNetList");
+		
+	}
+	
+	@Override
+	public void onRestart() {
+		super.onRestart();
+		
+		Log.i("TAG", "onRestart() LSNetList");
+		
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		Log.i("TAG", "onPause() LSNetList");
+		
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		Log.i("TAG", "onDestroy() LSNetList");
+		
 	}
 }

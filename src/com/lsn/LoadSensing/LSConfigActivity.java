@@ -33,7 +33,7 @@ public class LSConfigActivity extends ActionBarPreferenceActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+		//requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		super.onCreate(savedInstanceState);
 		
 		getActionBarHelper().changeIconHome();

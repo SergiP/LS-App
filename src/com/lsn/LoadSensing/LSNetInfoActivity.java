@@ -27,6 +27,7 @@ import com.readystatesoftware.mapviewballoons.R;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,6 +43,9 @@ public class LSNetInfoActivity extends ActionBarActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Log.i("TAG", "onCreate() LSNetInfo");
+		
 		setContentView(R.layout.act_netinfo);
 
 		Bundle bundle = getIntent().getExtras();
@@ -141,6 +145,7 @@ public class LSNetInfoActivity extends ActionBarActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			i = new Intent(LSNetInfoActivity.this, LSNetListActivity.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 			break;
 		case R.id.menu_help:
 			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
@@ -159,4 +164,44 @@ public class LSNetInfoActivity extends ActionBarActivity {
 		
 		return super.onOptionsItemSelected(item);
 	}	
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		Log.i("TAG", "onResume() LSNetInfo");
+		
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		
+		Log.i("TAG", "onStart() LSNetInfo");
+		
+	}
+	
+	@Override
+	public void onRestart() {
+		super.onRestart();
+		
+		Log.i("TAG", "onRestart() LSNetInfo");
+		
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		Log.i("TAG", "onPause() LSNetInfo");
+		
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		Log.i("TAG", "onDestroy() LSNetInfo");
+		
+	}
 }
