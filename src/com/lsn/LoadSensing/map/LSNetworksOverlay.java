@@ -68,8 +68,6 @@ public class LSNetworksOverlay extends BalloonItemizedOverlay<OverlayItem> {
 
 		if (i!=null){
 			Bundle bundle = new Bundle();
-
-			//bundle.putString("SESSION", LSHomeActivity.idSession);
 			bundle.putParcelable("NETWORK_OBJ", m_networks.get(index));
 
 			i.putExtras(bundle);

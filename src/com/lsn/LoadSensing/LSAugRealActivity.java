@@ -24,8 +24,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +35,6 @@ import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -65,6 +62,21 @@ public class LSAugRealActivity extends Activity {
 	JSONArray jArray;
 	JSONArray arrayObj;
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		Intent intent = getIntent();
+        String arrayJSON = intent.getStringExtra("ARRAY");
+
+        try {
+			arrayObj = new JSONArray(arrayJSON);
+		} catch (JSONException e) {
+			CustomToast.showCustomToast(LSAugRealActivity.this, R.string.msg_CommError,
+					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
+		}
+	}
+	
 	@Override
 	protected void onPause() {
 
@@ -149,7 +161,6 @@ public class LSAugRealActivity extends Activity {
 		boolean retStatus = false;
 
 		mixareInfo = new JSONObject();
-		arrayObj = new JSONArray();
 		try {
 			if (jArray != null) {
 
@@ -229,22 +240,6 @@ public class LSAugRealActivity extends Activity {
 					.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 		} catch (Exception ex) {
 		}
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		ProgressDialog progressDialog = new ProgressDialog(
-				LSAugRealActivity.this);
-		progressDialog.setTitle(getString(R.string.msg_PleaseWait));
-		progressDialog.setMessage(getString(R.string.msg_retrievData));
-		progressDialog.setCancelable(false);
-
-		AugRealTask augRealTask = new AugRealTask(LSAugRealActivity.this,
-				progressDialog);
-		augRealTask.execute();
-
 	}
 
 	public class GetLocation extends AsyncTask<Void, Position, Void> {
@@ -379,69 +374,4 @@ public class LSAugRealActivity extends Activity {
 		}
 
 	}
-
-	public class AugRealTask extends AsyncTask<String, Void, String> {
-		private Activity activity;
-		private ProgressDialog progressDialog;
-		private String messageReturn = null;
-
-		public AugRealTask(Activity activity, ProgressDialog progressDialog) {
-			this.progressDialog = progressDialog;
-			this.activity = activity;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			progressDialog.show();
-		}
-
-		@Override
-		protected String doInBackground(String... arg0) {
-			// Server Request
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("session", LSHomeActivity.idSession);
-			jArray = LSFunctions.urlRequestJSONArray(
-					"http://viuterrassa.com/Android/getLlistatXarxes.php",
-					params);
-			if (jArray != null) {
-				try {
-					for (int i = 0; i < jArray.length(); i++) {
-						JSONObject jsonData = jArray.getJSONObject(i);
-
-						JSONObject jsonObj = new JSONObject();
-
-						jsonObj.put("id", String.valueOf(i + 1));
-						jsonObj.put("lat", jsonData.getString("Lat"));
-						jsonObj.put("lng", jsonData.getString("Lon"));
-						jsonObj.put("elevation", "0");
-						jsonObj.put("title", jsonData.getString("Nom"));
-						jsonObj.put("has_detail_page", "0");
-						jsonObj.put("webpage", "");
-						jsonObj.put("netid", jsonData.getString("IdXarxa"));
-						arrayObj.put(jsonObj);
-					}
-
-				} catch (JSONException e) {
-					messageReturn = getString(R.string.msg_CommError);
-				}
-			}
-
-			return messageReturn;
-		}
-
-		@Override
-		protected void onPostExecute(String pMessageReturn) {
-			progressDialog.dismiss();
-			((LSAugRealActivity) activity).showError(pMessageReturn);
-
-		}
-	}
-
-	public void showError(String result) {
-		if (result != null) {
-			CustomToast.showCustomToast(LSAugRealActivity.this, result,
-					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
-		}
-	}
-
 }

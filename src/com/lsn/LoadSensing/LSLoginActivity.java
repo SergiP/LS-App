@@ -26,7 +26,6 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.lsn.LoadSensing.R;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 import com.lsn.LoadSensing.encript.LSSecurity;

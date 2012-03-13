@@ -21,13 +21,7 @@
 package com.lsn.LoadSensing;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import org.mapsforge.android.maps.GeoPoint;
 import org.mapsforge.android.maps.MapController;
@@ -38,20 +32,17 @@ import org.mapsforge.android.maps.OverlayItem;
 
 import com.lsn.LoadSensing.actionbar.ActionBarMapOSMActivity;
 import com.lsn.LoadSensing.element.LSNetwork;
-import com.lsn.LoadSensing.func.LSFunctions;
 import com.lsn.LoadSensing.mapsforge.LSNetworksOverlayForge;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
 
 public class LSNetMapsForgeActivity extends ActionBarMapOSMActivity {
 
@@ -70,6 +61,12 @@ public class LSNetMapsForgeActivity extends ActionBarMapOSMActivity {
 		
 		getActionBarHelper().changeIconHome();
 
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null)
+		{
+			m_networks = bundle.getParcelableArrayList("NETWOKRS");
+		}
+		
 		mapView = (MapView)findViewById(R.id.mapView);
 		mapView.setClickable(true);
 		mapView.setBuiltInZoomControls(true);
@@ -81,15 +78,25 @@ public class LSNetMapsForgeActivity extends ActionBarMapOSMActivity {
 		Drawable itemDefaultMarker = getResources().getDrawable(R.drawable.marker);
 		itemizedOverlay = new LSNetworksOverlayForge(itemDefaultMarker, mapView,m_networks);
 
-		ProgressDialog progressDialog = new ProgressDialog(LSNetMapsForgeActivity.this);
-		progressDialog.setTitle(getString(R.string.msg_PleaseWait));
-		progressDialog.setMessage(getString(R.string.msg_retrievNetworks));
-		progressDialog.setCancelable(false);
+		for (int i = 0; i< m_networks.size(); i++)
+		{
+			Integer intLat = (int) (m_networks.get(i).getNetworkPosition().getLatitude()*1e6);
+			Integer intLon = (int) (m_networks.get(i).getNetworkPosition().getLongitude()*1e6);
+			String strName = m_networks.get(i).getNetworkName();
+			String strSituation = m_networks.get(i).getNetworkSituation();
+			Integer strNumSensor = m_networks.get(i).getNetworkNumSensors();
+			String strNetDescripFormat = getResources().getString(R.string.strNetDescrip);
+			String strNetDescrip = String.format(strNetDescripFormat, strSituation, strNumSensor);
 
-		MapTask mapTask = new MapTask(LSNetMapsForgeActivity.this,progressDialog);
-		mapTask.execute();
+			point = new GeoPoint(intLat,intLon);
+			OverlayItem overlayItem = new OverlayItem(point, strName, strNetDescrip);
+			itemizedOverlay.addOverlay(overlayItem);
+
+			mapOverlays.add(itemizedOverlay);
+		}
 		
 		point = new GeoPoint((int)(40.416369*1E6),(int)(-3.702992*1E6));
+		
 		MapController mMapController = mapView.getController();
 		mMapController.setCenter(point);
 		mMapController.setZoom(5);
@@ -134,79 +141,5 @@ public class LSNetMapsForgeActivity extends ActionBarMapOSMActivity {
 
 		return super.onOptionsItemSelected(item);
 		
-	}
-	
-	public class MapTask extends AsyncTask<String, Void, String> {
-		private Activity activity;
-		private ProgressDialog progressDialog;
-		private String messageReturn = null;
-		
-		public MapTask(Activity activity, ProgressDialog progressDialog) {
-			this.progressDialog = progressDialog;
-			this.activity = activity;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			progressDialog.show();
-		}
-
-		@Override
-		protected String doInBackground(String... arg0) {
-			JSONObject jsonData;
-			m_networks = new ArrayList<LSNetwork>();
-			try {
-				// Server Request Ini
-				Map<String, String> params = new HashMap<String, String>();
-				params.put("session", LSHomeActivity.idSession);
-				JSONArray jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getLlistatXarxes.php",params);
-				if (jArray != null)
-				{
-					for (int i = 0; i<jArray.length(); i++)
-					{
-						jsonData = jArray.getJSONObject(i);
-						LSNetwork network = new LSNetwork();
-						network.setNetworkName(jsonData.getString("Nom"));
-						network.setNetworkPosition(jsonData.getString("Lat"),jsonData.getString("Lon"));
-						network.setNetworkNumSensors(jsonData.getString("Sensors"));
-						network.setNetworkId(jsonData.getString("IdXarxa"));
-						network.setNetworkSituation(jsonData.getString("Poblacio"));
-						m_networks.add(network);
-					}
-				}
-				else
-				{
-					messageReturn = getString(R.string.msg_CommError);
-				}
-			} catch (JSONException e) {
-				messageReturn = getString(R.string.msg_ProcessError);
-			}
-			
-			point = null;
-			for (int i = 0; i< m_networks.size(); i++)
-			{
-				Integer intLat = (int) (m_networks.get(i).getNetworkPosition().getLatitude()*1e6);
-				Integer intLon = (int) (m_networks.get(i).getNetworkPosition().getLongitude()*1e6);
-				String strName = m_networks.get(i).getNetworkName();
-				String strSituation = m_networks.get(i).getNetworkSituation();
-				Integer strNumSensor = m_networks.get(i).getNetworkNumSensors();
-				String strNetDescripFormat = getResources().getString(R.string.strNetDescrip);
-				String strNetDescrip = String.format(strNetDescripFormat, strSituation, strNumSensor);
-
-				point = new GeoPoint(intLat,intLon);
-				OverlayItem overlayItem = new OverlayItem(point, strName, strNetDescrip);
-				itemizedOverlay.addOverlay(overlayItem);
-
-				mapOverlays.add(itemizedOverlay);
-			}
-
-			return messageReturn;
-		}
-
-		@Override
-		protected void onPostExecute(String pMessageReturn) {
-			progressDialog.dismiss();
-			((LSNetMapsForgeActivity) activity).showError(pMessageReturn);
-		}
 	}
 }
