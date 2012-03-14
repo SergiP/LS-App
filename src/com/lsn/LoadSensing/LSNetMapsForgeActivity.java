@@ -34,7 +34,6 @@ import com.lsn.LoadSensing.actionbar.ActionBarMapOSMActivity;
 import com.lsn.LoadSensing.element.LSNetwork;
 import com.lsn.LoadSensing.mapsforge.LSNetworksOverlayForge;
 import com.lsn.LoadSensing.ui.CustomToast;
-import com.readystatesoftware.mapviewballoons.R;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
