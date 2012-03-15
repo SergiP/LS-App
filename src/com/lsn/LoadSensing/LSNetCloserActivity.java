@@ -51,6 +51,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -58,7 +60,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.ListView;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -83,6 +86,9 @@ public class LSNetCloserActivity extends ActionBarListActivity{
 	private Integer waitTime = 0;
 
 	private static boolean running;
+	
+	private EditText 				filterText = null;
+	private int						filter = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +101,9 @@ public class LSNetCloserActivity extends ActionBarListActivity{
 		this.m_adapter = new LSNetworkAdapter(this,R.layout.row_list_network,m_networks);
 		setListAdapter(this.m_adapter);
 
+		filterText = (EditText) findViewById(R.id.search_box);
+		filterText.addTextChangedListener(filterTextWatcher);
+		
 		//Allow the execution of async tasks
 		running= true;
 		//Retrieve configuration preferences
@@ -159,6 +168,23 @@ public class LSNetCloserActivity extends ActionBarListActivity{
 		
 		registerForContextMenu(getListView());
 	}
+	
+	private TextWatcher filterTextWatcher = new TextWatcher() {
+
+	    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+	    }
+
+	    public void onTextChanged(CharSequence s, int start, int before, int count) {
+	    	
+	    	m_adapter.getFilter().filter(s);
+	    }
+
+		@Override
+		public void afterTextChanged(Editable s) {			
+		}
+	};
+
+	
 
 	@Override
 	public void onResume() {
@@ -234,7 +260,6 @@ public class LSNetCloserActivity extends ActionBarListActivity{
 
 		}
 	};
-
 
 	private void getNetworks() {
 
@@ -401,22 +426,6 @@ public class LSNetCloserActivity extends ActionBarListActivity{
 		super.onPause();
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-
-		Intent i = null;
-		i = new Intent(LSNetCloserActivity.this,LSNetInfoActivity.class);
-
-		if (i!=null){
-			Bundle bundle = new Bundle();
-
-			bundle.putParcelable("NETWORK_OBJ", m_networks.get(position));
-			i.putExtras(bundle);
-
-			startActivity(i);
-		}
-	}
-
 	public class GetLocation extends AsyncTask<Void,Position,Void>
 	{
 		private Position curPosition;
@@ -430,7 +439,6 @@ public class LSNetCloserActivity extends ActionBarListActivity{
 			{
 				getCurrentLocation();
 				publishProgress(curPosition);
-				//SystemClock.sleep(5000);
 			}
 			return null;
 		}
@@ -702,7 +710,20 @@ public class LSNetCloserActivity extends ActionBarListActivity{
 			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
 			break; 
 		case R.id.menu_search:
-			CustomToast.showCustomToast(LSNetCloserActivity.this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			filter++;
+			InputMethodManager inputMgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			
+			if (filter % 2 == 0){
+				filterText.setVisibility(View.VISIBLE);
+				filterText.requestFocus();
+				inputMgr.toggleSoftInput(0, 0);
+			}
+			else {
+				filterText.setVisibility(View.INVISIBLE);
+				filterText.setText("");
+				inputMgr.hideSoftInputFromWindow(filterText.getWindowToken(), 0);
+
+			}
 			break; 
 		case R.id.menu_config:
 			i = new Intent(LSNetCloserActivity.this,LSConfigActivity.class);

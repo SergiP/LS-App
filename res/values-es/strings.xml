@@ -275,5 +275,10 @@
     <string name="osm_max_object_menu">Fijar máximo POI por URL</string>
     <string name="set_osm_max_object">Máximo POIs por URL</string>
     <!-- Mixare Library End -->
+    
+    <!-- Search Init -->
+	<string name="search_network">Buscar una red</string>
+	<string name="search_sensor">Buscar un sensor</string>
+	<!-- Search End -->
 
 </resources>

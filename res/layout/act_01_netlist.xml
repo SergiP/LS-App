@@ -4,10 +4,20 @@
     android:layout_height="fill_parent"
     android:background="#FFF"
     android:orientation="vertical" >
-
+         
+    <EditText android:id="@+id/search_box" 
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="wrap_content"
+   	    android:visibility="invisible"
+       	android:hint="@string/search_network"
+       	android:inputType="text"
+       	android:maxLines="1"/>
+       	  	
     <ListView
 		android:id="@+id/android:list"
+		android:layout_below="@id/search_box"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:cacheColorHint="#FFF" />
+              
 </LinearLayout>

@@ -36,10 +36,13 @@ import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -47,31 +50,35 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ListView;
+import android.widget.EditText;
 
 public class LSNetListActivity extends ActionBarListActivity {
 
-	private ProgressDialog       m_ProgressDialog = null;
-	private ArrayList<LSNetwork> m_networks = null;
-	private LSNetworkAdapter     m_adapter;
-	private Runnable             viewNetworks;
-	private Integer  			 errMessage;
-
+	private ProgressDialog      	m_ProgressDialog = null;
+	private ArrayList<LSNetwork>	m_networks = null;
+	private LSNetworkAdapter    	m_adapter;
+	private Runnable            	viewNetworks;
+	private Integer  				errMessage;
+	private EditText 				filterText = null;
+	private int						filter = 1;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		Log.i("TAG", "onCreate() LSNetList");
 		
 		setContentView(R.layout.act_01_netlist);
 
 		getActionBarHelper().changeIconHome();
 		
 		m_networks = new ArrayList<LSNetwork>();
-		this.m_adapter = new LSNetworkAdapter(this,R.layout.row_list_network,m_networks);
+		m_adapter = new LSNetworkAdapter(this,R.layout.row_list_network,m_networks);
 		setListAdapter(this.m_adapter);
-
+		
+		filterText = (EditText) findViewById(R.id.search_box);
+		filterText.addTextChangedListener(filterTextWatcher);
+		
 		viewNetworks = new Runnable()
 		{
 
@@ -83,9 +90,24 @@ public class LSNetListActivity extends ActionBarListActivity {
 		Thread thread = new Thread(null,viewNetworks,"ViewNetworks");
 		thread.start();
 		m_ProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.msg_PleaseWait), getResources().getString(R.string.msg_retrievNetworks), true);
-		
+
 		registerForContextMenu(getListView());
 	}
+	
+	private TextWatcher filterTextWatcher = new TextWatcher() {
+
+	    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+	    }
+
+	    public void onTextChanged(CharSequence s, int start, int before, int count) {
+	    	
+	    	m_adapter.getFilter().filter(s);
+	    }
+
+		@Override
+		public void afterTextChanged(Editable s) {			
+		}
+	};
 
 	private Runnable returnRes = new Runnable() {
 
@@ -115,7 +137,7 @@ public class LSNetListActivity extends ActionBarListActivity {
 
 		try{
 			m_networks = new ArrayList<LSNetwork>();
-
+			
 			// Server Request Ini
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("session", LSHomeActivity.idSession);
@@ -150,28 +172,12 @@ public class LSNetListActivity extends ActionBarListActivity {
 		}
 		runOnUiThread(returnRes);		
 	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-
-		Intent i = null;
-		i = new Intent(LSNetListActivity.this,LSNetInfoActivity.class);
-
-		if (i!=null){
-			Bundle bundle = new Bundle();
-
-			bundle.putParcelable("NETWORK_OBJ", m_networks.get(position));
-
-			i.putExtras(bundle);
-			startActivity(i);
-		}
-	}
 	
 	@Override 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.ab_item_search_help, menu);
-        
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -186,7 +192,20 @@ public class LSNetListActivity extends ActionBarListActivity {
 			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
 			break; 
 		case R.id.menu_search:
-			CustomToast.showCustomToast(LSNetListActivity.this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			filter++;
+			InputMethodManager inputMgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			
+			if (filter % 2 == 0){
+				filterText.setVisibility(View.VISIBLE);
+				filterText.requestFocus();
+				inputMgr.toggleSoftInput(0, 0);
+			}
+			else {
+				filterText.setVisibility(View.INVISIBLE);
+				filterText.setText("");
+				inputMgr.hideSoftInputFromWindow(filterText.getWindowToken(), 0);
+
+			}
 			break; 
 		case R.id.menu_config:
 			i = new Intent(LSNetListActivity.this,LSConfigActivity.class);
@@ -256,45 +275,5 @@ public class LSNetListActivity extends ActionBarListActivity {
 		default:
 			return super.onContextItemSelected(item);
 		}
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		
-		Log.i("TAG", "onResume() LSNetList");
-		
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		
-		Log.i("TAG", "onStart() LSNetList");
-		
-	}
-	
-	@Override
-	public void onRestart() {
-		super.onRestart();
-		
-		Log.i("TAG", "onRestart() LSNetList");
-		
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-		
-		Log.i("TAG", "onPause() LSNetList");
-		
-	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		
-		Log.i("TAG", "onDestroy() LSNetList");
-		
 	}
 }

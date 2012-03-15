@@ -38,20 +38,24 @@ import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ListView;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class LSSensorListActivity extends ActionBarListActivity {
@@ -67,6 +71,10 @@ public class LSSensorListActivity extends ActionBarListActivity {
 	private Integer 						errMessage;
 	
 	private String							networkId;
+	
+	private EditText 						filterText = null;
+	private int								filter = 1;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +84,9 @@ public class LSSensorListActivity extends ActionBarListActivity {
 		m_sensors = new ArrayList<LSSensor>();
 		this.m_adapter = new LSSensorAdapter(this,R.layout.row_list_sensor,m_sensors);
 		setListAdapter(this.m_adapter);
+		
+		filterText = (EditText) findViewById(R.id.search_box);
+		filterText.addTextChangedListener(filterTextWatcher);
 		
 		getActionBarHelper().changeIconHome();
 		
@@ -107,6 +118,21 @@ public class LSSensorListActivity extends ActionBarListActivity {
 		
 		registerForContextMenu(getListView());
 	}
+	
+	private TextWatcher filterTextWatcher = new TextWatcher() {
+
+	    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+	    }
+
+	    public void onTextChanged(CharSequence s, int start, int before, int count) {
+	    	
+	    	m_adapter.getFilter().filter(s);
+	    }
+
+		@Override
+		public void afterTextChanged(Editable s) {			
+		}
+	};
 
 	private Runnable returnRes = new Runnable() {
 
@@ -183,24 +209,6 @@ public class LSSensorListActivity extends ActionBarListActivity {
 		runOnUiThread(returnRes);		
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-
-		Intent i = null;
-		i = new Intent(LSSensorListActivity.this,LSSensorInfoActivity.class);
-
-		if (i!=null){
-			Bundle bundle = new Bundle();
-
-			bundle.putParcelable("SENSOR_OBJ", m_sensors.get(position));
-			bundle.putParcelable("NETWORK_OBJ", networkObj);
-
-			i.putExtras(bundle);
-
-			startActivity(i);
-		}
-	}
-	
 	@Override 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
@@ -224,7 +232,20 @@ public class LSSensorListActivity extends ActionBarListActivity {
 			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
 			break; 
 		case R.id.menu_search:
-			CustomToast.showCustomToast(LSSensorListActivity.this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
+			filter++;
+			InputMethodManager inputMgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			
+			if (filter % 2 == 0){
+				filterText.setVisibility(View.VISIBLE);
+				filterText.requestFocus();
+				inputMgr.toggleSoftInput(0, 0);
+			}
+			else {
+				filterText.setVisibility(View.INVISIBLE);
+				filterText.setText("");
+				inputMgr.hideSoftInputFromWindow(filterText.getWindowToken(), 0);
+
+			}
 			break; 
 		case R.id.menu_config:
 			i = new Intent(LSSensorListActivity.this,LSConfigActivity.class);

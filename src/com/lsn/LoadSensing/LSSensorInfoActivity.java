@@ -77,7 +77,6 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 			sensorSerial = bundle.getString("SENSOR_SERIAL");
 			
 			sensorBundle = bundle.getParcelable("SENSOR_OBJ");
-			networkObj = bundle.getParcelable("NETWORK_OBJ");
 		}
 		
 		ProgressDialog progressDialog = new ProgressDialog(LSSensorInfoActivity.this);

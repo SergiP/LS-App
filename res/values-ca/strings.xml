@@ -181,6 +181,8 @@
 
     <!-- Menu End -->
     
+    
+    
     <!-- SD Error Messages Init -->
     <string name="msgSDReadOnly">La targeta SDCard només pot ser llegida. Això impedirà el correcte funcionament de l\'aplicació d\'escritura.</string>
     <string name="msgSDBadFormat">La targeta SDCard no pot ser utilitzada, no té un format acceptat o no està correctament formatada.</string>
@@ -290,4 +292,8 @@
     <string name="set_osm_max_object">Màxim POIs per URL</string>
     <!-- Mixare Library End -->
 
+	<!-- Search Init -->
+	<string name="search_network">Buscar una xarxa</string>
+	<string name="search_sensor">Buscar un sensor</string>
+	<!-- Search End -->
 </resources>

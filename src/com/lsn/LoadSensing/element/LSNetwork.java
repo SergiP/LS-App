@@ -20,10 +20,12 @@
 
 package com.lsn.LoadSensing.element;
 
+import com.lsn.LoadSensing.filter.ListFilter;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class LSNetwork implements Parcelable {
+public class LSNetwork extends ListFilter implements Parcelable {
 
 	private String networkSituation;
 	private String networkName;
@@ -137,4 +139,8 @@ public class LSNetwork implements Parcelable {
 		}
 	};
 
+	@Override  
+    public boolean filterThisListItem(String prefix) {  
+        return networkName.toLowerCase().startsWith(prefix.toLowerCase());  
+    } 
 }

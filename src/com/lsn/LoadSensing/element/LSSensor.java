@@ -20,11 +20,13 @@
 
 package com.lsn.LoadSensing.element;
 
+import com.lsn.LoadSensing.filter.ListFilter;
+
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class LSSensor implements Parcelable {
+public class LSSensor extends ListFilter implements Parcelable {
 
 	private String sensorSituation;
 	private String sensorName;
@@ -310,5 +312,10 @@ public class LSSensor implements Parcelable {
 			return new LSSensor[size];
 		}
 	};
+
+	@Override
+	public boolean filterThisListItem(String prefix) {
+		return sensorName.toLowerCase().startsWith(prefix.toLowerCase());  
+	}
 }
 

@@ -284,4 +284,8 @@
     <string name="set_osm_max_object">Maximum POIs per URL</string>
     <!-- Mixare Library End -->
 
+	<!-- Search Init -->
+	<string name="search_network">Search a network</string>
+	<string name="search_sensor">Search a sensor</string>
+	<!-- Search End -->
 </resources>
