@@ -1,22 +1,24 @@
-//    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
-//    
-//    Copyright (C) 2011-2012
-//    Authors:
-//        Sergio González Díez        [sergio.gd@gmail.com]
-//        Sergio Postigo Collado      [spostigoc@gmail.com]
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-//
-//    You should have received a copy of the GNU General Public License
-//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    
+ *    Copyright (C) 2011-2012
+ *    Authors:
+ *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Postigo Collado      [spostigoc@gmail.com]
+ *    
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *    
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *    
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package com.lsn.LoadSensing.element;
 
@@ -25,6 +27,7 @@ import com.lsn.LoadSensing.filter.ListFilter;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 
 public class LSSensor extends ListFilter implements Parcelable {
 
@@ -43,7 +46,6 @@ public class LSSensor extends ListFilter implements Parcelable {
 	private int sensorFaves;
 
 	public LSSensor() {
-
 		sensorSituation = "";
 		sensorName = "";
 		sensorId = "";
@@ -60,7 +62,6 @@ public class LSSensor extends ListFilter implements Parcelable {
 	}
 
 	public LSSensor(Parcel in) {
-
 		sensorPosition = new Position();
 		sensorMeasure = new Measure();
 		readFromParcel(in);
@@ -263,13 +264,11 @@ public class LSSensor extends ListFilter implements Parcelable {
 
 	@Override
 	public int describeContents() {
-
 		return 0;
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-
 		dest.writeString(sensorSituation);
 		dest.writeString(sensorName);
 		dest.writeString(sensorId);
@@ -286,7 +285,6 @@ public class LSSensor extends ListFilter implements Parcelable {
 	}
 
 	private void readFromParcel(Parcel in) {
-
 		sensorSituation = in.readString();
 		sensorName = in.readString();
 		sensorId = in.readString();
@@ -318,4 +316,3 @@ public class LSSensor extends ListFilter implements Parcelable {
 		return sensorName.toLowerCase().startsWith(prefix.toLowerCase());  
 	}
 }
-

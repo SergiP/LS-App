@@ -22,7 +22,6 @@ package com.lsn.LoadSensing.fragments.faves;
 
 import java.util.ArrayList;
 
-import com.lsn.LoadSensing.LSFavesActivity;
 import com.lsn.LoadSensing.LSNetInfoActivity;
 import com.lsn.LoadSensing.R;
 import com.lsn.LoadSensing.SQLite.LSNSQLiteHelper;
@@ -38,22 +37,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
-/* GreenDroid -----
-import greendroid.app.GDListActivity;
-
-public class LSFavesNetworksActivity extends GDListActivity{
-----------
- */
 public class LSFavesNetworksActivity extends ListFragment {
 
 	private ProgressDialog       m_ProgressDialog = null;
@@ -91,13 +79,6 @@ public class LSFavesNetworksActivity extends ListFragment {
 		return v;
 	}
 	
-	@Override
-	public void onActivityCreated(final Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	
-		registerForContextMenu(getListView());
-	}
-
 	private Runnable returnRes = new Runnable() {
 
 		@Override
@@ -127,7 +108,6 @@ public class LSFavesNetworksActivity extends ListFragment {
 			LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(getActivity(), "DBLSN", null, 1);
 			SQLiteDatabase db = lsndbh.getReadableDatabase();
 
-			Log.i("INFO", "Faves getNetwork");
 			if (db != null) {
 				Cursor c = db.rawQuery("SELECT * FROM Network",
 						null);
@@ -178,50 +158,10 @@ public class LSFavesNetworksActivity extends ListFragment {
 		if (i != null) {
 			Bundle bundle = new Bundle();
 
-			// bundle.putString("SESSION", idSession);
 			bundle.putParcelable("NETWORK_OBJ", m_networks.get(position)); 
 
 			i.putExtras(bundle);
-			// i.putExtra("NETWORK_OBJ", m_networks.get(position));
 			startActivity(i);
-		}
-	}
-
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		MenuInflater inflater = getActivity().getMenuInflater();
-		menu.setHeaderTitle(R.string.act_lbl_homFaves);
-		inflater.inflate(R.menu.context_menu_del, menu);
-	}
-
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(getActivity(), "DBLSN", null, 1);
-		SQLiteDatabase db = lsndbh.getWritableDatabase();
-
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
-				.getMenuInfo();
-		switch (item.getItemId()) {
-		case R.id.del_faves:
-			LSNetwork net1 = new LSNetwork();
-			net1 = m_networks.get(info.position);
-			if (db != null) {
-				db.execSQL("DELETE FROM Network WHERE idNetwork ='"
-						+ net1.getNetworkId() + "'");
-				db.close();
-				Bundle bundle = new Bundle();
-				bundle.putInt("par", 0);
-				Intent i = new Intent(getActivity(), LSFavesActivity.class);
-				i.putExtras(bundle);
-				startActivity(i);
-				getActivity().finish();
-			}
-
-			return true;
-		default:
-			return super.onContextItemSelected(item);
 		}
 	}
 }

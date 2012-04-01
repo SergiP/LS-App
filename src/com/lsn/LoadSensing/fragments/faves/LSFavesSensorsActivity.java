@@ -51,12 +51,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
-/* GreenDroid -----
-import greendroid.app.GDListActivity;
-
-public class LSFavesSensorsActivity extends GDListActivity{	
----------
- */
 public class LSFavesSensorsActivity extends ListFragment {
 
 	private ProgressDialog       m_ProgressDialog = null;
@@ -134,7 +128,7 @@ public class LSFavesSensorsActivity extends ListFragment {
 
 			Log.i("INFO", "Faves getSensors");
 			if (db != null) {
-				Cursor c = db.rawQuery("SELECT * FROM Sensor", null);
+				Cursor c = db.rawQuery("SELECT * FROM Sensor ORDER BY idNetwork", null);
 				c.moveToFirst();
 				if (c != null) {
 					while (!c.isAfterLast()) {
@@ -174,7 +168,6 @@ public class LSFavesSensorsActivity extends ListFragment {
 
 						c.move(1);
 					}
-					Log.i("INFO", "Close cursor");
 					c.close();
 				}
 				db.close();

@@ -1,22 +1,24 @@
-//    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
-//    
-//    Copyright (C) 2011-2012
-//    Authors:
-//        Sergio González Díez        [sergio.gd@gmail.com]
-//        Sergio Postigo Collado      [spostigoc@gmail.com]
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-//
-//    You should have received a copy of the GNU General Public License
-//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    
+ *    Copyright (C) 2011-2012
+ *    Authors:
+ *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Postigo Collado      [spostigoc@gmail.com]
+ *    
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *    
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *    
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package com.lsn.LoadSensing;
 
@@ -30,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.lsn.LoadSensing.SQLite.LSNSQLiteHelper;
 import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 import com.lsn.LoadSensing.element.LSNetwork;
 import com.lsn.LoadSensing.element.LSSensor;
@@ -40,6 +43,8 @@ import com.readystatesoftware.mapviewballoons.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -60,23 +65,41 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 	private LSSensor 						sensorObj = null;
 	private LSNetwork 						networkObj = null;
 	private static HashMap<String,Bitmap> 	hashImages = new HashMap<String,Bitmap>();
-	private Bitmap 							imgSensor;
+	private Bitmap							imgSensor;
 	private ArrayList<LSSensor> 	 		m_sensors = null;
+	private int 							cont = 0;
+	private boolean 						star;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_sensorinfo);
 		
-		getActionBarHelper().changeIconHome();
-									
 		Bundle bundle = getIntent().getExtras();
-
-		if (bundle != null)
-		{
+		if (bundle != null) {
+			
+			// Get bundle to LSFavesSensorActivity or LSSensorList
+			sensorBundle = bundle.getParcelable("SENSOR_OBJ");
+			
+			// Get bundle to LSQRCodeActivity
 			sensorSerial = bundle.getString("SENSOR_SERIAL");
 			
-			sensorBundle = bundle.getParcelable("SENSOR_OBJ");
+			networkObj = bundle.getParcelable("NETWORK_OBJ");
+		}
+		
+		// Change home icon (<Icon)
+		getActionBarHelper().changeIconHome();
+		
+		star = getActionBarHelper().starSensor(sensorBundle.getSensorId());
+
+		if (star) { // network are in faves
+			
+			getActionBarHelper().setFavesActionItem(star);
+			cont = cont + 1;
+		} else {
+			
+			getActionBarHelper().setFavesActionItem(star);
 		}
 		
 		ProgressDialog progressDialog = new ProgressDialog(LSSensorInfoActivity.this);
@@ -87,15 +110,17 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		SensorInfoTask sensorInfoTask = new SensorInfoTask(LSSensorInfoActivity.this,progressDialog);
 		sensorInfoTask.execute();
 		
-		if (sensorSerial == null){
+		if (sensorSerial == null) {
+			
 			BackTask backTask = new BackTask(LSSensorInfoActivity.this,progressDialog);
 			backTask.execute();
-		}
-		
+		}	
 	}
 	
 	public void showError(String result) {
-		if (result != null){
+		
+		if (result != null) {
+			
 			CustomToast.showCustomToast(LSSensorInfoActivity.this, result,
 					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
@@ -103,36 +128,59 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 
 	@Override 
 	public boolean onCreateOptionsMenu(Menu menu) {
+		
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ab_item_help, menu);
+		menuInflater.inflate(R.menu.ab_item_star_ov_help, menu);
+		
+		getActionBarHelper().optionsMenuHelp(menu);
         
 		return super.onCreateOptionsMenu(menu);
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		
 		Intent i = null;
+		
 		switch (item.getItemId()) {
+		
 		case android.R.id.home:
-			if (sensorSerial == null){
+			
+			if (sensorSerial == null) {
+				
 				i = new Intent(LSSensorInfoActivity.this, LSSensorListActivity.class);
+				
 				Bundle bundle = new Bundle();
 				bundle.putParcelable("NETWORK_OBJ", networkObj);
+				
 				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 				i.putExtras(bundle);
 			} else {
+				
 				i = new Intent(LSSensorInfoActivity.this, LSHomeActivity.class);
 			}
 			break;
+			
+		case R.id.menu_star:
+			
+			cont = cont + 1;
+			if (cont % 2 == 0) {
+
+				getActionBarHelper().setFavesActionItem(true);
+				delToFaves();
+			} else {
+
+				getActionBarHelper().setFavesActionItem(false);
+				insertToFaves();
+			}
+			break;
+			
 		case R.id.menu_help:
+			
+			// TODO
 			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
 			break; 
-		case R.id.menu_config:
-			i = new Intent(LSSensorInfoActivity.this,LSConfigActivity.class);
-			break; 
-		case R.id.menu_info:
-			i = new Intent(LSSensorInfoActivity.this,LSInfoActivity.class);
-			break;
+			
 		}	
 		
 		if (i != null) {
@@ -143,28 +191,32 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 	}	
 	
 	public class SensorInfoTask extends AsyncTask<String, Void, String> {
+		
 		private Activity activity;
 		private ProgressDialog progressDialog;
 		private String messageReturn = null;
 		
 		public SensorInfoTask(Activity activity, ProgressDialog progressDialog) {
+			
 			this.progressDialog = progressDialog;
 			this.activity = activity;
 		}
 
 		@Override
 		protected void onPreExecute() {
+			
 			progressDialog.show();
 		}
 
 		@Override
 		protected String doInBackground(String... arg0) {
+			
 			m_sensors = new ArrayList<LSSensor>();
 			JSONObject jsonData = null;
 			JSONArray jArray = null;
 
-			if (sensorSerial != null)
-			{
+			if (sensorSerial != null) {
+				
 				// Server Request Ini
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session", LSHomeActivity.idSession);
@@ -172,22 +224,21 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 				jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getSensorInfo.php",params);
 			}
 
-			if (sensorBundle != null)
-			{
-
+			if (sensorBundle != null) {
+				
 				// Server Request Ini
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session", LSHomeActivity.idSession);
 				params.put("sensor", sensorBundle.getSensorName());
 				jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getSensorInfo.php",params);
-
 			}
 
-			if (jArray != null)
-			{
+			if (jArray != null) {
+				
 				try {
-					for (int i = 0; i<jArray.length(); i++)
-					{
+					
+					for (int i = 0; i<jArray.length(); i++) {
+						
 
 						jsonData = jArray.getJSONObject(i);
 
@@ -204,12 +255,11 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 						sensorObj.setSensorChannel(jsonData.getString("canal"));
 						sensorObj.setSensorType(jsonData.getString("tipus"));
 						String image = jsonData.getString("imatge");
-						if (hashImages.containsKey(image))
-						{
+						if (hashImages.containsKey(image)) {
+							
 							imgSensor = hashImages.get(image);
-						}
-						else
-						{
+						} else {
+							
 							imgSensor = LSFunctions.getRemoteImage(new URL("http://viuterrassa.com/Android/Imatges/"+image));
 							hashImages.put(image, imgSensor);
 						}
@@ -220,19 +270,17 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 						m_sensors.add(sensorObj);
 					}
 
-					// Server Request End  
-
 				} catch (JSONException e) {
-
+					
 					e.printStackTrace();
 					messageReturn = getString(R.string.msg_ProcessError);
 				} catch (MalformedURLException e) {
+					
 					e.printStackTrace();
 					messageReturn = getString(R.string.msg_ProcessError);
 				}
-			}
-			else
-			{
+			} else {
+				
 				messageReturn = getString(R.string.msg_CommError);
 			}
 			
@@ -241,20 +289,22 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 
 		@Override
 		protected void onPostExecute(String pMessageReturn) {
+			
 			progressDialog.dismiss();
 			((LSSensorInfoActivity) activity).showError(pMessageReturn);
 			
-			if (sensorObj != null)
-			{
+			if (sensorObj != null) {
+				
 				getSensor();
-			} else
-			{
+			} else {
+				
 				((LSSensorInfoActivity) activity).showError(getString(R.string.msg_SensorNotFound));
 			}
 		}
 	}
 	
 	private void getSensor() {
+		
 		TextView txtNetName = (TextView) findViewById(R.id.netName);
 		txtNetName.setText(sensorObj.getSensorNetwork());
 		TextView txtSensorName = (TextView) findViewById(R.id.sensorName);
@@ -276,6 +326,7 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		value = sensorObj.getSensorMeasure().toString();
 		unit = sensorObj.getSensorMeasureUnit();
 		if ((unit != null)&&(unit != "null")) {
+			
 			value += " " + unit;
 		}
 		TextView txtSensorMeasure = (TextView) findViewById(R.id.sensorMeasure);
@@ -284,6 +335,7 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		value = sensorObj.getSensorMaxLoad().toString();
 		unit = sensorObj.getSensorMaxLoadUnit();
 		if ((unit != null)&&(unit != "null")) {
+			
 			value += " " + unit;
 		}
 		TextView txtSensorMaxLoad = (TextView) findViewById(R.id.sensorMaxLoad);
@@ -292,6 +344,7 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		value = sensorObj.getSensorSensitivity().toString();
 		unit = sensorObj.getSensorSensitivityUnit();
 		if ((unit != null)&&(unit != "null")) {
+			
 			value += " " + unit;
 		}        
 		TextView txtSensorSensitivity = (TextView) findViewById(R.id.sensorSensitivity);
@@ -300,6 +353,7 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		value = sensorObj.getSensorOffset().toString();
 		unit = sensorObj.getSensorOffsetUnit();
 		if ((unit != null)&&(unit != "null")) {
+			
 			value += " " + unit;
 		}
 		TextView txtSensorOffset = (TextView) findViewById(R.id.sensorOffset);
@@ -308,6 +362,7 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		value = sensorObj.getSensorAlarmAt().toString();
 		unit = sensorObj.getSensorAlarmAtUnit();
 		if ((unit != null)&&(unit != "null")) {
+			
 			value += " " + unit;
 		}
 		TextView txtSensorAlarmAt = (TextView) findViewById(R.id.sensorAlarmAt);
@@ -318,9 +373,10 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		
 		Button loadChart = (Button)findViewById(R.id.btnLoadChart);
 		loadChart.setOnClickListener(new OnClickListener(){
-
+			
 			@Override
 			public void onClick(View v) {
+				
 
 				RadioButton chartStrain = (RadioButton)findViewById(R.id.chartStrain);
 				RadioButton chartPower = (RadioButton)findViewById(R.id.chartPower);
@@ -329,12 +385,15 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 				Integer chartType = 0;
 
 				if (chartStrain.isChecked()) {
+					
 						chartType = 0;
 					} else 
 						if (chartPower.isChecked()) {
+							
 						chartType = 1;
 						} else 
 							if (chartCounter.isChecked()) {
+								
 						chartType = 2;
 							}
 
@@ -342,6 +401,7 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 				i = new Intent(LSSensorInfoActivity.this,LSSensorChartActivity.class);
 
 				if (i!=null) {
+					
 					Bundle bundle = new Bundle();
 
 					bundle.putParcelable("SENSOR_OBJ", sensorObj);
@@ -356,23 +416,28 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 	}	
 	
 	public class BackTask extends AsyncTask<String, Void, String> {
+		
 		private Activity activity;
 		private ProgressDialog progressDialog;
 		private String messageReturn = null;
 
 		public BackTask(Activity activity, ProgressDialog progressDialog) {
+			
 			this.progressDialog = progressDialog;
 			this.activity = activity;
 		}
 
 		@Override
 		protected void onPreExecute() {
+			
 			progressDialog.show();
 		}
 
 		@Override
 		protected String doInBackground(String... arg0) {
+			
 			try {
+				
 				// Server Request Ini
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session", LSHomeActivity.idSession);
@@ -381,8 +446,10 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 						params);
 
 				if (jArray != null) {
+					
 					boolean trobat = false;
 					for (int i = 0; i < jArray.length(); i++) {
+						
 						JSONObject jsonData = jArray.getJSONObject(i);
 						if ((sensorBundle.getSensorNetwork().equals(jsonData.getString("Nom")) && !trobat)){
 							LSNetwork o1 = new LSNetwork();
@@ -397,9 +464,11 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 						} 
 					}
 				} else {
+					
 					messageReturn = getString(R.string.msg_CommError);
 				}
 			} catch (Exception e) {
+				
 				messageReturn = getString(R.string.msg_ProcessError);
 			}
 			return messageReturn;
@@ -407,8 +476,71 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 
 		@Override
 		protected void onPostExecute(String pMessageReturn) {
+			
 			progressDialog.dismiss();
 			((LSSensorInfoActivity) activity).showError(pMessageReturn);
+		}
+	}
+	
+	private void insertToFaves() {
+
+		LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(this, "DBLSN", null, 1);
+		SQLiteDatabase db = lsndbh.getWritableDatabase();
+		SQLiteDatabase db1 = lsndbh.getReadableDatabase();
+
+		if (db != null) {
+			
+			Cursor c = db1.rawQuery("SELECT * FROM Sensor WHERE idSensor = '"
+					+ sensorObj.getSensorId() + "';", null);
+			if (c.getCount() == 0) {
+				
+				db.execSQL("INSERT INTO Sensor (name,idSensor,idNetwork,type,description,channel,poblacio,image,faves) " +
+						"VALUES ('"
+						+ sensorBundle.getSensorName()
+						+ "','"
+						+ sensorBundle.getSensorId()
+						+ "','"
+						+ sensorObj.getSensorNetwork()
+						+ "','"
+						+ sensorObj.getSensorType()
+						+ "','"
+						+ sensorObj.getSensorDesc()
+						+ "','"
+						+ sensorObj.getSensorChannel()
+						+ "','"
+						+ sensorObj.getSensorSituation()
+						+ "','"
+						+ sensorBundle.getSensorImageName() 
+						+ "',"
+						+ 1
+						+ ");");
+
+				CustomToast.showCustomToast(this, R.string.message_add_sensor,
+						CustomToast.IMG_CORRECT, CustomToast.LENGTH_SHORT);
+			} else {
+				
+				CustomToast.showCustomToast(this,
+						R.string.message_error_network,
+						CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_SHORT);
+			}
+			db.close();
+			c.close();
+		}
+	}
+
+	private void delToFaves() {
+		
+		LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(this, "DBLSN", null, 1);
+		SQLiteDatabase db = lsndbh.getWritableDatabase();
+
+		if (db != null) {
+			
+			db.execSQL("DELETE FROM Sensor WHERE idSensor ='"
+					+ sensorBundle.getSensorId() + "'");
+
+			CustomToast.showCustomToast(this, R.string.message_del_sensor,
+					CustomToast.IMG_CORRECT, CustomToast.LENGTH_SHORT);
+			db.close();
 		}
 	}
 }

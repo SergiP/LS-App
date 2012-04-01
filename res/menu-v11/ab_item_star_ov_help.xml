@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menu_star"
+        android:title="@string/menu_star"
+        android:icon="@drawable/ic_action_star_off"
+        android:orderInCategory="0"
+        android:showAsAction="always" />
+        
+    <item android:id="@+id/menu_over_flow"
+        android:title="@string/menu_overflow"
+        android:icon="@drawable/ic_action_overflow"
+        android:orderInCategory="2"
+        android:showAsAction="always" >
+        <menu>
+        	<item
+        		android:id="@+id/menu_help"
+        		android:title="@string/act_lbl_homHelp" />
+    	</menu>    
+	</item>
+</menu>

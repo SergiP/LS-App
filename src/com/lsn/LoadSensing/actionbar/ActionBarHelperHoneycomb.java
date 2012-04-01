@@ -15,39 +15,61 @@
 
 package com.lsn.LoadSensing.actionbar;
 
+import com.lsn.LoadSensing.R;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.Menu;
+import android.view.MenuItem;
 
 /**
- * An extension of {@link ActionBarHelper} that provides Android 3.0-specific functionality for
- * Honeycomb tablets. It thus requires API level 11.
+ * An extension of {@link ActionBarHelper} that provides Android 3.0-specific
+ * functionality for Honeycomb tablets. It thus requires API level 11.
  */
 public class ActionBarHelperHoneycomb extends ActionBarHelper {
-    @SuppressWarnings("unused")
 	private Menu mOptionsMenu;
-    
-    protected ActionBarHelperHoneycomb(Activity activity) {
-        super(activity);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        mOptionsMenu = menu;
-        
-        return super.onCreateOptionsMenu(menu);
-    }
+	protected ActionBarHelperHoneycomb(Activity activity) {
+		super(activity);
+	}
 
-    /**
-     * Returns a {@link Context} suitable for inflating layouts for the action bar. The
-     * implementation for this method in {@link ActionBarHelperICS} asks the action bar for a
-     * themed context.
-     */
-    protected Context getActionBarThemedContext() { 
-        return mActivity;
-    }
-    
-    public void changeIconHome() {
-    	mActivity.getActionBar().setDisplayHomeAsUpEnabled(true);
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		mOptionsMenu = menu;
+		final MenuItem starButton1 = mOptionsMenu.findItem(R.id.menu_star);
+		if (starButton1 != null) {
+			if (trobat) {
+				starButton1.setIcon(R.drawable.ic_action_star_on);
+			} else {
+				starButton1.setIcon(R.drawable.ic_action_star_off);
+			}
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/**
+	 * Returns a {@link Context} suitable for inflating layouts for the action
+	 * bar. The implementation for this method in {@link ActionBarHelperICS}
+	 * asks the action bar for a themed context.
+	 */
+	protected Context getActionBarThemedContext() {
+		return mActivity;
+	}
+
+	public void changeIconHome() {
+		mActivity.getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+	
+	public void setFavesActionItem(boolean faves) {
+
+		if (mOptionsMenu == null) {
+			return;
+		}
+		final MenuItem starButton1 = mOptionsMenu.findItem(R.id.menu_star);
+		if (starButton1 != null) {
+
+			starButton1.setIcon(faves ? R.drawable.ic_action_star_off
+					: R.drawable.ic_action_star_on);
+		}
+	}
 }

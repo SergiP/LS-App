@@ -85,6 +85,9 @@
     <string name="message_add_network">Network added to favorites</string>
     <string name="message_add_sensor">Sensor added to favorites</string>
     <string name="message_add_image">Image added to favorites</string>
+    <string name="message_del_network">Network dropped to favorites</string>
+    <string name="message_del_sensor">Sensor dropped to favorites</string>
+    
     <!-- Faves Activity End -->
     <!-- NetList Activity Init -->
     <string name="strSituation">Situation:</string>
@@ -169,7 +172,8 @@
     <string name="menu_help">Help</string>
     <string name="menu_search">Search</string>
     <string name="menu_photo">Photo</string>
-     <string name="menu_mapmode">Map mode</string>
+    <string name="menu_mapmode">Map mode</string>
+    <string name="menu_star">Faves</string>
     
     <string name="strSearch">Find</string>
     <string name="strFilter">Filter</string>

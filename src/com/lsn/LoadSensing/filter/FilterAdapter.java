@@ -303,7 +303,7 @@ public class FilterAdapter<T extends ListFilter> extends BaseAdapter implements 
     public int getCount() {
         return mObjects.size();
     }
-
+    
     /**
      * {@inheritDoc}
      */

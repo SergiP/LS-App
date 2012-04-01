@@ -21,7 +21,8 @@
     <item type="id" name="actionbar_compat_item_refresh_progress" />
     <item type="id" name="actionbar_compat_item_refresh" />
     <item type="id" name="actionbar_compat_item_overlay" />
-    
+    <item type="id" name="actionbar_compat_item_faves" />    
+       
     <item type="id" name="menu_info" />
     <item type="id" name="menu_config" />
 </resources>

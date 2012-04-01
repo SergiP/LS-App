@@ -86,6 +86,8 @@
     <string name="message_add_network">Xarxa afegida a favorits</string>
     <string name="message_add_sensor">Sensor afegit a favorits</string>
     <string name="message_add_image">Imatge afegida a favorits</string>
+    <string name="message_del_network">Xarxa eliminada de favorits</string>
+    <string name="message_del_sensor">Sensor eliminat de favorits</string>
 
     <!-- Faves Activity End -->
     <!-- NetList Activity Init -->
@@ -174,6 +176,7 @@
     <string name="menu_search">Buscar</string>
     <string name="menu_photo">Fotografia</string>
     <string name="menu_mapmode">Tipus de mapa</string>
+    <string name="menu_star">Favorits</string>
     
     <string name="strSearch">Cercar</string>
     <string name="strFilter">Filtrar</string>

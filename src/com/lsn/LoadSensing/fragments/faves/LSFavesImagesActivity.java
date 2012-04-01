@@ -1,22 +1,22 @@
-//    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
-//    
-//    Copyright (C) 2011-2012
-//    Authors:
-//        Sergio González Díez        [sergio.gd@gmail.com]
-//        Sergio Postigo Collado      [spostigoc@gmail.com]
+// LS App - LoadSensing Application - https://github.com/Skamp/LS-App
 //
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
+// Copyright (C) 2011-2012
+// Authors:
+// Sergio González Díez [sergio.gd@gmail.com]
+// Sergio Postigo Collado [spostigoc@gmail.com]
 //
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-//    You should have received a copy of the GNU General Public License
-//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 package com.lsn.LoadSensing.fragments.faves;
 
@@ -53,45 +53,48 @@ import android.widget.ListView;
 
 public class LSFavesImagesActivity extends ListFragment {
 
-	private ProgressDialog       m_ProgressDialog = null;
-	private ArrayList<LSImage>   m_images = null;
-	private LSImageAdapter       m_adapter;
-	private Runnable             viewImages;
+	private ProgressDialog m_ProgressDialog = null;
+	private ArrayList<LSImage> m_images = null;
+	private LSImageAdapter m_adapter;
+	private Runnable viewImages;
 
 	private Bitmap imgSensor;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-			
-		if (container == null) {      
+
+		if (container == null) {
 			return null;
 		}
-			
-		View v = inflater.inflate(R.layout.act_04_favesimages, container, false);
+
+		View v = inflater
+				.inflate(R.layout.act_04_favesimages, container, false);
 
 		m_images = new ArrayList<LSImage>();
-		this.m_adapter = new LSImageAdapter(getActivity(),R.layout.row_list_image,m_images);
+		this.m_adapter = new LSImageAdapter(getActivity(),
+				R.layout.row_list_image, m_images);
 		setListAdapter(this.m_adapter);
 
-		viewImages = new Runnable()
-		{
+		viewImages = new Runnable() {
 
 			@Override
 			public void run() {
 				getImages();
 			}
 		};
-		Thread thread = new Thread(null,viewImages,"ViewImages");
+		Thread thread = new Thread(null, viewImages, "ViewImages");
 		thread.start();
-		m_ProgressDialog = ProgressDialog.show(getActivity(), getResources().getString(R.string.msg_PleaseWait), getResources().getString(R.string.msg_retrievImages), true);
+		m_ProgressDialog = ProgressDialog.show(getActivity(), getResources()
+				.getString(R.string.msg_PleaseWait),
+				getResources().getString(R.string.msg_retrievImages), true);
 
 		return v;
 	}
-	
+
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-	
+
 		registerForContextMenu(getListView());
 	}
 
@@ -99,9 +102,9 @@ public class LSFavesImagesActivity extends ListFragment {
 
 		@Override
 		public void run() {
-			if(m_images != null && m_images.size() > 0){
+			if (m_images != null && m_images.size() > 0) {
 				m_adapter.notifyDataSetChanged();
-				for(int i=0;i<m_images.size();i++)
+				for (int i = 0; i < m_images.size(); i++)
 					m_adapter.add(m_images.get(i));
 			}
 			m_ProgressDialog.dismiss();
@@ -114,7 +117,9 @@ public class LSFavesImagesActivity extends ListFragment {
 		@Override
 		public void run() {
 
-			CustomToast.showCustomToast(getActivity(),R.string.msg_ProcessError,CustomToast.IMG_AWARE,CustomToast.LENGTH_SHORT);
+			CustomToast.showCustomToast(getActivity(),
+					R.string.msg_ProcessError, CustomToast.IMG_AWARE,
+					CustomToast.LENGTH_SHORT);
 
 		}
 	};
@@ -123,7 +128,8 @@ public class LSFavesImagesActivity extends ListFragment {
 
 		try {
 			m_images = new ArrayList<LSImage>();
-			LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(getActivity(), "DBLSN", null, 1);
+			LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(getActivity(),
+					"DBLSN", null, 1);
 			SQLiteDatabase db = lsndbh.getReadableDatabase();
 
 			if (db != null) {
@@ -136,9 +142,12 @@ public class LSFavesImagesActivity extends ListFragment {
 						String idNetwork = c.getString(c
 								.getColumnIndex("idNetwork"));
 						String city = c.getString(c.getColumnIndex("poblacio"));
-						String image = c.getString(c.getColumnIndex("imageFile"));
+						String image = c.getString(c
+								.getColumnIndex("imageFile"));
 						try {
-							imgSensor = LSFunctions.getRemoteImage(new URL("http://viuterrassa.com/Android/Imatges/"+image));
+							imgSensor = LSFunctions.getRemoteImage(new URL(
+									"http://viuterrassa.com/Android/Imatges/"
+											+ image));
 						} catch (MalformedURLException e) {
 							e.printStackTrace();
 						}
@@ -155,12 +164,11 @@ public class LSFavesImagesActivity extends ListFragment {
 
 						c.move(1);
 					}
-					Log.i("INFO", "Close cursor");
 					c.close();
 				}
 				db.close();
 				Log.i("ARRAY", "" + m_images.size());
-			}	
+			}
 		} catch (Exception e) {
 			Log.e("BACKGROUND_PROC", e.getMessage());
 			getActivity().runOnUiThread(returnErr);
@@ -172,12 +180,13 @@ public class LSFavesImagesActivity extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 
 		Intent i = null;
-		i = new Intent(getActivity(),LSBigImageActivity.class);
+		i = new Intent(getActivity(), LSBigImageActivity.class);
 
-		if (i!=null){
+		if (i != null) {
 			Bundle bundle = new Bundle();
 
-			bundle.putParcelable("IMAGE_OBJ", m_images.get(position));
+			bundle.putString("IMAGE_ID", m_images.get(position).getImageId());
+			bundle.putString("NETWORK_NAME", m_images.get(position).getImageNetwork());
 			i.putExtras(bundle);
 
 			startActivity(i);
@@ -195,7 +204,8 @@ public class LSFavesImagesActivity extends ListFragment {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(getActivity(), "DBLSN", null, 1);
+		LSNSQLiteHelper lsndbh = new LSNSQLiteHelper(getActivity(), "DBLSN",
+				null, 1);
 		SQLiteDatabase db = lsndbh.getWritableDatabase();
 
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item

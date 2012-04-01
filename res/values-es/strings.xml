@@ -85,6 +85,9 @@
     <string name="message_add_network">Red añadida a favoritos</string>
     <string name="message_add_sensor">Sensor añadido a favoritos</string>
     <string name="message_add_image">Imagen añadida a favoritos</string>
+    <string name="message_del_network">Red eliminada de favoritos</string>
+    <string name="message_del_sensor">Sensor eliminado de favoritos</string>
+    
     <!-- Faves Activity End -->
     <!-- NetList Activity Init -->
     <string name="strSituation">Situación:</string>
@@ -167,7 +170,8 @@
     <string name="menu_help">Ayuda</string>
     <string name="menu_search">Buscar</string>
     <string name="menu_photo">Fotografía</string>
-     <string name="menu_mapmode">Tipo de mapa</string>
+    <string name="menu_mapmode">Tipo de mapa</string>
+    <string name="menu_star">Favoritos</string>
       
     <string name="strSearch">Buscar</string>
     <string name="strFilter">Filtrar</string>
