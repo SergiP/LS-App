@@ -177,6 +177,7 @@
     <string name="menu_photo">Fotografia</string>
     <string name="menu_mapmode">Tipus de mapa</string>
     <string name="menu_star">Favorits</string>
+    <string name="menu_home">Inici</string>
     
     <string name="strSearch">Cercar</string>
     <string name="strFilter">Filtrar</string>

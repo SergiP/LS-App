@@ -5,7 +5,7 @@ import com.lsn.LoadSensing.actionbar.ActionBarActivity;
 
 import android.os.Bundle;
 
-public class LSHelpListNetActivity extends ActionBarActivity {
+public class LSHelpSensorInfoActivity extends ActionBarActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

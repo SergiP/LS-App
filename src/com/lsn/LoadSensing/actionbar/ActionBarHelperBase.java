@@ -167,6 +167,13 @@ public class ActionBarHelperBase extends ActionBarHelper {
 		.setIcon(R.drawable.ic_action_help);
 	}
 	
+	public void optionsMenuHome(Menu menu) {
+
+		// Add help icon on physical menu button
+		menu.add(Menu.NONE, R.id.menu_home, Menu.NONE, R.string.menu_home)
+		.setIcon(R.drawable.ic_action_help);
+	}
+	
 	/** {@inheritDoc} */
 	@Override
 	protected void onTitleChanged(CharSequence title, int color) {

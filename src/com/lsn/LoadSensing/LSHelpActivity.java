@@ -23,7 +23,7 @@
 package com.lsn.LoadSensing;
 
 import com.lsn.LoadSensing.actionbar.ActionBarActivity;
-import com.lsn.LoadSensing.help.LSHelpListNetActivity;
+import com.lsn.LoadSensing.help.LSHelpNetListActivity;
 import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
@@ -53,7 +53,7 @@ public class LSHelpActivity extends ActionBarActivity {
 					public void onClick(View v) {
 
 						Intent i = new Intent(LSHelpActivity.this,
-								LSHelpListNetActivity.class);
+								LSHelpNetListActivity.class);
 						startActivity(i);
 					}
 				});

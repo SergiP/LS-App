@@ -164,7 +164,7 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 					.getString(R.string.msg_retrievNetworks), true);
 		}
 	}
-
+	
 	private TextWatcher filterTextWatcher = new TextWatcher() {
 
 		public void beforeTextChanged(CharSequence s, int start, int count,
@@ -695,6 +695,7 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 		case android.R.id.home:
 
 			i = new Intent(LSNetCloserActivity.this, LSHomeActivity.class);
+			
 			break;
 
 		case R.id.menu_search:

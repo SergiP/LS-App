@@ -63,8 +63,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 
 	private LSImage 						imageObj;
 	private LSNetwork 						networkObj;
-	private LSSensor 						sensorObj = null;
-
+	
 	private GestureDetector 				gestureScanner;
 
 	private boolean 						moveLeft;
@@ -269,6 +268,8 @@ public class LSBigImageActivity extends ActionBarActivity implements
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.ab_item_null, menu);
 		
+		getActionBarHelper().optionsMenuHome(menu);
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -288,7 +289,11 @@ public class LSBigImageActivity extends ActionBarActivity implements
 					| Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtras(bundle);
 			break;
-
+		
+		case R.id.menu_home:
+			
+			i = new Intent(LSBigImageActivity.this, LSHomeActivity.class);
+			break;
 		}
 
 		if (i != null) {
@@ -366,9 +371,9 @@ public class LSBigImageActivity extends ActionBarActivity implements
 					String x = jsonData.getString("x");
 					String y = jsonData.getString("y");
 
-					sensorObj = new LSSensor();
-					sensorObj.setSensorId(jsonData.getString("id"));
-					sensorObj.setSensorName(jsonData.getString("sensor"));
+					final LSSensor s1 = new LSSensor();
+					s1.setSensorId(jsonData.getString("id"));
+					s1.setSensorName(jsonData.getString("sensor"));
 
 					// s1.setSensorChannel(jsonData.getString("canal"));
 					// s1.setSensorType(jsonData.getString("tipus"));
@@ -405,7 +410,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 										Bundle bundle = new Bundle();
 
 										bundle.putParcelable("SENSOR_OBJ",
-												sensorObj);
+												s1);
 										bundle.putParcelable("NETWORK_OBJ",
 												networkObj);
 										i.putExtras(bundle);

@@ -46,6 +46,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -91,17 +92,6 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		// Change home icon (<Icon)
 		getActionBarHelper().changeIconHome();
 		
-		star = getActionBarHelper().starSensor(sensorBundle.getSensorId());
-
-		if (star) { // network are in faves
-			
-			getActionBarHelper().setFavesActionItem(star);
-			cont = cont + 1;
-		} else {
-			
-			getActionBarHelper().setFavesActionItem(star);
-		}
-		
 		ProgressDialog progressDialog = new ProgressDialog(LSSensorInfoActivity.this);
 		progressDialog.setTitle(getString(R.string.msg_PleaseWait));
 		progressDialog.setMessage(getString(R.string.msg_retrievData));
@@ -109,8 +99,19 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 
 		SensorInfoTask sensorInfoTask = new SensorInfoTask(LSSensorInfoActivity.this,progressDialog);
 		sensorInfoTask.execute();
-		
+
 		if (sensorSerial == null) {
+			
+			star = getActionBarHelper().starSensor(sensorBundle.getSensorId());
+
+			if (star) { // network are in faves
+				
+				getActionBarHelper().setFavesActionItem(star);
+				cont = cont + 1;
+			} else {
+				
+				getActionBarHelper().setFavesActionItem(star);
+			}
 			
 			BackTask backTask = new BackTask(LSSensorInfoActivity.this,progressDialog);
 			backTask.execute();
@@ -146,7 +147,7 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		
 		case android.R.id.home:
 			
-			if (sensorSerial == null) {
+			if (networkObj != null) {
 				
 				i = new Intent(LSSensorInfoActivity.this, LSSensorListActivity.class);
 				
@@ -163,15 +164,17 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 			
 		case R.id.menu_star:
 			
-			cont = cont + 1;
-			if (cont % 2 == 0) {
-
-				getActionBarHelper().setFavesActionItem(true);
-				delToFaves();
-			} else {
-
+			if (sensorSerial == null) {
+				cont = cont + 1;
+				if (cont % 2 == 0) {
+					
+					getActionBarHelper().setFavesActionItem(true);
+					delToFaves();
+				} else {
+					
 				getActionBarHelper().setFavesActionItem(false);
 				insertToFaves();
+				}
 			}
 			break;
 			
@@ -371,6 +374,10 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 		TextView txtSensorLastTare = (TextView) findViewById(R.id.sensorLastTare);
 		txtSensorLastTare.setText(sensorObj.getSensorLastTare().toString());
 		
+		if (sensorObj.getSensorMeasure() > sensorObj.getSensorAlarmAt()) {
+			txtSensorMeasure.setTextColor(Color.RED);
+		}
+		
 		Button loadChart = (Button)findViewById(R.id.btnLoadChart);
 		loadChart.setOnClickListener(new OnClickListener(){
 			
@@ -407,6 +414,7 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 					bundle.putParcelable("SENSOR_OBJ", sensorObj);
 					bundle.putInt("CHART_TYPE",chartType);
 					bundle.putParcelable("NETWORK_OBJ", networkObj);
+					bundle.getString("SENSOR_SERIAL", sensorSerial);
 					i.putExtras(bundle);
 
 					startActivity(i);
@@ -510,7 +518,8 @@ public class LSSensorInfoActivity extends ActionBarActivity {
 						+ "','"
 						+ sensorObj.getSensorSituation()
 						+ "','"
-						+ sensorBundle.getSensorImageName() 
+						+ "bulo.png"
+						//+ sensorBundle.getSensorImageName() 
 						+ "',"
 						+ 1
 						+ ");");

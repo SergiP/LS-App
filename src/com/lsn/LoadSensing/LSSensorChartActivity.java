@@ -113,6 +113,8 @@ public class LSSensorChartActivity extends ActionBarActivity {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.ab_item_null, menu);
 		
+		getActionBarHelper().optionsMenuHome(menu);
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -134,6 +136,10 @@ public class LSSensorChartActivity extends ActionBarActivity {
 			i.putExtras(bundle);
 			break;
 			
+		case R.id.menu_home:
+			
+			i = new Intent(LSSensorChartActivity.this, LSHomeActivity.class);
+			break;
 		}	
 		
 		if (i != null) {

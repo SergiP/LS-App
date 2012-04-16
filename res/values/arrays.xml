@@ -3,7 +3,7 @@
 
     <string-array name="mapTypeEntries">
         <item>Google Maps</item>
-        <item>Open StreetMap</item>
+        <item>Open Street Map</item>
     </string-array>
     <string-array name="mapTypeValues">
         <item>google</item>

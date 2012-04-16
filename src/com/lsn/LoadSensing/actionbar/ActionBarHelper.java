@@ -113,6 +113,9 @@ public abstract class ActionBarHelper {
 	
 	public void optionsMenuHelp(Menu menu) {
 	}
+	
+	public void optionsMenuHome(Menu menu) {
+	}
 
 	public void setFavesActionItem(boolean faves) {
 	}
