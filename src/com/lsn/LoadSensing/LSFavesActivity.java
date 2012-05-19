@@ -41,7 +41,6 @@ import com.lsn.LoadSensing.actionbar.ActionBarFragmentActivity;
 import com.lsn.LoadSensing.fragments.faves.LSFavesImagesActivity;
 import com.lsn.LoadSensing.fragments.faves.LSFavesNetworksActivity;
 import com.lsn.LoadSensing.fragments.faves.LSFavesSensorsActivity;
-import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
 public class LSFavesActivity extends ActionBarFragmentActivity implements
@@ -229,8 +228,6 @@ public class LSFavesActivity extends ActionBarFragmentActivity implements
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.ab_item_null, menu);
 
-		getActionBarHelper().optionsMenuHelp(menu);
-
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -242,12 +239,6 @@ public class LSFavesActivity extends ActionBarFragmentActivity implements
 		case android.R.id.home:
 			i = new Intent(LSFavesActivity.this, LSHomeActivity.class);
 			break;
-
-		case R.id.menu_help:
-			CustomToast.showCustomToast(this, R.string.msg_UnderDevelopment,
-					CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_SHORT);
-			break;
-
 		}
 
 		if (i != null) {
