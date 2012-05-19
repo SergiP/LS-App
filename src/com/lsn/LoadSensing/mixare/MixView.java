@@ -203,6 +203,7 @@ public class MixView extends Activity implements SensorEventListener, OnTouchLis
 		alert.show();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -473,7 +474,7 @@ public class MixView extends Activity implements SensorEventListener, OnTouchLis
 			searchNotificationTxt.setTextColor(Color.WHITE);
 
 			searchNotificationTxt.setOnTouchListener(this);
-			addContentView(searchNotificationTxt, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+			addContentView(searchNotificationTxt, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		}
 		else if(!dataView.isFrozen() && searchNotificationTxt != null){
 			searchNotificationTxt.setVisibility(View.GONE);
@@ -797,6 +798,7 @@ class CameraSurface extends SurfaceView implements SurfaceHolder.Callback {
 	SurfaceHolder holder;
 	Camera camera;
 
+	@SuppressWarnings("deprecation")
 	CameraSurface(Context context) {
 		super(context);
 

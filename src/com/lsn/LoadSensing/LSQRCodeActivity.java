@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -46,32 +46,27 @@ public class LSQRCodeActivity extends Activity {
 		
 		super.onResume();
 		
-		if (!fromQRReader) {
-			
+		if (!fromQRReader) {	
 			fromQRReader= true;
 			//Check if QRCode reader intent is available
 			if (LSFunctions.isIntentAvailable(this, intentQRCode)) {
-				
 				//Start QRCode reader intent
 				Intent intent = new Intent(intentQRCode);
 				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 				startActivityForResult(intent,0);
 			} else {
-				
 				//Show error message
 				CustomToast.showCustomToast(this,
 						R.string.msg_QRIntentError,
 						CustomToast.IMG_ERROR,
 						CustomToast.LENGTH_LONG);
-				try {
-					
+				try {				
 					//Access Android Market to install Google Googles
 					Intent i = new Intent();
 					i.setAction(Intent.ACTION_VIEW);
 					i.setData(Uri.parse("market://search?q=pname:com.google.android.apps.unveil"));
 					startActivity(i); 
 				} catch (Exception ex) {
-					
 					CustomToast.showCustomToast(this,
 							R.string.msg_ErrMarketAccess,
 							CustomToast.IMG_ERROR,
@@ -81,7 +76,6 @@ public class LSQRCodeActivity extends Activity {
 				this.finish();
 			}
 		} else {
-			
 			fromQRReader=false;
 			onBackPressed();
 		}
@@ -91,22 +85,18 @@ public class LSQRCodeActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		
 		if (requestCode==0) {
-			
 			if (resultCode == RESULT_OK) {
-				
 				// Handle successful scan
 				String contents = intent.getStringExtra("SCAN_RESULT");
 				String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 
 				// Check detected code is QRCode
 				if (format.equals("QR_CODE")) {
-					
 					Intent i = null;
 					
 					i = new Intent(LSQRCodeActivity.this,LSSensorInfoActivity.class);
 
 					if (i!=null) {
-						
 						Bundle bundle = new Bundle();
 						// Inform bundle information with the id of sensor detected
 						bundle.putString("SENSOR_SERIAL", contents);
@@ -124,8 +114,7 @@ public class LSQRCodeActivity extends Activity {
 						// Start activity showing the information of the sensor detected						
 						startActivity(i);
 					}
-				} else {
-					
+				} else {				
 					//Display error if code is not QRCode 
 					CustomToast.showCustomToast(this,
 							R.string.msg_QRFormatError,
@@ -136,7 +125,6 @@ public class LSQRCodeActivity extends Activity {
 					onBackPressed();
 				}
 			} else if (resultCode == RESULT_CANCELED) {
-				
 				// Go to Home activity if action is cancelled
 				fromQRReader=false;
 				onBackPressed();

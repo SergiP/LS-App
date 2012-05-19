@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -108,7 +108,6 @@ public class LSNetListActivity extends ActionBarListActivity {
 		public void run() {
 			
 			if(m_networks != null && m_networks.size() > 0){
-				
 				m_adapter.notifyDataSetChanged();
 				for(int i=0;i<m_networks.size();i++)
 					m_adapter.add(m_networks.get(i));
@@ -131,7 +130,6 @@ public class LSNetListActivity extends ActionBarListActivity {
 	private void getNetworks() {
 		
 		try{
-			
 			m_networks = new ArrayList<LSNetwork>();
 			
 			// Server Request Ini
@@ -140,9 +138,7 @@ public class LSNetListActivity extends ActionBarListActivity {
 			JSONArray jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getLlistatXarxes.php",params);
 
 			if (jArray != null) {
-				
 				for (int i = 0; i<jArray.length(); i++) {
-					
 					JSONObject jsonData = jArray.getJSONObject(i);
 					LSNetwork o1 = new LSNetwork();
 					o1.setNetworkName(jsonData.getString("Nom"));
@@ -153,7 +149,6 @@ public class LSNetListActivity extends ActionBarListActivity {
 					m_networks.add(o1);
 				}
 			} else {
-				
 				errMessage = R.string.msg_CommError;
 				runOnUiThread(returnErr); 
 			}
@@ -172,9 +167,7 @@ public class LSNetListActivity extends ActionBarListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ab_item_search_ov_help, menu);
-		
-		getActionBarHelper().optionsMenuHelp(menu);
+		menuInflater.inflate(R.menu.ab_item_search, menu);
 		
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -186,39 +179,27 @@ public class LSNetListActivity extends ActionBarListActivity {
 		
 		switch (item.getItemId()) {
 		
-		case android.R.id.home:
-			
+		case android.R.id.home:	
 			i = new Intent(LSNetListActivity.this, LSHomeActivity.class);
 			break;
 			
 		case R.id.menu_search:
-			
 			filter++;
 			InputMethodManager inputMgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 			
 			if (filter % 2 == 0) {
-				
 				filterText.setVisibility(View.VISIBLE);
 				filterText.requestFocus();
 				inputMgr.toggleSoftInput(0, 0);
 			} else {
-				
 				filterText.setVisibility(View.INVISIBLE);
 				filterText.setText("");
 				inputMgr.hideSoftInputFromWindow(filterText.getWindowToken(), 0);
 			}
-			break; 
-			
-		case R.id.menu_help:
-			
-			// TODO
-			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
-			break; 
-			
+			break; 			
 		}	
 		
 		if (i != null) {
-			
 			startActivity(i);
 		}
 		

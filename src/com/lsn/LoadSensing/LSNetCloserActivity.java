@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -63,28 +63,28 @@ import android.widget.TextView;
 
 public class LSNetCloserActivity extends ActionBarListActivity {
 
-	private LocationManager 		locManager;
-	private LocationListener 		locationListenerGPS;
-	private LocationListener 		locationListenerNetwork;
-	private GetLocation 			getLocation;
-	private UpdateNetworks 			updateNetworks;
+	private LocationManager locManager;
+	private LocationListener locationListenerGPS;
+	private LocationListener locationListenerNetwork;
+	private GetLocation getLocation;
+	private UpdateNetworks updateNetworks;
 
-	private boolean 				gpsStatus;
-	private boolean 				netStatus;
-	private static boolean 			running;
+	private boolean gpsStatus;
+	private boolean netStatus;
+	private static boolean running;
 
-	private ProgressDialog 			m_ProgressDialog = null;
-	private ArrayList<LSNetwork> 	m_networks = null;
-	private LSNetworkAdapter 		m_adapter;
-	private Runnable 				viewNetworks;
+	private ProgressDialog m_ProgressDialog = null;
+	private ArrayList<LSNetwork> m_networks = null;
+	private LSNetworkAdapter m_adapter;
+	private Runnable viewNetworks;
 
-	private Position 				currentPosition;
-	private String 					typeUnit = null;
-	private Integer 				maxDistance = 0;
-	private Integer 				waitTime = 0;
-	private int 					filter = 1;
+	private Position currentPosition;
+	private String typeUnit = null;
+	private Integer maxDistance = 0;
+	private Integer waitTime = 0;
+	private int filter = 1;
 
-	private EditText 				filterText = null;
+	private EditText filterText = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -110,7 +110,6 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 		retrievePreferences();
 
 		if (locManager == null) {
-
 			// Obtain reference to LocationManager
 			locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		}
@@ -120,7 +119,6 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 		checkNETStatus();
 
 		if (!gpsStatus && !netStatus) {
-
 			// Show error message if there are no active services
 			CustomToast.showCustomToast(this, R.string.msg_NOLocServ,
 					CustomToast.IMG_ERROR, CustomToast.LENGTH_LONG);
@@ -138,7 +136,6 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 			TextView txtDisplayInfo = (TextView) findViewById(R.id.txtDisplayInfo);
 			txtDisplayInfo.setText(strDisplayInfo);
 		} else {
-
 			// Obtain location using Async Task
 			getLocation = new GetLocation();
 			getLocation.execute();
@@ -164,7 +161,7 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 					.getString(R.string.msg_retrievNetworks), true);
 		}
 	}
-	
+
 	private TextWatcher filterTextWatcher = new TextWatcher() {
 
 		public void beforeTextChanged(CharSequence s, int start, int count,
@@ -204,11 +201,9 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 	private void checkNETStatus() {
 
 		try {
-
 			gpsStatus = locManager
 					.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		} catch (Exception ex) {
-
 			Log.e("BACKGROUND_PROC",
 					"Exception checkNETStatus" + ex.getMessage());
 		}
@@ -217,11 +212,9 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 	private void checkGPSStatus() {
 
 		try {
-
 			netStatus = locManager
 					.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 		} catch (Exception ex) {
-
 			Log.e("BACKGROUND_PROC",
 					"Exception checkGPStatus" + ex.getMessage());
 		}
@@ -233,7 +226,6 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 		public void run() {
 
 			if (m_networks != null && m_networks.size() > 0) {
-
 				m_adapter.notifyDataSetChanged();
 				for (int i = 0; i < m_networks.size(); i++)
 					m_adapter.add(m_networks.get(i));
@@ -267,7 +259,6 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 	private void getNetworks() {
 
 		try {
-
 			m_networks = new ArrayList<LSNetwork>();
 
 			// Server Request Ini
@@ -278,9 +269,7 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 					params);
 
 			if (jArray != null) {
-
 				for (int i = 0; i < jArray.length(); i++) {
-
 					JSONObject jsonData = jArray.getJSONObject(i);
 					LSNetwork network = new LSNetwork();
 					network.setNetworkName(jsonData.getString("Nom"));
@@ -291,40 +280,32 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 					network.setNetworkSituation(jsonData.getString("Poblacio"));
 
 					if (currentPosition != null) {
-
 						// Check distance unit configured
 						if (typeUnit.equals("mi")) { // miles
-
 							// Check if current network is closer than
 							// maxDistance configured in miles
 							if (network.getNetworkPosition().milesDistanceTo(
 									currentPosition) < maxDistance) {
-
 								m_networks.add(network);
 							}
 						} else { // Kilometers or not configured
-
 							// Check if current network is closer than
 							// maxDistance configured in kilometers
 							if ((network.getNetworkPosition().metersDistanceTo(
 									currentPosition) / 1000) < maxDistance) {
-
 								m_networks.add(network);
 							}
 						}
 					} else {
-
 						runOnUiThread(returnErr);
 					}
 				}
 			} else {
-
 				runOnUiThread(returnErr);
 			}
 
 			Log.i("ARRAY", "" + m_networks.size());
 		} catch (Exception e) {
-
 			Log.e("BACKGROUND_PROC", "getNetworks()" + e.getMessage());
 			runOnUiThread(returnErr);
 		}
@@ -340,12 +321,10 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 		// Disable updates of location when user goes out of the activity
 		if (gpsStatus || netStatus) {
 			if (gpsStatus) {
-
 				locManager.removeUpdates(locationListenerGPS);
 			}
 
 			if (netStatus) {
-
 				locManager.removeUpdates(locationListenerNetwork);
 			}
 
@@ -366,12 +345,10 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 		// Disable updates of location when user goes out of the activity
 		if (gpsStatus || netStatus) {
 			if (gpsStatus) {
-
 				locManager.removeUpdates(locationListenerGPS);
 			}
 
 			if (netStatus) {
-
 				locManager.removeUpdates(locationListenerNetwork);
 			}
 
@@ -393,7 +370,6 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 		protected Void doInBackground(Void... arg0) {
 
 			while (running) {
-
 				getCurrentLocation();
 				publishProgress(curPosition);
 			}
@@ -507,7 +483,6 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 			txtLocation.setText(strYourLocation);
 
 			if (displayInfo) {
-
 				String strDisplayInfoFormat = getResources().getString(
 						R.string.strDisplayInfo);
 
@@ -567,7 +542,6 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 		protected Void doInBackground(Void... arg0) {
 
 			while (running) {
-
 				SystemClock.sleep(waitTime * 1000);
 				m_networks = new ArrayList<LSNetwork>();
 
@@ -580,13 +554,10 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 				Log.i("INFO", "Call to server");
 
 				if (jArray != null) {
-
 					JSONObject jsonData;
 
 					try {
-
 						for (int i = 0; i < jArray.length(); i++) {
-
 							jsonData = jArray.getJSONObject(i);
 							LSNetwork network = new LSNetwork();
 							network.setNetworkName(jsonData.getString("Nom"));
@@ -601,27 +572,22 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 
 							// Check distance unit configured
 							if (typeUnit.equals("mi")) { // miles
-
 								// Check if current network is closer than
 								// maxDistance configured in miles
 								if (network.getNetworkPosition()
 										.milesDistanceTo(currentPosition) < maxDistance) {
-
 									m_networks.add(network);
 								}
 							} else { // kilometers or not configured
-
 								// Check if current network is closer than
 								// maxDistance configured in kilometers
 								if ((network.getNetworkPosition()
 										.metersDistanceTo(currentPosition) / 1000) < maxDistance) {
-
 									m_networks.add(network);
 								}
 							}
 						}
 					} catch (JSONException e) {
-
 						Log.e("BACKGROUND_PROC",
 								"JSONException" + e.getMessage());
 						e.printStackTrace();
@@ -653,7 +619,6 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 		protected void onProgressUpdate(ArrayList<LSNetwork>... values) {
 
 			if (lastPosition != currentPosition) {
-
 				m_adapter.clear();
 				m_adapter.notifyDataSetChanged();
 				for (int i = 0; i < m_networks.size(); i++)
@@ -677,11 +642,10 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ab_item_search_ov_conf_help, menu);
-		
-		getActionBarHelper().optionsMenuConfig(menu);
-		getActionBarHelper().optionsMenuHelp(menu);
+		menuInflater.inflate(R.menu.ab_item_search_ov_conf, menu);
 
+		getActionBarHelper().optionsMenuConfig(menu);
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -691,15 +655,11 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 		Intent i = null;
 
 		switch (item.getItemId()) {
-
 		case android.R.id.home:
-
 			i = new Intent(LSNetCloserActivity.this, LSHomeActivity.class);
-			
 			break;
 
 		case R.id.menu_search:
-
 			filter++;
 			InputMethodManager inputMgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -714,22 +674,14 @@ public class LSNetCloserActivity extends ActionBarListActivity {
 
 			}
 			break;
-			
+
 		case R.id.menu_config:
-
 			i = new Intent(LSNetCloserActivity.this, LSConfigActivity.class);
-			break;
-			
-		case R.id.menu_help:
-
-			CustomToast.showCustomToast(this, R.string.msg_UnderDevelopment,
-					CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_SHORT);
 			break;
 
 		}
 
 		if (i != null) {
-
 			startActivity(i);
 		}
 

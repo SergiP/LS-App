@@ -10,7 +10,7 @@ LS App is an application that allows remote access to real time and historic inf
 
 The development has been done in collaboration with [WorldSensing](http://www.worldsensing.com/) enterprise, that is involved in the development of communication systems and provides services related with sensor networks.
 
-Instructions
+Instructions 
 ------------
 
 * At least a Android 2.1 (SDK Version 7) is required.

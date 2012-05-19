@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -67,7 +67,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
 			
 			// Get intent (string) to AugReal
@@ -75,7 +74,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 		}
 		
 		if (networkId != null) {
-			
 			ProgressDialog progressDialog = new ProgressDialog(
 					LSNetInfoActivity.this);
 			progressDialog.setTitle(getString(R.string.msg_PleaseWait));
@@ -88,7 +86,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 			getData.execute();
 			
 		} else {
-			
 			networkInFaves();
 			networkData();
 		}
@@ -103,14 +100,12 @@ public class LSNetInfoActivity extends ActionBarActivity {
 			public void onClick(View v) {
 
 				if (networkObj != null) {
-
 					Intent i = null;
 
 					i = new Intent(LSNetInfoActivity.this,
 							LSSensorListActivity.class);
 
 					if (i != null) {
-
 						Bundle bundle = new Bundle();
 						bundle.putParcelable("NETWORK_OBJ", networkObj);
 
@@ -119,7 +114,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 						startActivity(i);
 					}
 				} else {
-
 					CustomToast.showCustomToast(LSNetInfoActivity.this,
 							R.string.msg_NetworkNotFound,
 							CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
@@ -134,13 +128,11 @@ public class LSNetInfoActivity extends ActionBarActivity {
 			public void onClick(View v) {
 
 				if (networkObj != null) {
-
 					Intent i = null;
 					i = new Intent(LSNetInfoActivity.this,
 							LSNetImagesActivity.class);
 
 					if (i != null) {
-
 						Bundle bundle = new Bundle();
 						bundle.putParcelable("NETWORK_OBJ", networkObj);
 						i.putExtras(bundle);
@@ -148,7 +140,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 						startActivity(i);
 					}
 				} else {
-
 					CustomToast.showCustomToast(LSNetInfoActivity.this,
 							R.string.msg_NetworkNotFound,
 							CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
@@ -162,11 +153,9 @@ public class LSNetInfoActivity extends ActionBarActivity {
 		star = getActionBarHelper().starNetwork(networkObj.getNetworkId());
 
 		if (star) { // network are in faves
-
 			getActionBarHelper().setFavesActionItem(star);
 			cont = cont + 1;
 		} else {
-
 			getActionBarHelper().setFavesActionItem(star);
 		}
 	}
@@ -174,7 +163,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 	private void networkData() {
 		
 		if (networkObj != null) {
-
 			TextView txtNetName = (TextView) findViewById(R.id.netName);
 			txtNetName.setText(networkObj.getNetworkName());
 			TextView txtNetSituation = (TextView) findViewById(R.id.netSituation);
@@ -192,7 +180,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 			txtNetNumSensors.setText(networkObj.getNetworkNumSensors()
 					.toString());
 		} else {
-
 			CustomToast.showCustomToast(this, R.string.msg_NetworkNotFound,
 					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
@@ -202,10 +189,8 @@ public class LSNetInfoActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ab_item_star_ov_help, menu);
+		menuInflater.inflate(R.menu.ab_item_star, menu);
 		
-		getActionBarHelper().optionsMenuHelp(menu);
-
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -215,38 +200,25 @@ public class LSNetInfoActivity extends ActionBarActivity {
 		Intent i = null;
 
 		switch (item.getItemId()) {
-
 		case android.R.id.home:
-
 			i = new Intent(LSNetInfoActivity.this, LSNetListActivity.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 					| Intent.FLAG_ACTIVITY_NEW_TASK);
 			break;
 
 		case R.id.menu_star:
-
 			cont = cont + 1;
 			if (cont % 2 == 0) {
-
 				getActionBarHelper().setFavesActionItem(true);
 				delToFaves();
 			} else {
-
 				getActionBarHelper().setFavesActionItem(false);
 				insertToFaves();
 			}
 			break;
-
-		case R.id.menu_help:
-
-			CustomToast.showCustomToast(this, R.string.msg_UnderDevelopment,
-					CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_SHORT);
-			break;
-
 		}
 
 		if (i != null) {
-
 			startActivity(i);
 		}
 
@@ -260,11 +232,9 @@ public class LSNetInfoActivity extends ActionBarActivity {
 		SQLiteDatabase db1 = lsndbh.getReadableDatabase();
 
 		if (db != null) {
-
 			Cursor c = db1.rawQuery("SELECT * FROM Network WHERE idNetwork = '"
 					+ networkObj.getNetworkId() + "';", null);
 			if (c.getCount() == 0) {
-
 				db.execSQL("INSERT INTO Network (name,poblacio,idNetwork,sensors,lat,lon) VALUES ('"
 						+ networkObj.getNetworkName()
 						+ "','"
@@ -281,7 +251,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 				CustomToast.showCustomToast(this, R.string.message_add_network,
 						CustomToast.IMG_CORRECT, CustomToast.LENGTH_SHORT);
 			} else {
-
 				CustomToast.showCustomToast(this,
 						R.string.message_error_network,
 						CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_SHORT);
@@ -297,7 +266,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 		SQLiteDatabase db = lsndbh.getWritableDatabase();
 
 		if (db != null) {
-
 			db.execSQL("DELETE FROM Network WHERE idNetwork ='"
 					+ networkObj.getNetworkId() + "'");
 			CustomToast.showCustomToast(this, R.string.message_del_network,
@@ -329,7 +297,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 
 			boolean trobat = false;
 			try {
-
 				// Server Request Ini
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session", LSHomeActivity.idSession);
@@ -338,9 +305,7 @@ public class LSNetInfoActivity extends ActionBarActivity {
 						params);
 
 				if (jArray != null) {
-
 					for (int i = 0; i < jArray.length(); i++) {
-
 						JSONObject jsonData = jArray.getJSONObject(i);
 						if ((networkId.equals(jsonData.getString("IdXarxa")) && !trobat)) {
 
@@ -360,11 +325,9 @@ public class LSNetInfoActivity extends ActionBarActivity {
 						}
 					}
 				} else {
-
 					messageReturn = getString(R.string.msg_CommError);
 				}
 			} catch (Exception e) {
-
 				Log.e("BACKGROUND_PROC",
 						"Exception GetNetworkData" + e.getMessage());
 				messageReturn = getString(R.string.msg_ProcessError);
@@ -387,7 +350,6 @@ public class LSNetInfoActivity extends ActionBarActivity {
 	public void showError(String result) {
 
 		if (result != null) {
-
 			CustomToast.showCustomToast(LSNetInfoActivity.this, result,
 					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}

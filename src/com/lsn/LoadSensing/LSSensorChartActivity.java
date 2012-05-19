@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -53,6 +53,7 @@ import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -82,12 +83,12 @@ public class LSSensorChartActivity extends ActionBarActivity {
 		
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-			
 			sensorSerial = bundle.getString("SENSOR_SERIAL");
 			sensorBundle = bundle.getParcelable("SENSOR_OBJ");
 			chartType = bundle.getInt("CHART_TYPE");
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
 		}
+		Log.d("nombre", sensorBundle.getSensorId());
 		
 		ProgressDialog progressDialog = new ProgressDialog(LSSensorChartActivity.this);
 		progressDialog.setTitle(getString(R.string.msg_PleaseWait));
@@ -101,7 +102,6 @@ public class LSSensorChartActivity extends ActionBarActivity {
 	public void showError(String result) {
 		
 		if (result != null) {
-			
 			CustomToast.showCustomToast(LSSensorChartActivity.this, result,
 					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
@@ -111,7 +111,7 @@ public class LSSensorChartActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ab_item_null, menu);
+		menuInflater.inflate(R.menu.ab_item_ov_home, menu);
 		
 		getActionBarHelper().optionsMenuHome(menu);
 		
@@ -124,11 +124,10 @@ public class LSSensorChartActivity extends ActionBarActivity {
 		Intent i = null;
 		
 		switch (item.getItemId()) {
-		
 		case android.R.id.home:
-			
 			i = new Intent(LSSensorChartActivity.this, LSSensorInfoActivity.class);
 			Bundle bundle = new Bundle();
+			Log.d("nombre", sensorBundle.getSensorId());
 			bundle.putString("SENSOR_SERIAL", sensorSerial);
 			bundle.putParcelable("SENSOR_OBJ", sensorBundle);
 			bundle.putParcelable("NETWORK_OBJ", networkObj);
@@ -137,13 +136,11 @@ public class LSSensorChartActivity extends ActionBarActivity {
 			break;
 			
 		case R.id.menu_home:
-			
 			i = new Intent(LSSensorChartActivity.this, LSHomeActivity.class);
 			break;
 		}	
 		
 		if (i != null) {
-			
 			startActivity(i);
 		}
 		
@@ -172,7 +169,6 @@ public class LSSensorChartActivity extends ActionBarActivity {
 		protected String doInBackground(String... arg0) {
 			
 			if (sensorSerial != null) {
-				
 				// Server Request Ini
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session", LSHomeActivity.idSession);
@@ -182,7 +178,6 @@ public class LSSensorChartActivity extends ActionBarActivity {
 			}
 
 			if (sensorBundle != null) {
-				
 				// Server Request Ini
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session", LSHomeActivity.idSession);
@@ -209,16 +204,13 @@ public class LSSensorChartActivity extends ActionBarActivity {
 		
 		String message = null;
 		
-		if (jArray != null) {
-			
+		if (jArray != null) {		
 			try {
-				
 				jsonData = jArray.getJSONObject(0);
 				strSensor = jsonData.getString("sensorName");
 				strNetwork = jsonData.getString("Nom");
 				jArray = jsonData.getJSONArray("ValorsGrafica");
 			} catch (JSONException e1) {
-				
 				e1.printStackTrace();
 				message= getString(R.string.msg_ProcessError);
 			}
@@ -227,9 +219,7 @@ public class LSSensorChartActivity extends ActionBarActivity {
 			GraphViewData[] data = new GraphViewData[num];
 			String[] strKeys = new String[num];
 			try {
-				
-				for (int i = 0; i<jArray.length(); i++) {
-					
+				for (int i = 0; i<jArray.length(); i++) {	
 					jsonData = jArray.getJSONObject(i);
 					hashValues.put(jsonData.getString("date"), jsonData.getDouble("value"));
 					data[i] = new GraphViewData(i+1,jsonData.getDouble("value"));
@@ -237,10 +227,8 @@ public class LSSensorChartActivity extends ActionBarActivity {
 					Format formatter = new SimpleDateFormat("yyyy-MM-dd");
 					Date date = null;
 					try {
-						
 						date = ((DateFormat) formatter).parse(jsonData.getString("date"));
 					} catch (ParseException e) {
-
 						e.printStackTrace();
 					}
 
@@ -248,7 +236,6 @@ public class LSSensorChartActivity extends ActionBarActivity {
 					strKeys[i] = formatter.format(date);
 				}
 			} catch (JSONException e) {
-				
 				e.printStackTrace();
 				message= getString(R.string.msg_ProcessError);
 			}
@@ -259,20 +246,17 @@ public class LSSensorChartActivity extends ActionBarActivity {
 			txtSensorName.setText(strSensor);
 
 			String strChartType = null;
-			switch (chartType) {
 			
+			switch (chartType) {
 			case 0:
-				
 				strChartType = getResources().getString(R.string.lblSensorChartStrain);
 				break;
 				
 			case 1:
-				
 				strChartType = getResources().getString(R.string.lblSensorChartPower);
 				break;
 				
 			case 2:
-				
 				strChartType = getResources().getString(R.string.lblSensorChartCounter);
 				break;
 				
@@ -295,7 +279,6 @@ public class LSSensorChartActivity extends ActionBarActivity {
 
 					// draw data
 					for (int i = 0; i < values.length; i++) {
-						
 						float valY = (float) (values[i].valueY - minY);
 						float ratY = (float) (valY / diffY);
 						float y = graphheight * ratY;
@@ -314,8 +297,7 @@ public class LSSensorChartActivity extends ActionBarActivity {
 			LinearLayout chartLayout = (LinearLayout)findViewById(R.id.sensorChart);
 			chartLayout.addView(graphView);
 			
-		} else { // jArray = null
-			
+		} else { // jArray = null		
 			message= getString(R.string.msg_CommError);
 		}
 		

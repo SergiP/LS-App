@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -69,8 +69,7 @@ public class LSNetMapsActivity extends ActionBarMapActivity {
 		getActionBarHelper().changeIconHome();
 		
 		Bundle bundle = getIntent().getExtras();
-		if (bundle != null) {
-			
+		if (bundle != null) {		
 			m_networks = bundle.getParcelableArrayList("NETWORKS");
 		}
 		
@@ -85,7 +84,6 @@ public class LSNetMapsActivity extends ActionBarMapActivity {
 		itemizedOverlay = new LSNetworksOverlay(drawable, mapView, m_networks);
 		
 		for (int i = 0; i< m_networks.size(); i++) {
-			
 			Integer intLat = (int) (m_networks.get(i).getNetworkPosition().getLatitude()*1e6);
 			Integer intLon = (int) (m_networks.get(i).getNetworkPosition().getLongitude()*1e6);
 			String strName = m_networks.get(i).getNetworkName();
@@ -161,14 +159,11 @@ public class LSNetMapsActivity extends ActionBarMapActivity {
 		Intent i = null;
 		
 		switch (item.getItemId()) {
-		
 		case android.R.id.home:
-			
 			i = new Intent(LSNetMapsActivity.this, LSHomeActivity.class);
 			break;
 			
 		case R.id.menu_mapmode:
-			
 			//Switch map mode
 			if (isModeStreeView()) {
 				setSatelliteView();
@@ -179,14 +174,12 @@ public class LSNetMapsActivity extends ActionBarMapActivity {
 			break; 
 		
 		case R.id.menu_config:
-			
 			i = new Intent(LSNetMapsActivity.this,LSConfigActivity.class);
 			break; 
 				
 		}	
 		
 		if (i != null) {
-			
 			startActivity(i);
 		}
 
@@ -199,7 +192,6 @@ public class LSNetMapsActivity extends ActionBarMapActivity {
 		Intent i = new Intent(LSNetMapsActivity.this, LSHomeActivity.class);
 			
 		if (i != null) {
-
 			startActivity(i);
 		}
 	}

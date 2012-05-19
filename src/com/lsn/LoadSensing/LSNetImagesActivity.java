@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -94,7 +94,6 @@ public class LSNetImagesActivity extends ActionBarActivity {
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
 		}
 
@@ -117,10 +116,8 @@ public class LSNetImagesActivity extends ActionBarActivity {
 						LSBigImageActivity.class);
 
 				if (i != null) {
-
 					Bundle bundle = new Bundle();
 					try {
-
 						bundle.putInt("POSITION", position);
 						bundle.putParcelable("NETWORK_OBJ", networkObj);
 
@@ -128,7 +125,6 @@ public class LSNetImagesActivity extends ActionBarActivity {
 						startActivity(i);
 
 					} catch (Exception ex) {
-
 						Log.e("BACKGROUND_PROC",
 								"Exception onCreate()" + ex.getMessage());
 					}
@@ -158,10 +154,8 @@ public class LSNetImagesActivity extends ActionBarActivity {
 		public void run() {
 
 			if (m_images != null && m_images.size() > 0) {
-
 				m_adapter.notifyDataSetChanged();
 				for (int i = 0; i < m_images.size(); i++)
-
 					m_adapter.add(m_images.get(i));
 			}
 			m_ProgressDialog.dismiss();
@@ -182,7 +176,6 @@ public class LSNetImagesActivity extends ActionBarActivity {
 	private void getImages() {
 
 		try {
-
 			m_images = new ArrayList<LSImage>();
 
 			// Server Request Ini
@@ -194,19 +187,15 @@ public class LSNetImagesActivity extends ActionBarActivity {
 					params);
 
 			if (jArray != null) {
-
 				for (int i = 0; i < jArray.length(); i++) {
-
 					JSONObject jsonData = jArray.getJSONObject(i);
 					LSImage img = new LSImage();
 					img.setImageId(jsonData.getString("IdImatge"));
 					String image = jsonData.getString("imatge");
 
 					if (hashImages.containsKey(image)) {
-
 						imgNetwork = hashImages.get(image);
 					} else {
-
 						imgNetwork = LSFunctions.getRemoteImage(new URL(
 								"http://viuterrassa.com/Android/Imatges/"
 										+ image));
@@ -221,7 +210,6 @@ public class LSNetImagesActivity extends ActionBarActivity {
 					m_images.add(img);
 				}
 			} else {
-
 				errMessage = R.string.msg_CommError;
 				runOnUiThread(returnErr);
 			}
@@ -245,7 +233,6 @@ public class LSNetImagesActivity extends ActionBarActivity {
 				folder);
 
 		if (!path.exists()) {
-
 			path.mkdir();
 		}
 
@@ -258,13 +245,10 @@ public class LSNetImagesActivity extends ActionBarActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == CAMERA_PIC_REQUEST) {
-
 			if (resultCode == RESULT_OK) {
-
 				final File file = getTempFile(this);
 
 				try {
-
 					Bitmap photoTaken = Media.getBitmap(getContentResolver(),
 							Uri.fromFile(file));
 
@@ -284,17 +268,14 @@ public class LSNetImagesActivity extends ActionBarActivity {
 					m_adapter.notifyDataSetChanged();
 
 				} catch (FileNotFoundException e) {
-
 					Log.e("BACKGROUND_PROC",
 							"FileNotFoundException onActivityResult() "
 									+ e.getMessage());
 				} catch (IOException e) {
-
 					Log.e("BACKGROUND_PROC", "IOException onActivityResult() "
 							+ e.getMessage());
 				}
 			} else if (resultCode == RESULT_CANCELED) {
-
 				CustomToast.showCustomToast(this, R.string.msg_ActionCancelled,
 						CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_LONG);
 			}
@@ -305,10 +286,8 @@ public class LSNetImagesActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ab_item_photo_ov_help, menu);
+		menuInflater.inflate(R.menu.ab_item_photo, menu);
 		
-		getActionBarHelper().optionsMenuHelp(menu);
-
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -318,9 +297,7 @@ public class LSNetImagesActivity extends ActionBarActivity {
 		Intent i = null;
 
 		switch (item.getItemId()) {
-
 		case android.R.id.home:
-
 			i = new Intent(LSNetImagesActivity.this, LSNetInfoActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putParcelable("NETWORK_OBJ", networkObj);
@@ -331,25 +308,15 @@ public class LSNetImagesActivity extends ActionBarActivity {
 			break;
 
 		case R.id.menu_photo:
-
 			Intent photoCamera = new Intent(
 					android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			photoCamera.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
 					Uri.fromFile(getTempFile(this)));
 			startActivityForResult(photoCamera, CAMERA_PIC_REQUEST);
 			break;
-
-		case R.id.menu_help:
-
-			// TODO
-			CustomToast.showCustomToast(this, R.string.msg_UnderDevelopment,
-					CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_SHORT);
-			break;
-
 		}
 
 		if (i != null) {
-
 			startActivity(i);
 		}
 
@@ -377,20 +344,16 @@ public class LSNetImagesActivity extends ActionBarActivity {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
 		switch (item.getItemId()) {
-
 		case R.id.add_faves:
-
 			LSImage ima1 = new LSImage();
 			ima1 = m_images.get(info.position);
 
 			if (db != null) {
-
 				Cursor c = db1.rawQuery(
 
 				"SELECT * FROM Image WHERE idImage = '" + ima1.getImageId()
 						+ "';", null);
 				if (c.getCount() == 0) {
-
 					db.execSQL("INSERT INTO Image (name,idImage,idNetwork,poblacio,imageFile) "
 							+ "VALUES ('"
 							+ ima1.getImageName()

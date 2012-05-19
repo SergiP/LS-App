@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -61,26 +61,26 @@ import com.readystatesoftware.mapviewballoons.R;
 public class LSBigImageActivity extends ActionBarActivity implements
 		OnGestureListener {
 
-	private LSImage 						imageObj;
-	private LSNetwork 						networkObj;
-	
-	private GestureDetector 				gestureScanner;
+	private LSImage imageObj;
+	private LSNetwork networkObj;
 
-	private boolean 						moveLeft;
-	private boolean 						moveRight;
-	private String 							idImage = null;
-	private String 							nameNetwork = null;
-	private Integer 						position;
+	private GestureDetector gestureScanner;
 
-	private ImageButton[] 					imageButtonArray;
-	private Bitmap 							imgNetwork;
+	private boolean moveLeft;
+	private boolean moveRight;
+	private String idImage = null;
+	private String nameNetwork = null;
+	private Integer position;
 
-	private JSONArray 						jArray = null;
+	private ImageButton[] imageButtonArray;
+	private Bitmap imgNetwork;
 
-	private RelativeLayout 					rl;
-	private RelativeLayout.LayoutParams 	params1;
+	private JSONArray jArray = null;
 
-	@Override
+	private RelativeLayout rl;
+	private RelativeLayout.LayoutParams params1;
+
+	@SuppressWarnings({ "deprecation" })
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
@@ -88,7 +88,6 @@ public class LSBigImageActivity extends ActionBarActivity implements
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-
 			// Get bundle to LSFavesImagesActivity
 			idImage = bundle.getString("IMAGE_ID");
 			nameNetwork = bundle.getString("NETWORK_NAME");
@@ -103,7 +102,6 @@ public class LSBigImageActivity extends ActionBarActivity implements
 
 		// if before activity -> LSFavesImagesActivity
 		if (idImage != null && nameNetwork != null) {
-
 			ProgressDialog progressDialog = new ProgressDialog(
 					LSBigImageActivity.this);
 			progressDialog.setTitle(getString(R.string.msg_PleaseWait));
@@ -121,7 +119,6 @@ public class LSBigImageActivity extends ActionBarActivity implements
 			bigImageTask.execute();
 
 		} else { // if Before activity -> LSNetImages
-
 			gestureScanner = new GestureDetector(this);
 			updateTitle();
 			updateImage();
@@ -138,7 +135,6 @@ public class LSBigImageActivity extends ActionBarActivity implements
 	public void showError(String result) {
 
 		if (result != null) {
-
 			CustomToast.showCustomToast(LSBigImageActivity.this, result,
 					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
@@ -148,7 +144,6 @@ public class LSBigImageActivity extends ActionBarActivity implements
 	public boolean onTouchEvent(MotionEvent me) {
 
 		if (gestureScanner != null) {
-
 			return gestureScanner.onTouchEvent(me);
 		} else
 
@@ -166,9 +161,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 			float velocityY) {
 
 		if (moveLeft) {
-
 			if (position < LSNetImagesActivity.m_images.size() - 1) {
-
 				++position;
 				delSensors();
 				updateTitle();
@@ -178,9 +171,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 		}
 
 		if (moveRight) {
-
 			if (position > 0) {
-
 				--position;
 				delSensors();
 				updateTitle();
@@ -200,11 +191,9 @@ public class LSBigImageActivity extends ActionBarActivity implements
 			float distanceY) {
 
 		if (distanceX > 0) { // Scroll left
-
 			moveLeft = true;
 			moveRight = false;
 		} else { // Scroll right
-
 			moveLeft = false;
 			moveRight = true;
 		}
@@ -257,7 +246,6 @@ public class LSBigImageActivity extends ActionBarActivity implements
 		RelativeLayout rl = (RelativeLayout) findViewById(R.id.relative);
 
 		for (ImageButton imgButton : imageButtonArray) {
-
 			rl.removeView(imgButton);
 		}
 	}
@@ -266,10 +254,10 @@ public class LSBigImageActivity extends ActionBarActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ab_item_null, menu);
-		
+		menuInflater.inflate(R.menu.ab_item_ov_home, menu);
+
 		getActionBarHelper().optionsMenuHome(menu);
-		
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -279,9 +267,7 @@ public class LSBigImageActivity extends ActionBarActivity implements
 		Intent i = null;
 
 		switch (item.getItemId()) {
-
 		case android.R.id.home:
-
 			i = new Intent(LSBigImageActivity.this, LSNetImagesActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putParcelable("NETWORK_OBJ", networkObj);
@@ -289,15 +275,13 @@ public class LSBigImageActivity extends ActionBarActivity implements
 					| Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtras(bundle);
 			break;
-		
+
 		case R.id.menu_home:
-			
 			i = new Intent(LSBigImageActivity.this, LSHomeActivity.class);
 			break;
 		}
 
 		if (i != null) {
-
 			startActivity(i);
 		}
 
@@ -326,7 +310,6 @@ public class LSBigImageActivity extends ActionBarActivity implements
 		protected String doInBackground(String... arg0) {
 
 			try {
-
 				// Server Request Ini
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session", LSHomeActivity.idSession);
@@ -336,7 +319,6 @@ public class LSBigImageActivity extends ActionBarActivity implements
 								"http://viuterrassa.com/Android/getLlistaSensorsImatges.php",
 								params);
 			} catch (Exception e) {
-
 				Log.e("BACKGROUND_PROC",
 						"Exception BigImageTask" + e.getMessage());
 				messageReturn = getString(R.string.msg_ProcessError);
@@ -358,13 +340,10 @@ public class LSBigImageActivity extends ActionBarActivity implements
 	public void getSensors() {
 
 		if (jArray != null) {
-
 			try {
-
 				imageButtonArray = new ImageButton[jArray.length()];
 
 				for (int i = 0; i < jArray.length(); i++) {
-
 					JSONObject jsonData;
 					jsonData = jArray.getJSONObject(i);
 
@@ -375,21 +354,12 @@ public class LSBigImageActivity extends ActionBarActivity implements
 					s1.setSensorId(jsonData.getString("id"));
 					s1.setSensorName(jsonData.getString("sensor"));
 
-					// s1.setSensorChannel(jsonData.getString("canal"));
-					// s1.setSensorType(jsonData.getString("tipus"));
-					// s1.setSensorImageName(jsonData.getString("imatge"));
-					// s1.setSensorDesc(jsonData.getString("Descripcio"));
-					// s1.setSensorSituation(jsonData.getString("Poblacio"));
-					// s1.setSensorNetwork(jsonData.getString("Nom"));
-
 					params1 = new RelativeLayout.LayoutParams(15, 15);
 
 					if (!x.equals("null")) {
-
 						params1.leftMargin = Integer.parseInt(x) + 5;
 					}
 					if (!y.equals("null")) {
-
 						params1.topMargin = Integer.parseInt(y) + 60;
 					}
 
@@ -406,11 +376,9 @@ public class LSBigImageActivity extends ActionBarActivity implements
 											LSSensorInfoActivity.class);
 
 									if (i != null) {
-
 										Bundle bundle = new Bundle();
 
-										bundle.putParcelable("SENSOR_OBJ",
-												s1);
+										bundle.putParcelable("SENSOR_OBJ", s1);
 										bundle.putParcelable("NETWORK_OBJ",
 												networkObj);
 										i.putExtras(bundle);
@@ -423,13 +391,11 @@ public class LSBigImageActivity extends ActionBarActivity implements
 					rl.addView(imageButtonArray[i], params1);
 				}
 			} catch (JSONException e) {
-
 				Log.e("BACKGROUND_PROC", "JSONException" + e.getMessage());
 				CustomToast.showCustomToast(this, R.string.msg_ProcessError,
 						CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 			}
 		} else {
-
 			CustomToast.showCustomToast(this, R.string.msg_CommError,
 					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
@@ -458,7 +424,6 @@ public class LSBigImageActivity extends ActionBarActivity implements
 
 			boolean trobat = false;
 			try {
-
 				// Server Request Ini
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("session", LSHomeActivity.idSession);
@@ -467,12 +432,9 @@ public class LSBigImageActivity extends ActionBarActivity implements
 						params);
 
 				if (jArray != null) {
-
 					for (int i = 0; i < jArray.length(); i++) {
-
 						JSONObject jsonData = jArray.getJSONObject(i);
 						if ((nameNetwork.equals(jsonData.getString("Nom")) && !trobat)) {
-
 							LSNetwork o1 = new LSNetwork();
 							o1.setNetworkName(jsonData.getString("Nom"));
 							o1.setNetworkPosition(jsonData.getString("Lat"),
@@ -489,20 +451,16 @@ public class LSBigImageActivity extends ActionBarActivity implements
 						}
 					}
 				} else {
-
 					messageReturn = getString(R.string.msg_CommError);
 				}
 			} catch (Exception e) {
-
 				Log.e("BACKGROUND_PROC",
 						"Exception GetDataTask" + e.getMessage());
 				messageReturn = getString(R.string.msg_ProcessError);
 			}
 
 			if (trobat) {
-
 				try {
-
 					// Server Request Ini
 					Map<String, String> params = new HashMap<String, String>();
 					params.put("session", LSHomeActivity.idSession);
@@ -515,19 +473,14 @@ public class LSBigImageActivity extends ActionBarActivity implements
 					trobat = false;
 					String image = null;
 					if (jArray != null) {
-
 						for (int i = 0; i < jArray.length(); i++) {
-
 							JSONObject jsonData = jArray.getJSONObject(i);
 							if ((idImage.equals(jsonData.getString("IdImatge")) && !trobat)) {
-
 								image = jsonData.getString("imatge");
-
 								trobat = true;
 							}
 						}
 					} else {
-
 						messageReturn = getString(R.string.msg_CommError);
 					}
 
@@ -538,7 +491,6 @@ public class LSBigImageActivity extends ActionBarActivity implements
 
 					}
 				} catch (Exception e) {
-
 					Log.e("BACKGROUND_PROC",
 							"Exception GetDataTask" + e.getMessage());
 					messageReturn = getString(R.string.msg_ProcessError);

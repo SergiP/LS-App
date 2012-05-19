@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -47,17 +47,17 @@ import com.readystatesoftware.mapviewballoons.R;
 public class LSFavesActivity extends ActionBarFragmentActivity implements
 		TabHost.OnTabChangeListener {
 
-	private int 						currentTab = 0;
-	private TabHost 					mTabHost;
-	private HashMap<String, TabInfo>	mapTabInfo = new HashMap<String, TabInfo>();
-	private TabInfo 					mLastTab = null;
+	private int currentTab = 0;
+	private TabHost mTabHost;
+	private HashMap<String, TabInfo> mapTabInfo = new HashMap<String, TabInfo>();
+	private TabInfo mLastTab = null;
 
 	private class TabInfo {
 
-		private String 		tag;
-		private Class<?> 	clss;
-		private Bundle 		args;
-		private Fragment 	fragment;
+		private String tag;
+		private Class<?> clss;
+		private Bundle args;
+		private Fragment fragment;
 
 		TabInfo(String tag, Class<?> clazz, Bundle args) {
 
@@ -72,7 +72,6 @@ public class LSFavesActivity extends ActionBarFragmentActivity implements
 		private final Context mContext;
 
 		public TabFactory(Context context) {
-
 			mContext = context;
 		}
 
@@ -96,7 +95,6 @@ public class LSFavesActivity extends ActionBarFragmentActivity implements
 		initialiseTabHost(savedInstanceState);
 
 		if (savedInstanceState != null) {
-
 			// Set the tab as per the saved state
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
@@ -120,7 +118,7 @@ public class LSFavesActivity extends ActionBarFragmentActivity implements
 	protected void onSaveInstanceState(Bundle outState) {
 
 		// save the tab selected
-		outState.putString("tab", mTabHost.getCurrentTabTag()); 
+		outState.putString("tab", mTabHost.getCurrentTabTag());
 
 		super.onSaveInstanceState(outState);
 	}
@@ -185,7 +183,7 @@ public class LSFavesActivity extends ActionBarFragmentActivity implements
 		 */
 		tabInfo.fragment = activity.getSupportFragmentManager()
 				.findFragmentByTag(tag);
-		
+
 		if (tabInfo.fragment != null && !tabInfo.fragment.isDetached()) {
 
 			FragmentTransaction ft = activity.getSupportFragmentManager()
@@ -203,25 +201,19 @@ public class LSFavesActivity extends ActionBarFragmentActivity implements
 		TabInfo newTab = this.mapTabInfo.get(tag);
 
 		if (mLastTab != newTab) {
-
 			FragmentTransaction ft = this.getSupportFragmentManager()
 					.beginTransaction();
 			if (mLastTab != null) {
-
 				if (mLastTab.fragment != null) {
-
 					ft.detach(mLastTab.fragment);
 				}
 			}
 			if (newTab != null) {
-
 				if (newTab.fragment == null) {
-
 					newTab.fragment = Fragment.instantiate(this,
 							newTab.clss.getName(), newTab.args);
 					ft.add(R.id.realtabcontent, newTab.fragment, newTab.tag);
 				} else {
-
 					ft.attach(newTab.fragment);
 				}
 			}
@@ -235,8 +227,8 @@ public class LSFavesActivity extends ActionBarFragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ab_item_ov_help, menu);
-		
+		menuInflater.inflate(R.menu.ab_item_null, menu);
+
 		getActionBarHelper().optionsMenuHelp(menu);
 
 		return super.onCreateOptionsMenu(menu);
@@ -247,14 +239,11 @@ public class LSFavesActivity extends ActionBarFragmentActivity implements
 		Intent i = null;
 
 		switch (item.getItemId()) {
-
 		case android.R.id.home:
-
 			i = new Intent(LSFavesActivity.this, LSHomeActivity.class);
 			break;
-			
-		case R.id.menu_help:
 
+		case R.id.menu_help:
 			CustomToast.showCustomToast(this, R.string.msg_UnderDevelopment,
 					CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_SHORT);
 			break;
@@ -262,7 +251,6 @@ public class LSFavesActivity extends ActionBarFragmentActivity implements
 		}
 
 		if (i != null) {
-
 			startActivity(i);
 		}
 

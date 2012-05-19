@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -78,8 +78,7 @@ public class LSSensorListActivity extends ActionBarListActivity {
 		
 		Bundle bundle = getIntent().getExtras();
 
-		if (bundle != null) {		
-			
+		if (bundle != null) {				
 			networkObj = bundle.getParcelable("NETWORK_OBJ");
 		} 
 		
@@ -126,11 +125,9 @@ public class LSSensorListActivity extends ActionBarListActivity {
 		@Override
 		public void run() {
 			
-			if(m_sensors != null && m_sensors.size() > 0){
-				
+			if(m_sensors != null && m_sensors.size() > 0){			
 				m_adapter.notifyDataSetChanged();
-				for(int i=0;i<m_sensors.size();i++)
-					
+				for(int i=0;i<m_sensors.size();i++)				
 					m_adapter.add(m_sensors.get(i));
 			}
 			m_ProgressDialog.dismiss();
@@ -150,7 +147,6 @@ public class LSSensorListActivity extends ActionBarListActivity {
 	private void getSensors() {
 		
 		try{
-			
 			m_sensors = new ArrayList<LSSensor>();
 
 			Map<String, String> params = new HashMap<String, String>();
@@ -158,10 +154,8 @@ public class LSSensorListActivity extends ActionBarListActivity {
 			params.put("IdXarxa", networkObj.getNetworkId());
 			JSONArray jArray = LSFunctions.urlRequestJSONArray("http://viuterrassa.com/Android/getLlistaSensors.php",params);
 
-			if (jArray != null) {
-				
+			if (jArray != null) {	
 				for (int i = 0; i<jArray.length(); i++) {
-					
 					JSONObject jsonData = jArray.getJSONObject(i);
 					LSSensor s1 = new LSSensor();
 					s1.setSensorId(jsonData.getString("id"));
@@ -169,11 +163,9 @@ public class LSSensorListActivity extends ActionBarListActivity {
 					s1.setSensorChannel(jsonData.getString("canal"));
 					s1.setSensorType(jsonData.getString("tipus"));
 					String image = jsonData.getString("imatge");
-					if (hashImages.containsKey(image)) {
-						
+					if (hashImages.containsKey(image)) {					
 						imgSensor = hashImages.get(image);
 					} else {
-						
 						imgSensor = LSFunctions.getRemoteImage(new URL("http://viuterrassa.com/Android/Imatges/"+image));
 						hashImages.put(image, imgSensor);
 					}
@@ -191,7 +183,6 @@ public class LSSensorListActivity extends ActionBarListActivity {
 
 			Log.i("ARRAY SENSORS", ""+ m_sensors.size());
 		} catch (Exception e) { 
-			
 			Log.e("BACKGROUND_PROC", e.getMessage());
 			errMessage = R.string.msg_ProcessError;
 			runOnUiThread(returnErr); 
@@ -203,10 +194,8 @@ public class LSSensorListActivity extends ActionBarListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.ab_item_search_ov_help, menu);
+		menuInflater.inflate(R.menu.ab_item_search, menu);
         
-		getActionBarHelper().optionsMenuHelp(menu);
-
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -215,10 +204,8 @@ public class LSSensorListActivity extends ActionBarListActivity {
 		
 		Intent i = null;
 		
-		switch (item.getItemId()) {
-		
+		switch (item.getItemId()) {	
 		case android.R.id.home:
-			
 			i = new Intent(LSSensorListActivity.this, LSNetInfoActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putParcelable("NETWORK_OBJ", networkObj);
@@ -227,7 +214,6 @@ public class LSSensorListActivity extends ActionBarListActivity {
 			break;
 			
 		case R.id.menu_search:
-			
 			filter++;
 			InputMethodManager inputMgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 			
@@ -236,23 +222,14 @@ public class LSSensorListActivity extends ActionBarListActivity {
 				filterText.requestFocus();
 				inputMgr.toggleSoftInput(0, 0);
 			} else {
-				
 				filterText.setVisibility(View.INVISIBLE);
 				filterText.setText("");
 				inputMgr.hideSoftInputFromWindow(filterText.getWindowToken(), 0);
 			}
 			break; 
-			
-		case R.id.menu_help:
-			
-			// TODO
-			CustomToast.showCustomToast(this,R.string.msg_UnderDevelopment,CustomToast.IMG_EXCLAMATION,CustomToast.LENGTH_SHORT);
-			break; 
-			
 		}	
 		
-		if (i != null) {
-			
+		if (i != null) {	
 			startActivity(i);
 		}
 		

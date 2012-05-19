@@ -1,5 +1,5 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
@@ -38,34 +38,30 @@ public class LSHelpActivity extends ActionBarActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.help_menu);
-		
+
 		// Change home icon (<Icon)
 		getActionBarHelper().changeIconHome();
 	}
-	
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.ab_item_null, menu);
-		
+
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		Intent i = null;
 
 		switch (item.getItemId()) {
-
 		case android.R.id.home:
-
 			i = new Intent(LSHelpActivity.this, LSHomeActivity.class);
 			break;
-
 		}
 
 		if (i != null) {
-
 			startActivity(i);
 		}
 

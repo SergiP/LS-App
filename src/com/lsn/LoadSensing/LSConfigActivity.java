@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -32,47 +32,44 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class LSConfigActivity extends ActionBarPreferenceActivity {
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
-		//requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
+		// requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		super.onCreate(savedInstanceState);
-		
+
 		// Change home icon (<Icon)
 		getActionBarHelper().changeIconHome();
 
-		addPreferencesFromResource(R.xml.config); 
+		addPreferencesFromResource(R.xml.config);
 	}
-	
-	@Override 
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
+
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.ab_item_null, menu);
-        
+
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
+
 		Intent i = null;
-		
+
 		switch (item.getItemId()) {
-		
 		case android.R.id.home:
-			
-			i = new Intent(LSConfigActivity.this,LSHomeActivity.class);
+			i = new Intent(LSConfigActivity.this, LSHomeActivity.class);
 			break;
-			
-		}	
-		
+		}
+
 		if (i != null) {
-			
 			startActivity(i);
 		}
-		
+
 		return super.onOptionsItemSelected(item);
 	}
 }

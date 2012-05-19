@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -45,18 +45,18 @@ import android.widget.TabHost.TabContentFactory;
 public class LSInfoActivity extends ActionBarFragmentActivity implements
 		TabHost.OnTabChangeListener {
 
-	private static boolean 				predecessor = false;
+	private static boolean predecessor = false;
 
-	private TabHost 					mTabHost;
-	private HashMap<String, TabInfo> 	mapTabInfo = new HashMap<String, TabInfo>();
-	private TabInfo 					mLastTab = null;
+	private TabHost mTabHost;
+	private HashMap<String, TabInfo> mapTabInfo = new HashMap<String, TabInfo>();
+	private TabInfo mLastTab = null;
 
 	private class TabInfo {
 
-		private String 		tag;
-		private Class<?> 	clss;
-		private Bundle 		args;
-		private Fragment 	fragment;
+		private String tag;
+		private Class<?> clss;
+		private Bundle args;
+		private Fragment fragment;
 
 		TabInfo(String tag, Class<?> clazz, Bundle args) {
 
@@ -95,7 +95,6 @@ public class LSInfoActivity extends ActionBarFragmentActivity implements
 		initialiseTabHost(savedInstanceState);
 
 		if (savedInstanceState != null) {
-
 			// Set the tab as per the saved state
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
@@ -105,7 +104,6 @@ public class LSInfoActivity extends ActionBarFragmentActivity implements
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-
 			predecessor = bundle.getBoolean("ACTIVITY_BEFORE");
 		}
 	}
@@ -173,7 +171,6 @@ public class LSInfoActivity extends ActionBarFragmentActivity implements
 		tabInfo.fragment = activity.getSupportFragmentManager()
 				.findFragmentByTag(tag);
 		if (tabInfo.fragment != null && !tabInfo.fragment.isDetached()) {
-			
 			FragmentTransaction ft = activity.getSupportFragmentManager()
 					.beginTransaction();
 			ft.detach(tabInfo.fragment);
@@ -185,29 +182,23 @@ public class LSInfoActivity extends ActionBarFragmentActivity implements
 	}
 
 	public void onTabChanged(String tag) {
-		
+
 		TabInfo newTab = this.mapTabInfo.get(tag);
 		if (mLastTab != newTab) {
-			
 			FragmentTransaction ft = this.getSupportFragmentManager()
 					.beginTransaction();
 			if (mLastTab != null) {
-				
 				if (mLastTab.fragment != null) {
-					
 					ft.detach(mLastTab.fragment);
 				}
 			}
-			
+
 			if (newTab != null) {
-				
 				if (newTab.fragment == null) {
-					
 					newTab.fragment = Fragment.instantiate(this,
 							newTab.clss.getName(), newTab.args);
 					ft.add(R.id.realtabcontent, newTab.fragment, newTab.tag);
 				} else {
-					
 					ft.attach(newTab.fragment);
 				}
 			}
@@ -219,7 +210,7 @@ public class LSInfoActivity extends ActionBarFragmentActivity implements
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
+
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.ab_item_null, menu);
 
@@ -227,28 +218,24 @@ public class LSInfoActivity extends ActionBarFragmentActivity implements
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
+
 		Intent i = null;
 
 		switch (item.getItemId()) {
-		
 		case android.R.id.home:
-			
 			if (predecessor) { // LSLoingActivity.java
 				i = new Intent(LSInfoActivity.this, LSLoginActivity.class);
 				predecessor = false;
 				break;
-				
+
 			} else {
-				
 				i = new Intent(LSInfoActivity.this, LSHomeActivity.class);
 				predecessor = false;
 				break;
-			}	
+			}
 		}
 
 		if (i != null) {
-			
 			startActivity(i);
 		}
 

@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -127,9 +127,7 @@ public class LSLoginActivity extends ActionBarActivity {
 		Intent i = null;
 
 		switch (item.getItemId()) {
-			
-		case R.id.menu_info:
-			
+		case R.id.menu_info:	
 			i = new Intent(LSLoginActivity.this, LSInfoActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putBoolean("ACTIVITY_BEFORE", true);
@@ -139,7 +137,6 @@ public class LSLoginActivity extends ActionBarActivity {
 		}
 
 		if (i != null) {
-			
 			startActivity(i);
 		}
 
@@ -171,11 +168,9 @@ public class LSLoginActivity extends ActionBarActivity {
 		protected String doInBackground(String... arg0) {
 			
 			try {
-				
 				if (!LSFunctions.checkConnection(LSLoginActivity.this)) {
 					messageReturn = getString(R.string.msg_NotConnected);
-				} else {
-					
+				} else {					
 					Map<String, String> params = new HashMap<String, String>();
 					params.put("user", edtLogin.getText().toString());
 					params.put("pass", LSSecurity.encrypt(edtPassword.getText()
@@ -185,24 +180,19 @@ public class LSLoginActivity extends ActionBarActivity {
 							"http://viuterrassa.com/Android/login.php", params);
 
 					if (response != null) {	
-						
 						loginValue = (Boolean) response.get("login");
 							
 						if (loginValue) {
-							
 							messageReturn = response.get("session")
 									.toString();
 						} else {
-							
 							messageReturn = getString(R.string.msg_BadLoginPass);
 						}
 					} else {
-						
 						messageReturn = getString(R.string.msg_CommError);
 					}
 				}
 			} catch (Exception e) {
-				
 				Log.e("BACKGROUND_PROC",
 						"Exception LoginTask" + e.getMessage());
 				messageReturn = getString(R.string.msg_ProcessError);
@@ -216,10 +206,8 @@ public class LSLoginActivity extends ActionBarActivity {
 			
 			progressDialog.dismiss();
 			if (loginValue)
-				
 				((LSLoginActivity) activity).login(pMessageReturn);
 			else
-				
 				((LSLoginActivity) activity).showLoginError(pMessageReturn);
 		}
 	}

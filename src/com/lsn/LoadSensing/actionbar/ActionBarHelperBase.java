@@ -159,19 +159,19 @@ public class ActionBarHelperBase extends ActionBarHelper {
 		menu.add(Menu.NONE, R.id.menu_config, Menu.NONE, R.string.menu_config)
 		.setIcon(R.drawable.ic_action_settings);
 	}
-	
+
 	public void optionsMenuHelp(Menu menu) {
 
 		// Add help icon on physical menu button
 		menu.add(Menu.NONE, R.id.menu_help, Menu.NONE, R.string.menu_help)
 		.setIcon(R.drawable.ic_action_help);
 	}
-	
+
 	public void optionsMenuHome(Menu menu) {
 
 		// Add help icon on physical menu button
 		menu.add(Menu.NONE, R.id.menu_home, Menu.NONE, R.string.menu_home)
-		.setIcon(R.drawable.ic_action_help);
+		.setIcon(R.drawable.ic_action_home);
 	}
 	
 	/** {@inheritDoc} */

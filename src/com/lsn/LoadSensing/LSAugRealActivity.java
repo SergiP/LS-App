@@ -1,9 +1,9 @@
 /*
- *    LS App - LoadSensing Application - https://github.com/Skamp/LS-App
+ *    LS App - LoadSensing Application - https://github.com/SergiP/LS-App
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -51,31 +51,31 @@ import android.util.Log;
 
 public class LSAugRealActivity extends Activity {
 
-	private LocationManager 	locManager;
-	private LocationListener 	locationListenerGPS;
-	private LocationListener 	locationListenerNetwork;
-	private GetLocation 		getLocation;
-	private Position 			curPosition;
+	private LocationManager locManager;
+	private LocationListener locationListenerGPS;
+	private LocationListener locationListenerNetwork;
+	private GetLocation getLocation;
+	private Position curPosition;
 
-	private boolean 			gpsStatus;
-	private boolean 			netStatus;
-	static boolean 				fromMixare = false;
+	private boolean gpsStatus;
+	private boolean netStatus;
+	static boolean fromMixare = false;
 
-	private JSONObject 			mixareInfo;
-	private JSONArray 			jArray;
+	private JSONObject mixareInfo;
+	private JSONArray jArray;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 
 		// Get intent (string) to LSHomeActivity
 		String arrayJSON = getIntent().getStringExtra("ARRAY");
 
 		try {
-
 			jArray = new JSONArray(arrayJSON);
-		} catch (JSONException e) {
 			
+		} catch (JSONException e) {
 			Log.e("BACKGROUND_PROC", "JSONException" + e.getMessage());
 			CustomToast.showCustomToast(LSAugRealActivity.this,
 					R.string.msg_CommError, CustomToast.IMG_AWARE,
@@ -87,13 +87,10 @@ public class LSAugRealActivity extends Activity {
 	protected void onPause() {
 		
 		if (gpsStatus || netStatus) {
-			
 			if (gpsStatus) {
-				
 				locManager.removeUpdates(locationListenerGPS);
 			}
 			if (netStatus) {
-				
 				locManager.removeUpdates(locationListenerNetwork);
 			}
 			getLocation.cancel(true);
@@ -103,11 +100,9 @@ public class LSAugRealActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		
-		Intent i = new Intent(LSAugRealActivity.this, LSHomeActivity.class);
-		
-		if (i != null) {
 
+		Intent i = new Intent(LSAugRealActivity.this, LSHomeActivity.class);
+		if (i != null) {
 			startActivity(i);
 		}
 	}
@@ -117,30 +112,28 @@ public class LSAugRealActivity extends Activity {
 
 		super.onResume();
 		if (locManager == null) {
-			
 			// Obtain reference to LocationManager
 			locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		}
+		
 		// Check status of location services
 		checkGPSStatus();
 		checkNETStatus();
 
 		if (!gpsStatus && !netStatus) {
-			
 			// Show error message if there are no active services
 			CustomToast.showCustomToast(this, R.string.msg_NOLocServ,
 					CustomToast.IMG_ERROR, CustomToast.LENGTH_LONG);
 		} else {
-			
 			// Obtain location using Async Task
 			getLocation = new GetLocation();
 			getLocation.execute();
 			curPosition = getLocation.getPosition();
+			
 			if (!fromMixare) {
-				
 				boolean fileGenerated = generateJSONFile();
+				
 				if (fileGenerated) {
-					
 					Intent i = new Intent();
 					i.setAction(Intent.ACTION_VIEW);
 					i.setDataAndType(Uri.parse("file://"
@@ -153,7 +146,6 @@ public class LSAugRealActivity extends Activity {
 					startActivity(i);
 				}
 			} else {
-				
 				fromMixare = false;
 				onBackPressed();
 			}
@@ -164,16 +156,12 @@ public class LSAugRealActivity extends Activity {
 
 		boolean retStatus = false;
 		try {
-
 			mixareInfo = new JSONObject();
 			JSONArray arrayObj = new JSONArray();
 
 			if (jArray != null) {
-				
 				try {
-					
 					for (int i = 0; i < jArray.length(); i++) {
-						
 						JSONObject jsonData = jArray.getJSONObject(i);
 						JSONObject jsonObj = new JSONObject();
 
@@ -188,7 +176,6 @@ public class LSAugRealActivity extends Activity {
 						arrayObj.put(jsonObj);
 					}
 				} catch (JSONException e) {
-
 					Log.e("BACKGROUND_PROC", "JSONException" + e.getMessage());
 					CustomToast.showCustomToast(LSAugRealActivity.this,
 							R.string.msg_CommError, CustomToast.IMG_AWARE,
@@ -201,32 +188,19 @@ public class LSAugRealActivity extends Activity {
 
 				boolean result = saveJSONFile(mixareInfo.toString());
 				if (!result) {
-					
 					CustomToast.showCustomToast(this,
 							R.string.msg_ErrorSavingFile,
 							CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 					retStatus = false;
 				}
 				retStatus = true;
-			} else {
 				
+			} else {
 				CustomToast.showCustomToast(this, R.string.msg_CommError,
 						CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 				retStatus = false;
 			}
-			// JSONObject obj1 = new JSONObject();
-			// obj1.put("id", "1");
-			// obj1.put("lat", "41.416556");
-			// obj1.put("lng", "2.152194");
-			// obj1.put("elevation", "0");
-			// obj1.put("title", "LSN Network 1");
-			// obj1.put("has_detail_page", "0");
-			// obj1.put("webpage", "");
-			// obj1.put("netid", "AAAAAAAAA");
-			
-			// arrayObj.put(obj1);
 		} catch (JSONException e) {
-			
 			Log.e("BACKGROUND_PROC", "JSONException" + e.getMessage());
 			CustomToast.showCustomToast(this, R.string.msg_CommError,
 					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
@@ -240,7 +214,6 @@ public class LSAugRealActivity extends Activity {
 
 		boolean retStatus = false;
 		if (LSFunctions.checkSDCard(this)) {
-			
 			String folder = "LSN";
 			String filename = "LSN/LSApp_mixare.json";
 
@@ -248,7 +221,6 @@ public class LSAugRealActivity extends Activity {
 					Environment.getExternalStorageDirectory(), folder);
 
 			if (!LSNFolder.exists()) {
-				
 				LSNFolder.mkdir();
 			}
 			File file = new File(Environment.getExternalStorageDirectory(),
@@ -257,7 +229,6 @@ public class LSAugRealActivity extends Activity {
 			byte[] data = info.getBytes();
 
 			try {
-				
 				fos = new FileOutputStream(file);
 				fos.write(data);
 				fos.flush();
@@ -265,13 +236,13 @@ public class LSAugRealActivity extends Activity {
 				retStatus = true;
 
 			} catch (FileNotFoundException e) {
-				
-				Log.e("BACKGROUND_PROC", "FileNotFoundException" + e.getMessage());
+				Log.e("BACKGROUND_PROC",
+						"FileNotFoundException" + e.getMessage());
 				CustomToast.showCustomToast(this, R.string.msg_CommError,
 						CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 			} catch (IOException e) {
-				
-				Log.e("BACKGROUND_PROC", "FileNotFoundException" + e.getMessage());
+				Log.e("BACKGROUND_PROC",
+						"FileNotFoundException" + e.getMessage());
 				CustomToast.showCustomToast(this, R.string.msg_CommError,
 						CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 			}
@@ -283,12 +254,11 @@ public class LSAugRealActivity extends Activity {
 	private void checkNETStatus() {
 
 		try {
-			
 			gpsStatus = locManager
 					.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		} catch (Exception ex) {
-			
-			Log.e("BACKGROUND_PROC", "Exception checkNETStatus()" + ex.getMessage());
+			Log.e("BACKGROUND_PROC",
+					"Exception checkNETStatus()" + ex.getMessage());
 			CustomToast.showCustomToast(this, R.string.msg_CommError,
 					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
@@ -297,31 +267,29 @@ public class LSAugRealActivity extends Activity {
 	private void checkGPSStatus() {
 
 		try {
-			
 			netStatus = locManager
 					.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 		} catch (Exception ex) {
-			
-			Log.e("BACKGROUND_PROC", "Exception checkGPSStatus()" + ex.getMessage());
+			Log.e("BACKGROUND_PROC",
+					"Exception checkGPSStatus()" + ex.getMessage());
 			CustomToast.showCustomToast(this, R.string.msg_CommError,
 					CustomToast.IMG_AWARE, CustomToast.LENGTH_SHORT);
 		}
 	}
 
 	public class GetLocation extends AsyncTask<Void, Position, Void> {
-		
+
 		private boolean running = true;
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
 
 			while (running) {
-				
 				getCurrentLocation();
 				publishProgress(curPosition);
 				SystemClock.sleep(5000);
 			}
-			
+
 			return null;
 		}
 
@@ -350,7 +318,6 @@ public class LSAugRealActivity extends Activity {
 
 				@Override
 				public void onLocationChanged(Location location) {
-					
 					curPosition = new Position(location);
 				}
 
@@ -369,10 +336,8 @@ public class LSAugRealActivity extends Activity {
 			};
 
 			locationListenerNetwork = new LocationListener() {
-				
 				@Override
 				public void onLocationChanged(Location location) {
-
 					curPosition = new Position(location);
 				}
 
@@ -391,11 +356,11 @@ public class LSAugRealActivity extends Activity {
 			};
 
 			if (gpsStatus)
-				
+
 				locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 						0, 0, locationListenerGPS);
 			if (netStatus)
-				
+
 				locManager.requestLocationUpdates(
 						LocationManager.NETWORK_PROVIDER, 0, 0,
 						locationListenerNetwork);
@@ -411,7 +376,7 @@ public class LSAugRealActivity extends Activity {
 		}
 
 		private void getCurrentLocation() {
-			
+
 			locManager.removeUpdates(locationListenerGPS);
 			locManager.removeUpdates(locationListenerNetwork);
 
@@ -419,37 +384,30 @@ public class LSAugRealActivity extends Activity {
 			Location netLocation = null;
 
 			if (gpsStatus)
-				
 				gpsLocation = locManager
 						.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			if (netStatus)
-				
 				netLocation = locManager
 						.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
 			if (gpsLocation != null && netLocation != null) {
-				
 				if (gpsLocation.getTime() > netLocation.getTime()) {
-					
 					curPosition.setPosition(gpsLocation);
 				} else {
-					
 					curPosition.setPosition(netLocation);
 				}
 			} else if (gpsLocation != null) {
-				
 				curPosition.setPosition(gpsLocation);
 			} else if (netLocation != null) {
-				
 				curPosition.setPosition(netLocation);
 			} else {
-				
+
 				return;
 			}
 		}
 
 		public Position getPosition() {
-			
+
 			return curPosition;
 		}
 	}

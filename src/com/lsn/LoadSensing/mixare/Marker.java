@@ -71,6 +71,7 @@ abstract public class Marker implements Comparable<Marker> {
 	protected TextObj textBlock;
 	
 	//public Marker(String title, double latitude, double longitude, double altitude, String link, DataSource datasource) {
+	@SuppressWarnings("deprecation")
 	public Marker(String title, double latitude, double longitude, double altitude, String netid, String link, DataSource datasource) {
 		super();
 
@@ -184,7 +185,7 @@ abstract public class Marker implements Comparable<Marker> {
 		if (!isActive())
 			return false;
 		
-		//TODO adapt the following to the variable radius!
+		
 		pPt.x = x - signMarker.x;
 		pPt.y = y - signMarker.y;
 		pPt.rotate(Math.toRadians(-(currentAngle + 90)));
@@ -229,10 +230,10 @@ abstract public class Marker implements Comparable<Marker> {
 	}
 	
 	public void drawTextBlock(PaintScreen dw) {
-		//TODO: grandezza cerchi e trasparenza
+		
 		float maxHeight = Math.round(dw.getHeight() / 10f) + 1;
 
-		//TODO: change textblock only when distance changes
+
 		String textStr="";
 
 		double d = distance;
