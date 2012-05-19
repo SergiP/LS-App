@@ -3,7 +3,7 @@
  *    
  *    Copyright (C) 2011-2012
  *    Authors:
- *    	Sergio González Díez        [sergio.gd@gmail.com]
+ *    	Sergio Gonzï¿½lez Dï¿½ez        [sergio.gd@gmail.com]
  *    	Sergio Postigo Collado      [spostigoc@gmail.com]
  *    
  *    This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,6 @@
 package com.lsn.LoadSensing;
 
 import com.lsn.LoadSensing.actionbar.ActionBarActivity;
-import com.lsn.LoadSensing.help.LSHelpNetListActivity;
-import com.lsn.LoadSensing.ui.CustomToast;
 import com.readystatesoftware.mapviewballoons.R;
 
 import android.content.Intent;
@@ -32,8 +30,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 
 public class LSHelpActivity extends ActionBarActivity {
 
@@ -45,83 +41,6 @@ public class LSHelpActivity extends ActionBarActivity {
 		
 		// Change home icon (<Icon)
 		getActionBarHelper().changeIconHome();
-
-		findViewById(R.id.funcNetList).setOnClickListener(
-				new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-
-						Intent i = new Intent(LSHelpActivity.this,
-								LSHelpNetListActivity.class);
-						startActivity(i);
-					}
-				});
-
-		findViewById(R.id.funcNetMaps).setOnClickListener(
-				new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-
-						CustomToast.showCustomToast(LSHelpActivity.this,
-								R.string.msg_UnderDevelopment,
-								CustomToast.IMG_EXCLAMATION,
-								CustomToast.LENGTH_SHORT);
-					}
-
-				});
-
-		findViewById(R.id.funcQRCode).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				CustomToast.showCustomToast(LSHelpActivity.this,
-						R.string.msg_UnderDevelopment,
-						CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_SHORT);
-			}
-
-		});
-
-		findViewById(R.id.funcFaves).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				CustomToast.showCustomToast(LSHelpActivity.this,
-						R.string.msg_UnderDevelopment,
-						CustomToast.IMG_EXCLAMATION, CustomToast.LENGTH_SHORT);
-			}
-
-		});
-
-		findViewById(R.id.funcAugReal).setOnClickListener(
-				new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-
-						CustomToast.showCustomToast(LSHelpActivity.this,
-								R.string.msg_UnderDevelopment,
-								CustomToast.IMG_EXCLAMATION,
-								CustomToast.LENGTH_SHORT);
-					}
-
-				});
-
-		findViewById(R.id.funcNetCloser).setOnClickListener(
-				new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-
-						CustomToast.showCustomToast(LSHelpActivity.this,
-								R.string.msg_UnderDevelopment,
-								CustomToast.IMG_EXCLAMATION,
-								CustomToast.LENGTH_SHORT);
-					}
-				});
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
