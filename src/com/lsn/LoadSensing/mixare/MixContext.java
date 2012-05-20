@@ -261,6 +261,7 @@ public class MixContext extends ContextWrapper {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public InputStream getHttpGETInputStream(String urlStr)
 	throws Exception {
 		InputStream is = null;
