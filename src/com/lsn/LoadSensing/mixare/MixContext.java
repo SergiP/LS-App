@@ -143,7 +143,8 @@ public class MixContext extends ContextWrapper {
 		}
 		// select Wikipedia if nothing was previously selected  
 		if(!atLeastOneDatasourceSelected)
-			
+			//TODO>: start intent data source select
+		
 		
 		rotationM.toIdentity();
 		
@@ -220,7 +221,9 @@ public class MixContext extends ContextWrapper {
 		
 		setLocationAtLastDownload(curLoc);
 
+//TODO fix logic
 
+	
 	}
 	
 	public void unregisterLocationManager() {
@@ -258,7 +261,6 @@ public class MixContext extends ContextWrapper {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public InputStream getHttpGETInputStream(String urlStr)
 	throws Exception {
 		InputStream is = null;
@@ -430,7 +432,7 @@ public class MixContext extends ContextWrapper {
 	}
 
 	public void loadMixViewWebPage(String url) throws Exception {
-		
+		// TODO
 		WebView webview = new WebView(mixView);
 		webview.getSettings().setJavaScriptEnabled(true);
 
@@ -460,7 +462,7 @@ public class MixContext extends ContextWrapper {
 		webview.loadUrl(url);
 	}
 	public void loadWebPage(String url, Context context) throws Exception {
-		
+		// TODO
 		WebView webview = new WebView(context);
 		
 		webview.setWebViewClient(new WebViewClient() {
